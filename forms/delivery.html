@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery Certificate | Sri Ramakrishna Hospital</title>
+<link rel="icon" type="image/png" href="https://rh-alg.github.io/RH-IMG/RH-LOGO.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* CM001 - CSS Variables and Body */
+body { font-family: 'Roboto Slab', serif; background-color: #f3f4f6; padding: 10px; margin: 0; }
+
+/* CM002 - A4 Page Dimensions */
+.a4-page { width: 210mm; height: 297mm; padding: 6mm; margin: 10px auto 40px auto; background: #ffffff; box-sizing: border-box; display: flex; flex-direction: column; gap: 12mm; position: relative; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden; }
+
+/* CM003 - Half Page Border */
+.half-page-border { border: 2.5px solid #1e3a8a; height: 136mm; padding: 10px; display: flex; flex-direction: column; position: relative; box-sizing: border-box; }
+
+/* CM004 - Header Styling */
+.header-container { display: flex; flex-direction: column; border-bottom: 2.5px solid teal; padding-bottom: 10px; margin-bottom: 10px; }
+.header-top { display: flex; align-items: center; justify-content: flex-start; gap: 15px; width: 100%; }
+.logo-img { height: 90px; width: 110px; object-fit: contain; }
+.hospital-name { font-size: 1.23rem; font-weight: 900; color:#1e3a8a; text-transform: uppercase; line-height: 1.2; margin: 0; }
+.since-box { font-size: 0.9rem; font-weight: 800; color:#000000; background-color:#7FD3FF; padding: 3px 10px; border-radius: 4px; border: 1px solid #1e3a8a; }
+
+/* CM005 - Typography and Content */
+.receipt-headline { font-size: 1.05rem; font-weight: 800; color: #1e3a8a; text-decoration: underline; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; margin-top: 4px; margin-bottom: 4px; }
+.receipt-paragraph { font-size: 0.9rem; line-height: 2.3; color: #1e293b; text-align: justify; font-weight: 600; text-transform: uppercase; margin: 0; }
+
+/* CM006 - Form Inputs */
+.line-input { border: none; border-bottom: 1.5px dotted #1e3a8a; outline: none; padding: 0 4px; font-weight: 800; color: #1e3a8a; text-align: center; background: transparent; font-size: 0.90rem; min-width: 100px; display: inline-block; vertical-align: bottom; }
+.wide-input { min-width: 350px; }
+.medium-input { min-width: 250px; }
+.date-input-container { position: relative; display: inline-flex; align-items: center; }
+.date-input-container input[type="date"] { position: absolute; opacity: 0; width: 100%; cursor: pointer; }
+.date-field { border:none; border-bottom:1.5px dotted #1e3a8a; outline:none; padding:0 4px; color:#1e3a8a; font-weight:800; width:110px; text-align:center; font-size:0.75rem; cursor:pointer; background: transparent; }
+input[type="time"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+
+/* CM007 - Top Controls and Buttons */
+.controls-wrapper { display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 10px; width: 100%; max-width: 210mm; margin: 0 auto 10px auto; }
+.btn { padding: 4px 12px; color: white; border-radius: 4px; font-weight: 800; cursor: pointer; border: 1px solid rgba(0,0,0,0.3); display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 3px 0 rgba(0,0,0,0.2), 0 4px 4px rgba(0,0,0,0.3); transition: all 0.1s; text-shadow: 0 -1px 0 rgba(0,0,0,0.3); }
+.btn:active { box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 rgba(0,0,0,0.2), 0 2px 2px rgba(0,0,0,0.3); transform: translateY(2px); }
+.search-box { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #1e3a8a; }
+.search-box input { border: 2px inset #cbd5e1; outline: none; padding: 2px 6px; height: 26px; border-radius: 4px; font-weight: 700; background: #ffffff; width: 250px; font-size: 12px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
+
+/* CM008 - Modals and Popups */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9999; align-items:center; justify-content:center; }
+.modal-content { background:#fff; padding:20px; border-radius:10px; text-align:center; min-width:300px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+
+/* CM009 - Print Queries */
+@media print { 
+    @page { size: A4; margin: 0; } 
+    body { background-color: #ffffff; padding: 0; margin: 0; } 
+    .controls-wrapper, .status-msg, .fa-calendar-alt, .modal-overlay { display: none !important; } 
+    .a4-page { box-shadow: none !important; margin: 0 !important; width: 210mm !important; height: 297mm !important; padding: 6mm !important; gap: 12mm !important; } 
+    .half-page-border { border: 2.5px solid #1e3a8a !important; height: 136mm !important; } 
+}
+</style>
+</head>
+<body>
+
+<!-- CM010 - Top Controls Bar -->
+<div class="controls-wrapper">
+<div style="display:flex; gap:10px; align-items:center;">
+<button class="btn" style="background:linear-gradient(to bottom, #f43f5e, #e11d48);" onclick="confirmReset()"><i class="fa-solid fa-trash-can"></i> RESET</button>
+<button class="btn" style="background:linear-gradient(to bottom, #10b981, #059669);" id="commitBtn_9381" onclick="handleSaveOrUpdate_7182()"><i class="fa-solid fa-cloud-arrow-up" id="saveIcon"></i> <span id="btnText_992">SAVE</span></button>
+<button class="btn" style="background:linear-gradient(to bottom, #3b82f6, #2563eb);" onclick="window.print()"><i class="fa-solid fa-print"></i> PRINT</button>
+</div>
+<div class="search-box">
+<span style="font-size:14px; text-shadow:1px 1px 1px rgba(255,255,255,0.8);">C-ID:</span>
+<input type="text" id="searchInput_8822" placeholder="Enter Certificate No" oninput="this.value=this.value.toUpperCase()" onkeydown="handleSearchEnter(event)">
+<button id="verifyBtn_7722" class="btn" style="background:linear-gradient(to bottom, #f59e0b, #d97706); padding:2px 10px; height:26px; min-width:80px;" onclick="performSearch_9281()"><i id="verifyIcon_7722" class="fa-solid fa-check"></i> VERIFY</button>
+</div>
+<div id="statusMsg_991" style="display:none;"></div>
+</div>
+
+<!-- CM011 - Main A4 Certificate -->
+<div class="a4-page">
+
+<!-- CM012 - First Half Page Border Area -->
+<div class="half-page-border">
+<div class="header-container">
+    <div class="header-top" style="gap: 15px;">
+        <!-- Hospital Logo -->
+        <img src="https://rh-alg.github.io/RH-IMG/RH-LOGO.png" alt="Hospital Logo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid teal;">
+        
+        <!-- Hospital Names -->
+        <div style="flex: 1; text-align: center;">
+            <div style="color: teal; font-weight: 800; font-size: 1.05rem; margin-bottom: 4px;">శ్రీ శ్రీనివాస నర్సింగ్ హోమ్ - Sri Srinivasa Nursing Home</div>
+            <h1 style="font-size: 1.4rem; font-weight: 900; color: #000000; text-transform: uppercase; margin: 0; line-height: 1.2;">
+                SRI RAMAKRISHNA HOSPITAL
+                <span style="font-size: 1.25rem; text-transform: none; display: inline-block; margin-left: 8px;">శ్రీ రామకృష్ణ హాస్పిటల్</span>
+            </h1>
+            
+            <!-- Hospital Details (Sub-header) -->
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 0.85rem; font-weight: 700; color: #333; margin-top: 6px;">
+                <span>ESTD 1972</span>
+                <span><i class="fas fa-map-marker-alt" style="color: teal; margin-right: 4px;"></i> Allagadda</span>
+                <span><i class="fas fa-phone-alt" style="color: teal; margin-right: 4px;"></i> 08514-200028</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:flex; justify-content:space-between; width:100%; margin-top:4px; font-weight:700; color:#1e3a8a; border-bottom:1px solid rgba(30,58,138,0.3); padding-bottom:4px; font-size:0.75rem;">
+<div>Certificate No: <span id="receiptNumDisplay_9182" style="color:#e11d48; font-weight:800;">[New]</span></div>
+<div class="date-input-container">Date:
+<input type="text" id="receiptDate_8471" class="date-field" placeholder="DD MON YYYY" readonly>
+<input type="date" onchange="formatDate(this, 'receiptDate_8471')">
+<i class="fas fa-calendar-alt ml-2 text-blue-900 cursor-pointer"></i>
+</div>
+</div>
+
+<div style="margin-top:10px;">
+<div class="receipt-headline">DELIVERY CERTIFICATE</div>
+<p class="receipt-paragraph">
+THIS IS TO CERTIFY THAT SMT. <span contenteditable="plaintext-only" id="smtName_1004" class="line-input wide-input"></span>
+W/O SRI <span contenteditable="plaintext-only" id="sriName_1005" class="line-input wide-input"></span>
+NATIVE OF <span contenteditable="plaintext-only" id="nativePlace_1006" class="line-input medium-input"></span>
+MANDAL <span contenteditable="plaintext-only" id="mandalName_1007" class="line-input medium-input"></span>
+DIST <span contenteditable="plaintext-only" id="distName_1008" class="line-input medium-input"></span>
+DELIVERED IN OUR NURSING HOME, ALLAGADDA ON
+<span class="date-input-container">
+<input type="text" id="deliveryDate_1009" class="date-field" placeholder="DD MON YYYY" readonly>
+<input type="date" onchange="formatDate(this, 'deliveryDate_1009')">
+<i class="fas fa-calendar-alt ml-2 text-blue-900 cursor-pointer"></i>
+</span>.
+TIME IS 
+<input type="time" id="deliveryTime" class="line-input" style="width:110px;" onchange="this.blur()">
+THIS IS HER <select id="deliveryOrder_1010" class="line-input" style="width:60px; color:#1e3a8a;"><option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option></select>
+DELIVERY, AND THE BORN CHILD IS ALIVE <select id="childGender_1011" class="line-input" style="width:90px; color:#1e3a8a;"><option>MALE</option><option>FEMALE</option></select>.
+</p>
+</div>
+
+<div style="display:flex; justify-content:space-between; align-items:flex-end; font-size:0.85rem; margin-top:auto; padding-top:10px;">
+    <!-- Hospital Address -->
+    <div style="color: #333;">
+        <i class="fas fa-map-marker-alt" style="color: teal; margin-right: 6px; font-size: 1rem;"></i>
+        Mini Theater Street, Padma Street, <b style="color: #000; font-weight: 900;">Allagadda</b>, AP - 518553
+    </div>
+    
+    <!-- Doctor Signature Area -->
+    <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:160px; border-top:2px solid #000; margin-bottom:5px;"></div>
+        <div style="font-weight:800; color:#000;">Doctor Signature</div>
+    </div>
+</div>
+</div>
+
+</div>
+
+<!-- CM013 - Reset Modal -->
+<div id="resetPopup" class="modal-overlay">
+<div class="modal-content">
+<h3 style="font-weight:700; color:#1e3a8a;">Are You Sure To Reset ?</h3>
+<div style="margin-top:15px; display:flex; justify-content:center; gap:10px;">
+<button class="btn" style="background:linear-gradient(to bottom, #f43f5e, #e11d48);" onclick="doReset()">YES</button>
+<button class="btn" style="background:linear-gradient(to bottom, #10b981, #059669);" onclick="closeResetPopup()">NO</button>
+</div>
+</div>
+</div>
+
+<!-- CM014 - Success Modal -->
+<div id="successPopup" class="modal-overlay">
+<div class="modal-content">
+<i class="fa-solid fa-circle-check" style="font-size:60px; color:#16a34a;"></i>
+<h2 style="margin-top:15px; font-weight:800; color:#16a34a;">SUCCESS</h2>
+<p id="successText" style="font-weight:700; margin-top:10px;"></p>
+<button class="btn" style="background:linear-gradient(to bottom, #10b981, #059669); margin-top:15px;" onclick="closeSuccessPopup()">OK</button>
+</div>
+</div>
+
+<script>
+// CM015 - State and Initialization
+const URL = "https://script.google.com/macros/s/AKfycbzyGan8iOXKcoj_KJT8Az3Qxj5G6oQ8lzn4YTXLVyTWrYfRBJGs8rj1czzKz3gwkuQ/exec";
+window.addEventListener('load', loadFormData);
+document.addEventListener('input', handleGlobalInput);
+document.addEventListener('change', handleGlobalInput);
+
+// CM016 - Save and Load Handlers
+function handleGlobalInput(e) { saveFormData(); }
+function saveFormData() { const formData = { certNo: localStorage.getItem('vsr_cert') || '', receiptDate: document.getElementById('receiptDate_8471').value, deliveryDate: document.getElementById('deliveryDate_1009').value, deliveryTime: document.getElementById('deliveryTime').value, motherName: document.getElementById('smtName_1004').innerText, fatherName: document.getElementById('sriName_1005').innerText, village: document.getElementById('nativePlace_1006').innerText, mandal: document.getElementById('mandalName_1007').innerText, dist: document.getElementById('distName_1008').innerText, deliveryOrder: document.getElementById('deliveryOrder_1010').value, childGender: document.getElementById('childGender_1011').value }; localStorage.setItem('vsr_form_data', JSON.stringify(formData)); }
+function loadFormData() { const data = JSON.parse(localStorage.getItem('vsr_form_data') || '{}'); if (!Object.keys(data).length) return; document.getElementById('receiptDate_8471').value = data.receiptDate || ''; document.getElementById('deliveryDate_1009').value = data.deliveryDate || ''; document.getElementById('deliveryTime').value = data.deliveryTime || ''; document.getElementById('smtName_1004').innerText = data.motherName || ''; document.getElementById('sriName_1005').innerText = data.fatherName || ''; document.getElementById('nativePlace_1006').innerText = data.village || ''; document.getElementById('mandalName_1007').innerText = data.mandal || ''; document.getElementById('distName_1008').innerText = data.dist || ''; document.getElementById('deliveryOrder_1010').value = data.deliveryOrder || '1st'; document.getElementById('childGender_1011').value = data.childGender || 'MALE'; if (data.certNo) { document.getElementById('receiptNumDisplay_9182').innerText = data.certNo; } }
+
+// CM017 - Date Formatting Handlers
+function formatDate(input, targetId) { const d = new Date(input.value); const m = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]; document.getElementById(targetId).value = `${("0"+d.getDate()).slice(-2)} ${m[d.getMonth()]} ${d.getFullYear()}`; saveFormData(); }
+function normalizeDate(v) { if (!v || !v.includes('T')) return v; const d = new Date(v); const m = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]; return `${("0"+d.getDate()).slice(-2)} ${m[d.getMonth()]} ${d.getFullYear()}`; }
+
+// CM018 - Reset Logic
+function confirmReset() { document.getElementById('resetPopup').style.display = 'flex'; }
+function closeResetPopup() { document.getElementById('resetPopup').style.display = 'none'; }
+function doReset() { localStorage.removeItem('vsr_cert'); localStorage.removeItem('vsr_form_data'); document.getElementById('searchInput_8822').value = ''; document.getElementById('receiptNumDisplay_9182').innerText = '[New]'; document.getElementById('receiptDate_8471').value = ''; document.getElementById('deliveryDate_1009').value = ''; document.getElementById('deliveryTime').value = ''; document.getElementById('smtName_1004').innerText = ''; document.getElementById('sriName_1005').innerText = ''; document.getElementById('nativePlace_1006').innerText = ''; document.getElementById('mandalName_1007').innerText = ''; document.getElementById('distName_1008').innerText = ''; document.getElementById('deliveryOrder_1010').selectedIndex = 0; document.getElementById('childGender_1011').selectedIndex = 0; closeResetPopup(); window.location.reload(); }
+
+// CM019 - Search and Verify Logic
+function performSearch_9281() { const q = document.getElementById('searchInput_8822').value.trim(); if (!q) { document.getElementById('verifyBtn_7722').disabled = false; document.getElementById('verifyIcon_7722').className = 'fa-solid fa-check'; return; } document.getElementById('verifyBtn_7722').disabled = true; document.getElementById('verifyIcon_7722').className = 'fa-solid fa-spinner fa-spin'; fetch(`${URL}?certNo=${encodeURIComponent(q)}`).then(r => r.json()).then(d => { if (d.status === "success") { document.getElementById('smtName_1004').innerText = d.data['Mothers Name'] || ''; document.getElementById('sriName_1005').innerText = d.data['Father Name'] || ''; document.getElementById('nativePlace_1006').innerText = d.data['village'] || ''; document.getElementById('mandalName_1007').innerText = d.data['Mandal'] || ''; document.getElementById('distName_1008').innerText = d.data['Dist'] || ''; document.getElementById('receiptDate_8471').value = normalizeDate(d.data['Date']); document.getElementById('deliveryDate_1009').value = normalizeDate(d.data['On Date']); document.getElementById('deliveryTime').value = d.data['Time'] || ''; document.getElementById('receiptNumDisplay_9182').innerText = q; localStorage.setItem('vsr_cert', q); document.getElementById('verifyBtn_7722').disabled = false; document.getElementById('verifyIcon_7722').className = 'fa-solid fa-check'; saveFormData(); } else { document.getElementById('verifyBtn_7722').disabled = false; document.getElementById('verifyIcon_7722').className = 'fa-solid fa-check'; showSuccessPopup('Certificate Not Found', true); } }).catch(err => { document.getElementById('verifyBtn_7722').disabled = false; document.getElementById('verifyIcon_7722').className = 'fa-solid fa-check'; console.error(err); showSuccessPopup('Search Error', true); }); }
+function handleSearchEnter(event) { if (event.key === 'Enter') { event.preventDefault(); performSearch_9281(); } }
+
+// CM020 - Save to Backend Logic
+function handleSaveOrUpdate_7182() { const receiptDate = document.getElementById('receiptDate_8471').value.trim(); const deliveryDate = document.getElementById('deliveryDate_1009').value.trim(); const motherName = document.getElementById('smtName_1004').innerText.trim(); const fatherName = document.getElementById('sriName_1005').innerText.trim(); const mandalName = document.getElementById('mandalName_1007').innerText.trim(); if (!receiptDate || !deliveryDate || !motherName || !fatherName || !mandalName) { showSuccessPopup("Please Fill All Required Fields", true); return; } document.getElementById('saveIcon').className = 'fa-solid fa-spinner fa-spin'; document.getElementById('btnText_992').innerText = 'SAVING'; const p = { certNo: localStorage.getItem('vsr_cert') || "NEW", date: document.getElementById('receiptDate_8471').value, motherName: document.getElementById('smtName_1004').innerText, fatherName: document.getElementById('sriName_1005').innerText, village: document.getElementById('nativePlace_1006').innerText, mandal: document.getElementById('mandalName_1007').innerText, dist: document.getElementById('distName_1008').innerText, onDate: document.getElementById('deliveryDate_1009').value, time: document.getElementById('deliveryTime').value, delivered: document.getElementById('deliveryOrder_1010').value, gender: document.getElementById('childGender_1011').value }; fetch(URL, { method: "POST", body: JSON.stringify(p) }).then(r => r.json()).then(d => { document.getElementById('receiptNumDisplay_9182').innerText = d.certNo; localStorage.setItem('vsr_cert', d.certNo); document.getElementById('saveIcon').className = 'fa-solid fa-circle-check'; document.getElementById('btnText_992').innerText = 'UPDATED'; saveFormData(); showSuccessPopup('Certificate Saved Successfully<br><br>Certificate No : <b>' + d.certNo + '</b>', false); }).catch(err => { document.getElementById('saveIcon').className = 'fa-solid fa-cloud-arrow-up'; document.getElementById('btnText_992').innerText = 'SAVE'; showSuccessPopup("Save Error", true); }); }
+function showSuccessPopup(msg, isError) { document.getElementById('successText').innerHTML = msg; const icon = document.querySelector('#successPopup .fa-solid'); if(isError) { icon.className = 'fa-solid fa-circle-xmark'; icon.style.color = '#e11d48'; document.querySelector('#successPopup h2').innerText = 'ERROR'; document.querySelector('#successPopup h2').style.color = '#e11d48'; } else { icon.className = 'fa-solid fa-circle-check'; icon.style.color = '#16a34a'; document.querySelector('#successPopup h2').innerText = 'SUCCESS'; document.querySelector('#successPopup h2').style.color = '#16a34a'; } document.getElementById('successPopup').style.display = 'flex'; }
+function closeSuccessPopup() { document.getElementById('successPopup').style.display = 'none'; document.getElementById('saveIcon').className = 'fa-solid fa-cloud-arrow-up'; document.getElementById('btnText_992').innerText = 'SAVE'; }
+
+</script>
+</body>
+</html>

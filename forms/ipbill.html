@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP BILL | Sri Ramakrishna Hospital</title>
+<link rel="icon" type="image/png" href="https://rh-alg.github.io/RH-IMG/RH-LOGO.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+
+/* CM001 - Core Body and Page Setup */
+body { font-family: 'Roboto Slab', serif; background-color: #f1f5f9; padding: 2px; margin: 0; }
+
+/* CM002 - A4 Paper Layout with 6mm Outer Gap */
+.a4-page { width: 210mm; min-height: 297mm; padding: 6mm; margin: 10px auto; background: #ffffff; box-sizing: border-box; position: relative; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); overflow: hidden; }
+
+/* CM003 - Inner Content Border */
+.a4-content-border { border: 3.5px solid #1e3a8a; min-height: calc(297mm - 12mm); padding: 5mm 8mm 8mm 8mm; display: flex; flex-direction: column; position: relative; box-sizing: border-box; }
+
+/* CM004 - Header Structure */
+.header-container { display: flex; flex-direction: column; border-bottom: 2.5px solid teal; padding-bottom: 6px; margin-top: -10px; margin-bottom: 10px; }
+.header-top { display: flex; align-items: center; justify-content: flex-start; gap: 15px; width: 100%; }
+
+/* CM006 - Doctor Columns */
+.doctors-row { display: flex; justify-content: space-around; align-items: flex-start; border-top: 1.5px solid #1e3a8a; margin-top: 8px; padding-top: 6px; color: #1e3a8a; text-align: center; gap: 12px; }
+.doctor-col { display: flex; flex-direction: column; align-items: center; width: 48%; }
+.doctor-name { font-size: 0.92rem; font-weight: 800; letter-spacing: 0.015em; margin-bottom: 1px; text-transform: uppercase; line-height: 1.1; }
+.doctor-degree { font-size: 0.75rem; font-weight: 700; margin-bottom: 1px; line-height: 1.1; }
+.doctor-extra { font-size: 0.62rem; font-weight: 500; opacity: 0.90; text-align: center; margin-bottom: 2px; line-height: 1.2; font-family: sans-serif; }
+.doctor-reg { font-size: 0.65rem; font-weight: 700; opacity: 0.95; line-height: 1.1; }
+
+/* CM007 - Form Input Fields */
+.field-row { display: flex; align-items: center; margin-bottom: 7px; font-size: 0.95rem; justify-content: flex-start; }
+.field-label { width: 230px; font-weight: 700; color: #1e3a8a; cursor: default; }
+.input-field { border: none; border-bottom: 1px dotted #1e3a8a; width: 100%; outline: none; padding: 1px 2px; font-weight: bold; color: #0f172a; background: transparent; line-height: 1.1; }
+.input-field:focus { border-bottom: 1.5px solid #2563eb; }
+.date-field { border: none; border-bottom: 1px dotted #1e3a8a; width: 145px; outline: none; padding: 1px; background: transparent; color: #1e3a8a; font-weight: bold; }
+
+/* CM008 - Footer Elements */
+.footer-wrapper { position: absolute; bottom: 12px; left: 12px; right: 12px; }
+
+/* CM009 - Compact UI Buttons */
+.btn { padding: 6px 12px; background-color: #1e3a8a; color: white; border-radius: 6px; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; transition: all 0.2s ease-in-out; }
+.btn-save { background-color: #059669; }
+.btn-print { background-color: #3b82f6; }
+.print-pulse { animation: pulseGlow 2s infinite; }
+@keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.7); } 70% { box-shadow: 0 0 0 10px rgba(59,130,246,0); } 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); } }
+
+/* CM010 - Toast Notification */
+#toast { position: fixed; bottom: 25px; right: 25px; padding: 14px 28px; border-radius: 8px; font-weight: 800; color: white; display: none; z-index: 2000; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); }
+.toast-success { background: #10b981; }
+.toast-error { background: #ef4444; }
+
+/* CM011 - Print Optimizations (Maintains 6mm Gap) */
+@media print {
+@page { size: A4; margin: 0; }
+body { background: none; padding: 0; margin: 0; }
+.no-print { display: none !important; }
+.a4-page { margin: 0; padding: 6mm; box-shadow: none !important; width: 210mm; min-height: 297mm; }
+.a4-content-border { border: 3.5px solid #1e3a8a !important; min-height: calc(297mm - 12mm); }
+input[type="checkbox"] { display: none !important; }
+.print-hide { display: none !important; }
+}
+</style>
+</head>
+<body onload="loadStoredElementsAndCheckState_8831()" oninput="runDataAutoSave_8312()">
+
+<!-- CM012 - Simplified Top Controls (One Row + Doctors without BG) -->
+<div class="no-print w-full bg-slate-50 text-slate-800 p-2 shadow-md border-b border-slate-300">
+<div class="max-w-[1250px] mx-auto flex flex-col gap-2">
+<div class="flex flex-row flex-wrap lg:flex-nowrap items-center justify-center gap-3 w-full">
+<button class="btn bg-rose-600 hover:bg-rose-700 shadow-sm whitespace-nowrap" onclick="triggerConfirmReset_8213()"><i class="fa-solid fa-trash-can"></i> RESET</button>
+<button class="btn btn-save shadow-sm whitespace-nowrap" id="commitBtn_9381" onclick="submitToSpreadsheet_7182()"><i class="fa-solid fa-cloud-arrow-up"></i> SAVE</button>
+<button class="btn btn-print shadow-sm whitespace-nowrap" id="printBtn_2831" onclick="triggerNativePrint_9281()"><i class="fa-solid fa-print"></i> PRINT</button>
+<div class="text-xs font-extrabold text-blue-900 flex items-center gap-1.5 whitespace-nowrap uppercase tracking-wide ml-2"><i class="fa-solid fa-hospital-user text-blue-600"></i> IP BILL TRACKER :</div>
+<input type="text" id="searchIpNumber_9182" placeholder="Search IP Bill/Receipt No..." class="w-full md:w-56 px-2 py-1 bg-white border border-slate-300 rounded text-slate-800 font-bold text-xs focus:outline-none focus:border-blue-500 shadow-sm" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')">
+<button class="btn bg-blue-600 hover:bg-blue-700 text-white shadow-sm whitespace-nowrap" onclick="verifySearch_9283()"><i class="fa-solid fa-circle-check"></i> VERIFY</button>
+</div>
+</div>
+</div>
+
+<!-- CM013 - Global UI Components -->
+<div id="toast"></div>
+
+<!-- CM014 - Reset Confirmation Modal -->
+<div id="confirmModal_9988" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[3000] hidden">
+<div class="bg-white p-6 rounded-xl border-2 border-blue-900 shadow-2xl max-w-sm w-full text-center m-4">
+<h3 class="text-lg font-extrabold text-blue-900 mb-2">Confirm Action</h3>
+<p class="text-sm text-slate-700 mb-6 font-semibold">Are you sure you want to reset?</p>
+<div class="flex justify-center gap-4">
+<button class="px-4 py-2 bg-slate-300 hover:bg-slate-400 text-slate-800 font-bold rounded" onclick="closeConfirmModal_8822()">Cancel</button>
+<button class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded" onclick="confirmAndClearAllStoredData_9281()">Yes, Reset</button>
+</div>
+</div>
+</div>
+
+<!-- CM015 - Main A4 Form Wrapper -->
+<div class="a4-page">
+<div class="a4-content-border">
+
+<!-- CM016 - Sri Ramakrishna Hospital Brand Header -->
+<div class="header-container">
+    <div class="header-top">
+        <!-- Hospital Logo -->
+        <img src="https://rh-alg.github.io/RH-IMG/RH-LOGO.png" alt="Hospital Logo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid teal;">
+        
+        <!-- Hospital Names -->
+        <div style="flex: 1; text-align: center;">
+            <div style="color: teal; font-weight: 800; font-size: 1.05rem; margin-bottom: 4px;">శ్రీ శ్రీనివాస నర్సింగ్ హోమ్ - Sri Srinivasa Nursing Home</div>
+            <h1 style="font-size: 1.4rem; font-weight: 900; color: #000000; text-transform: uppercase; margin: 0; line-height: 1.2;">
+                SRI RAMAKRISHNA HOSPITAL
+                <span style="font-size: 1.25rem; text-transform: none; display: inline-block; margin-left: 8px;">శ్రీ రామకృష్ణ హాస్పిటల్</span>
+            </h1>
+            
+            <!-- Hospital Details (Sub-header) -->
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 0.85rem; font-weight: 700; color: #333; margin-top: 6px;">
+                <span style="font-size: 0.9rem; font-weight: 800; color:#000000; background-color:#7FD3FF; padding: 3px 10px; border-radius: 4px; border: 1px solid #1e3a8a;">ESTD 1972</span>
+                <span><i class="fas fa-map-marker-alt" style="color: teal; margin-right: 4px;"></i> Allagadda</span>
+                <span><i class="fas fa-phone-alt" style="color: teal; margin-right: 4px;"></i> 08514-200028</span>
+            </div>
+        </div>
+    </div>
+    <div class="doctors-row" id="billDoctorsRow_9381">
+        <!-- Static Doctors List based on requirement -->
+        <div class="doctor-col">
+            <div class="doctor-name" style="font-size: 1rem; color: #0f172a;">Dr. N. Lakshmi Sekhar Reddy</div>
+            <div class="doctor-degree" style="font-size: 0.85rem; color: #1e3a8a;">General Medicine</div>
+        </div>
+        <div class="doctor-col">
+            <div class="doctor-name" style="font-size: 1rem; color: #0f172a;">Dr. N. Sujatha</div>
+            <div class="doctor-degree" style="font-size: 0.85rem; color: #1e3a8a;">Obstetrics & Gynecology (OBG)</div>
+        </div>
+    </div>
+</div>
+
+<!-- CM017 - Form Fields Section -->
+<div class="px-2 py-1 flex-grow">
+<div class="flex justify-between mb-4 font-bold text-blue-900 border-b border-blue-900 pb-2 text-sm px-2">
+<div>Receipt No: <span id="receiptNumDisplay_9182" class="text-rose-600 font-extrabold">[Click Save]</span></div>
+<div>IP Number: <span id="ipNumDisplay_2931" class="text-rose-600 font-extrabold">[Click Save]</span></div>
+<div>Date: <input type="date" class="date-field" id="receiptDate_8471"></div>
+</div>
+<div class="space-y-1.5 px-2">
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_patientName" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_patientName" onblur="saveLabel_9281(this)">Patient Name</span></label> : <input type="text" class="input-field uppercase" id="patientName_9103"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_consultFee" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_consultFee" onblur="saveLabel_9281(this)">Consultation Fee</span></label> : <input type="number" class="input-field" id="consultFee_2841"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_admissionFee" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_admissionFee" onblur="saveLabel_9281(this)">Admission Fee</span></label> : <input type="number" class="input-field" id="admissionFee_4732"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_opCharge" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_opCharge" onblur="saveLabel_9281(this)">Operation Charges</span></label> : <input type="number" class="input-field" id="opCharge_9184"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_anesCharge" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_anesCharge" onblur="saveLabel_9281(this)">Anesthesia Charges</span></label> : <input type="number" class="input-field" id="anesCharge_3849"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_otCharge" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_otCharge" onblur="saveLabel_9281(this)">OT Charges</span></label> : <input type="number" class="input-field" id="otCharge_7412"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_oxyCharge" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_oxyCharge" onblur="saveLabel_9281(this)">Oxygen Charges</span></label> : <input type="number" class="input-field" id="oxyCharge_6391"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_fluidsMed" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_fluidsMed" onblur="saveLabel_9281(this)">Fluids & Medicine</span></label> : <input type="number" class="input-field" id="fluidsMed_8423"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_docCharge" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_docCharge" onblur="saveLabel_9281(this)">Doctor Charges</span></label> : <input type="number" class="input-field" id="docCharge_1942"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_rentDays" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_rentDays" onblur="saveLabel_9281(this)">Charges Days</span></label> : <input type="number" class="input-field text-center mx-2 font-black text-lg" style="width: 70px;" id="rentDays_5821"> <span class="mx-3 font-bold text-blue-900">From</span> <input type="date" class="date-field" style="width: 155px;" id="rentFrom_4812"> <span class="mx-3 font-bold text-blue-900">To</span> <input type="date" class="date-field" style="width: 155px;" id="rentTo_2931"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_roomRent" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_roomRent" onblur="saveLabel_9281(this)">Room Rent</span></label> : <input type="number" class="input-field" id="roomRent_6294"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_nurseCharge" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_nurseCharge" onblur="saveLabel_9281(this)">Nursing Charges</span></label> : <input type="number" class="input-field" id="nurseCharge_7183"></div>
+<div class="field-row"><label class="field-label flex items-center gap-2"><input type="checkbox" id="chk_misc" checked onchange="toggleField_9281(this)"><span contenteditable="true" id="lbl_misc" onblur="saveLabel_9281(this)">Miscellaneous</span></label> : <input type="number" class="input-field" id="misc_3948"></div>
+</div>
+
+<!-- CM018 - Total and Amount In Words -->
+<div class="mt-4 border-t-2 border-blue-900 pt-3 px-2">
+<div class="field-row text-xl font-bold"><label class="field-label">Total Amount</label> : <input type="text" class="input-field text-blue-900 text-lg" id="totalAmount_8192" readonly></div>
+<div class="field-row font-bold text-orange-700"><label class="field-label">Received Amt</label> : <input type="number" class="input-field" id="receivedAmount_9482" oninput="transcribeNumberToWords_1832()"></div>
+<div class="field-row"><label class="field-label">Rupees in words</label> : <input type="text" class="input-field text-slate-800 text-sm italic font-extrabold" id="rupeesWords_1029" readonly></div>
+</div>
+</div>
+
+<!-- CM019 - Footer and Signatory Section (Sri Ramakrishna Style) -->
+<div class="footer-wrapper">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; font-size:0.85rem;">
+        <!-- Hospital Address -->
+        <div style="color: #333;">
+            <i class="fas fa-map-marker-alt" style="color: teal; margin-right: 6px; font-size: 1rem;"></i>
+            Mini Theater Street, Padma Street, <b style="color: #000; font-weight: 900;">Allagadda</b>, AP - 518553
+        </div>
+        
+        <!-- Doctor Signature Area -->
+        <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="width:160px; border-top:2px solid #000; margin-bottom:5px;"></div>
+            <div style="font-weight:800; color:#000;">Doctor Signature</div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+/* CM020 - Configuration and Constants */
+const NUMERIC_CALCULATION_IDS_8293 = ['consultFee_2841', 'admissionFee_4732', 'opCharge_9184', 'anesCharge_3849', 'otCharge_7412', 'oxyCharge_6391', 'fluidsMed_8423', 'docCharge_1942', 'roomRent_6294', 'nurseCharge_7183', 'misc_3948'];
+const ALL_FORM_INPUTS_LIST_8392 = ['receiptDate_8471', 'patientName_9103', ...NUMERIC_CALCULATION_IDS_8293, 'rentDays_5821', 'rentFrom_4812', 'rentTo_2931', 'receivedAmount_9482', 'rupeesWords_1029'];
+// కింద ఉన్న URL ని తీసేసి, మీ Google Sheets నుండి వచ్చిన 'కొత్త Web App URL' ను ఇక్కడ పేస్ట్ చేయండి.
+const OFFICIAL_WEBAPP_URL_9283 = "https://script.google.com/macros/s/AKfycbz-TSkKND4wAAxz47tm0133VyE1n_pxBi1KSTYnHjOCPvZy-D93kVUxobLl2FWUATP9/exec";
+
+/* CM021 - Utility Logic */
+const saveLabel_9281 = (span) => localStorage.setItem("vsr_lbl_" + span.id, span.innerText);
+const triggerConfirmReset_8213 = () => document.getElementById('confirmModal_9988').classList.remove('hidden');
+const closeConfirmModal_8822 = () => document.getElementById('confirmModal_9988').classList.add('hidden');
+const triggerNativePrint_9281 = () => window.print();
+function showToast_8392(msg, isSuccess) { const t = document.getElementById('toast'); t.className = "fixed bottom-5 right-5 font-extrabold text-white z-[5000] shadow-2xl p-4 rounded-lg " + (isSuccess ? "bg-emerald-600" : "bg-rose-600"); t.innerText = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 4000); }
+function convertDateForInput(dateValue) { if (!dateValue) return ''; const d = new Date(dateValue); if (isNaN(d.getTime())) return ''; return d.toISOString().split('T')[0]; }
+function numberToIndianWords_7381(num) { if (num === 0) return 'Zero Rupees Only'; const single = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']; const double = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']; const formatHundreds = (n) => n < 20 ? single[n] : double[Math.floor(n / 10)] + (n % 10 ? ' ' + single[n % 10] : ''); let words = ''; if (Math.floor(num / 10000000) > 0) { words += formatHundreds(Math.floor(num / 10000000)) + ' Crore '; num %= 10000000; } if (Math.floor(num / 100000) > 0) { words += formatHundreds(Math.floor(num / 100000)) + ' Lakh '; num %= 100000; } if (Math.floor(num / 1000) > 0) { words += formatHundreds(Math.floor(num / 1000)) + ' Thousand '; num %= 1000; } if (Math.floor(num / 100) > 0) { words += formatHundreds(Math.floor(num / 100)) + ' Hundred '; num %= 100; } if (num > 0) { words += (words !== '' ? 'and ' : '') + formatHundreds(num); } return words.trim() + ' Rupees Only'; }
+function transcribeNumberToWords_1832() { const amt = parseInt(document.getElementById('receivedAmount_9482').value) || 0; document.getElementById('rupeesWords_1029').value = amt > 0 ? numberToIndianWords_7381(amt) : ''; runDataAutoSave_8312(); }
+
+/* CM022 - State Management */
+function loadStoredElementsAndCheckState_8831() { restoreFormValuesFromStore_8291(); restoreUIStates_9921(); runCalculations_9182(); handleInitialPrintBtnState_2819(); const savedNo = localStorage.getItem('vsr_saved_receipt_no'); const savedIp = localStorage.getItem('vsr_saved_ip_no'); if (savedNo && savedNo !== '[Click Save]') { document.getElementById('receiptNumDisplay_9182').innerText = savedNo; } if (savedIp && savedIp !== '[Click Save]') { document.getElementById('ipNumDisplay_2931').innerText = savedIp; } }
+function restoreUIStates_9921() { document.querySelectorAll('input[type="checkbox"]').forEach(chk => { if(chk.id.startsWith('sel_')) return; const saved = localStorage.getItem("vsr_checked_" + chk.id); chk.checked = saved === null ? true : saved === 'true'; toggleField_9281(chk, true); }); document.querySelectorAll('[contenteditable="true"]').forEach(lbl => { const saved = localStorage.getItem("vsr_lbl_" + lbl.id); if(saved) lbl.innerText = saved; }); }
+function toggleField_9281(checkbox, isInit = false) { const row = checkbox.closest('.field-row'); if (!row) return; const inputs = row.querySelectorAll('input[type="number"], input[type="text"]'); inputs.forEach(inp => { inp.disabled = false; }); if (checkbox.checked) { row.classList.remove('print-hide'); } else { row.classList.add('print-hide'); } if(!isInit) { localStorage.setItem("vsr_checked_" + checkbox.id, checkbox.checked); runCalculations_9182(); runDataAutoSave_8312(); } }
+function runCalculations_9182() { let aggregatedTotal_2931 = 0; NUMERIC_CALCULATION_IDS_8293.forEach(targetId_1928 => { const el = document.getElementById(targetId_1928); if(el && !el.disabled) aggregatedTotal_2931 += parseFloat(el.value) || 0; }); document.getElementById('totalAmount_8192').value = aggregatedTotal_2931 > 0 ? aggregatedTotal_2931 : ""; }
+function restoreFormValuesFromStore_8291() { ALL_FORM_INPUTS_LIST_8392.forEach(fieldId_3821 => { const savedVal_8192 = localStorage.getItem("vsr_field_" + fieldId_3821); if (savedVal_8192 !== null) { const el = document.getElementById(fieldId_3821); if(el) el.value = savedVal_8192; } }); }
+function runDataAutoSave_8312() { runCalculations_9182(); ALL_FORM_INPUTS_LIST_8392.forEach(fieldId_3821 => { const el = document.getElementById(fieldId_3821); if(el) localStorage.setItem("vsr_field_" + fieldId_3821, el.value); }); const printBtn_8291 = document.getElementById('printBtn_2831'); printBtn_8291.disabled = true; printBtn_8291.classList.remove('print-pulse'); }
+function handleInitialPrintBtnState_2819() { const savedReceipt_3821 = localStorage.getItem('vsr_saved_receipt_9182'); if (savedReceipt_3821) { document.getElementById('printBtn_2831').disabled = false; document.getElementById('printBtn_2831').classList.add('print-pulse'); } }
+function confirmAndClearAllStoredData_9281() { closeConfirmModal_8822(); localStorage.clear(); location.reload(); }
+
+/* CM024 - API Networking */
+async function verifySearch_9283() { const query = document.getElementById('searchIpNumber_9182').value.trim(); if(!query) return showToast_8392('Please enter a Bill or IP Number to verify.', false); const btn = document.querySelector('button[onclick="verifySearch_9283()"]'); const orig = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i>'; try { const response = await fetch(OFFICIAL_WEBAPP_URL_9283, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'search', query: query }) }); const text = await response.text(); let result; try { result = JSON.parse(text); } catch(err) { console.error("Non-JSON Search Response received:", text); if (text.includes("HtmlOutput") || text.includes("<!DOCTYPE") || text.includes("html") || text.includes("Authorization")) { return showToast_8392('Google Script deployment issue! Redeploy with Access: Anyone.', false); } return showToast_8392('Invalid response format received from sheet.', false); } if (result.status === 'success' && result.found) { showToast_8392('Record successfully retrieved from Cloud!', true); document.getElementById('receiptNumDisplay_9182').innerText = result.receiptNo || ''; document.getElementById('ipNumDisplay_2931').innerText = result.ipNumber || ''; localStorage.setItem('vsr_saved_receipt_no', result.receiptNo || ''); localStorage.setItem('vsr_saved_ip_no', result.ipNumber || ''); document.getElementById('receiptDate_8471').value = result.receiptDate_8471 || ''; document.getElementById('rentFrom_4812').value = result.rentFrom_4812 || ''; document.getElementById('rentTo_2931').value = result.rentTo_2931 || ''; const fields = { 'receiptDate_8471': convertDateForInput(result.receiptDate_8471), 'patientName_9103': result.patientName_9103, 'consultFee_2841': result.consultFee_2841, 'admissionFee_4732': result.admissionFee_4732, 'opCharge_9184': result.opCharge_9184, 'anesCharge_3849': result.anesCharge_3849, 'otCharge_7412': result.otCharge_7412, 'oxyCharge_6391': result.oxyCharge_6391, 'fluidsMed_8423': result.fluidsMed_8423, 'docCharge_1942': result.docCharge_1942, 'rentDays_5821': result.rentDays_5821, 'rentFrom_4812': convertDateForInput(result.rentFrom_4812), 'rentTo_2931': convertDateForInput(result.rentTo_2931), 'roomRent_6294': result.roomRent_6294, 'nurseCharge_7183': result.nurseCharge_7183, 'misc_3948': result.misc_3948, 'receivedAmount_9482': result.receivedAmount_9482, 'rupeesWords_1029': result.rupeesWords_1029 }; Object.keys(fields).forEach(id => { const el = document.getElementById(id); if(el) { el.value = fields[id] || ''; localStorage.setItem("vsr_field_" + id, el.value); } }); NUMERIC_CALCULATION_IDS_8293.forEach(id => { const el = document.getElementById(id); const chk = document.getElementById("chk_" + id.split('_')[0]); if(el && chk) { chk.checked = parseFloat(el.value) > 0; toggleField_9281(chk, true); } }); const pBtn = document.getElementById('printBtn_2831'); pBtn.disabled = false; pBtn.classList.add('print-pulse'); runCalculations_9182(); } else { showToast_8392('No matching record found.', false); } } catch(e) { console.error("Verify Network Error Details:", e); showToast_8392('CORS / Fetch Error! Ensure Incognito window or re-deploy Google Apps Script.', false); } finally { btn.disabled = false; btn.innerHTML = orig; } }
+async function submitToSpreadsheet_7182() { const btn = document.getElementById('commitBtn_9381'); const origText = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> SAVING...'; const payload = { action: 'save' }; ALL_FORM_INPUTS_LIST_8392.forEach(id => { const el = document.getElementById(id); payload[id] = el ? el.value : ''; }); payload['totalAmount_8192'] = document.getElementById('totalAmount_8192').value; const currentReceiptNo = document.getElementById('receiptNumDisplay_9182').innerText; if (currentReceiptNo && currentReceiptNo !== '[Click Save]') { payload['receiptNo'] = currentReceiptNo; } const customLabels = ['lbl_patientName', 'lbl_consultFee', 'lbl_admissionFee', 'lbl_opCharge', 'lbl_anesCharge', 'lbl_otCharge', 'lbl_oxyCharge', 'lbl_fluidsMed', 'lbl_docCharge', 'lbl_rentDays', 'lbl_roomRent', 'lbl_nurseCharge', 'lbl_misc']; customLabels.forEach(id => { const el = document.getElementById(id); payload[id] = el ? el.innerText : ''; }); try { const response = await fetch(OFFICIAL_WEBAPP_URL_9283, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) }); const text = await response.text(); let result; try { result = JSON.parse(text); } catch(err) { console.error("Non-JSON Save Response received:", text); return showToast_8392('Save failed: Sheet deployment must have "Anyone" access enabled.', false); } if (result.status === 'success') { document.getElementById('receiptNumDisplay_9182').innerText = result.receiptNo; document.getElementById('ipNumDisplay_2931').innerText = result.ipNumber; localStorage.setItem('vsr_saved_receipt_9182', JSON.stringify(result)); localStorage.setItem('vsr_saved_receipt_no', result.receiptNo); localStorage.setItem('vsr_saved_ip_no', result.ipNumber); showToast_8392(result.updated ? 'Data Successfully Updated on Sheet!' : 'New Data Saved Successfully to Cloud!', true); const pBtn = document.getElementById('printBtn_2831'); pBtn.disabled = false; pBtn.classList.add('print-pulse'); } else { showToast_8392('Server Error: ' + result.message, false); } } catch (err) { console.error("Save Network Error:", err); showToast_8392('Network Block! Ensure spreadsheet script has "Anyone" access deployment.', false); } finally { btn.disabled = false; btn.innerHTML = origText; } }
+
+</script>
+</body>
+</html>

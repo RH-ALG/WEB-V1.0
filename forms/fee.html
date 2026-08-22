@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fee Receipt | Sri Ramakrishna Hospital</title>
+<link rel="icon" type="image/png" href="https://rh-alg.github.io/RH-IMG/RH-LOGO.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* CM001 - CSS Variables and Body */
+body { font-family: 'Roboto Slab', serif; background-color: #f3f4f6; padding: 10px; margin: 0; }
+
+/* CM002 - A4 Page Dimensions */
+.a4-page { width: 210mm; height: 297mm; padding: 6mm; margin: 10px auto 40px auto; background: #ffffff; box-sizing: border-box; display: flex; flex-direction: column; gap: 12mm; position: relative; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden; }
+
+/* CM003 - Half Page Border */
+.half-page-border { border: 2.5px solid #1e3a8a; height: 136mm; padding: 10px; display: flex; flex-direction: column; position: relative; box-sizing: border-box; }
+
+/* CM004 - Header Styling */
+.header-container { display: flex; flex-direction: column; border-bottom: 2.5px solid teal; padding-bottom: 10px; margin-bottom: 10px; }
+.header-top { display: flex; align-items: center; justify-content: flex-start; gap: 15px; width: 100%; }
+.logo-img { height: 90px; width: 110px; object-fit: contain; }
+.hospital-name { font-size: 1.23rem; font-weight: 900; color:#1e3a8a; text-transform: uppercase; line-height: 1.2; margin: 0; }
+.since-box { font-size: 0.9rem; font-weight: 800; color:#000000; background-color:#7FD3FF; padding: 3px 10px; border-radius: 4px; border: 1px solid #1e3a8a; }
+
+/* CM005 - Typography and Content */
+.receipt-headline { font-size: 1.05rem; font-weight: 800; color: #1e3a8a; text-decoration: underline; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; margin-top: 4px; margin-bottom: 4px; }
+.receipt-paragraph { font-size: 0.9rem; line-height: 2.3; color: #1e293b; text-align: justify; font-weight: 600; text-transform: uppercase; margin: 0; }
+
+/* CM006 - Form Inputs */
+.line-input { border: none; border-bottom: 1.5px dotted #1e3a8a; outline: none; padding: 0 4px; font-weight: 800; color: #1e3a8a; text-align: center; background: transparent; font-size: 0.90rem; min-width: 100px; display: inline-block; vertical-align: bottom; }
+.wide-input { min-width: 350px; }
+.medium-input { min-width: 250px; }
+.date-input-container { position: relative; display: inline-flex; align-items: center; }
+.date-input-container input[type="date"] { position: absolute; opacity: 0; width: 100%; cursor: pointer; }
+.date-field { border:none; border-bottom:1.5px dotted #1e3a8a; outline:none; padding:0 4px; color:#1e3a8a; font-weight:800; width:110px; text-align:center; font-size:0.75rem; cursor:pointer; background: transparent; }
+input[type="time"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+
+/* CM007 - Top Controls and Buttons */
+.controls-wrapper { display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 10px; width: 100%; max-width: 210mm; margin: 0 auto 10px auto; }
+.btn { padding: 4px 12px; color: white; border-radius: 4px; font-weight: 800; cursor: pointer; border: 1px solid rgba(0,0,0,0.3); display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 3px 0 rgba(0,0,0,0.2), 0 4px 4px rgba(0,0,0,0.3); transition: all 0.1s; text-shadow: 0 -1px 0 rgba(0,0,0,0.3); }
+.btn:active { box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 rgba(0,0,0,0.2), 0 2px 2px rgba(0,0,0,0.3); transform: translateY(2px); }
+.search-box { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #1e3a8a; }
+.search-box input { border: 2px inset #cbd5e1; outline: none; padding: 2px 6px; height: 26px; border-radius: 4px; font-weight: 700; background: #ffffff; width: 250px; font-size: 12px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
+
+/* CM008 - Modals and Popups */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9999; align-items:center; justify-content:center; }
+.modal-content { background:#fff; padding:20px; border-radius:10px; text-align:center; min-width:300px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+
+/* CM009 - Print Queries */
+@media print { 
+    @page { size: A4; margin: 0; } 
+    body { background-color: #ffffff; padding: 0; margin: 0; } 
+    .controls-wrapper, .status-msg, .fa-calendar-alt, .modal-overlay { display: none !important; } 
+    .a4-page { box-shadow: none !important; margin: 0 !important; width: 210mm !important; height: 297mm !important; padding: 6mm !important; gap: 12mm !important; } 
+    .half-page-border { border: 2.5px solid #1e3a8a !important; height: 136mm !important; } 
+    #towardsPurpose_5821 { border-bottom: none !important; }
+}
+</style>
+</head>
+<body onload="loadSavedData_8412()" oninput="runDataAutoSave_8312()">
+
+<!-- CM010 - Top Controls Bar -->
+<div class="controls-wrapper">
+<div style="display:flex; gap:10px; align-items:center;">
+<button class="btn" style="background:linear-gradient(to bottom, #f43f5e, #e11d48);" id="resetBtn_8213" onclick="triggerConfirmReset_8213()"><i id="resetIcon_8213" class="fa-solid fa-trash-can"></i> RESET</button>
+<button class="btn" style="background:linear-gradient(to bottom, #10b981, #059669);" id="commitBtn_9381" onclick="submitToSpreadsheet_7182()"><i class="fa-solid fa-cloud-arrow-up"></i> SAVE</button>
+<button class="btn" style="background:linear-gradient(to bottom, #3b82f6, #2563eb);" id="printBtn_2831" onclick="window.print()"><i class="fa-solid fa-print"></i> PRINT</button>
+</div>
+<div class="search-box">
+<span style="font-size:14px; text-shadow:1px 1px 1px rgba(255,255,255,0.8);">Receipt No:</span>
+<input type="text" id="searchReceiptNo_9981" placeholder="Enter Receipt No" oninput="this.value=this.value.toUpperCase(); runDataAutoSave_8312();">
+<button id="searchBtn_9982" class="btn" style="background:linear-gradient(to bottom, #f59e0b, #d97706); padding:2px 10px; height:26px; min-width:80px;" onclick="searchReceiptFromSheet_9982()"><i id="searchIcon_9983" class="fa-solid fa-check"></i> VERIFY</button>
+</div>
+</div>
+
+<!-- CM011 - Main A4 Certificate -->
+<div class="a4-page">
+
+<!-- CM012 - First Half Page Border Area -->
+<div class="half-page-border">
+<div class="header-container">
+    <div class="header-top" style="gap: 15px;">
+        <!-- Hospital Logo -->
+        <img src="https://rh-alg.github.io/RH-IMG/RH-LOGO.png" alt="Hospital Logo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid teal;">
+        
+        <!-- Hospital Names -->
+        <div style="flex: 1; text-align: center;">
+            <div style="color: teal; font-weight: 800; font-size: 1.05rem; margin-bottom: 4px;">శ్రీ శ్రీనివాస నర్సింగ్ హోమ్ - Sri Srinivasa Nursing Home</div>
+            <h1 style="font-size: 1.4rem; font-weight: 900; color: #000000; text-transform: uppercase; margin: 0; line-height: 1.2;">
+                SRI RAMAKRISHNA HOSPITAL
+                <span style="font-size: 1.25rem; text-transform: none; display: inline-block; margin-left: 8px;">శ్రీ రామకృష్ణ హాస్పిటల్</span>
+            </h1>
+            
+            <!-- Hospital Details (Sub-header) -->
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 0.85rem; font-weight: 700; color: #333; margin-top: 6px;">
+                <span>ESTD 1972</span>
+                <span><i class="fas fa-map-marker-alt" style="color: teal; margin-right: 4px;"></i> Allagadda</span>
+                <span><i class="fas fa-phone-alt" style="color: teal; margin-right: 4px;"></i> 08514-200028</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:flex; justify-content:space-between; width:100%; margin-top:4px; font-weight:700; color:#1e3a8a; border-bottom:1px solid rgba(30,58,138,0.3); padding-bottom:4px; font-size:0.75rem;">
+<div>Receipt No: <span id="receiptNumDisplay_9182" style="color:#e11d48; font-weight:800;">[Click Save]</span></div>
+<div class="date-input-container">Date:
+<input type="text" id="receiptDate_8471" class="date-field" placeholder="DD MON YYYY" onblur="this.value = formatToDDMONYYYY(this.value); runDataAutoSave_8312();">
+<input type="date" onchange="setDateFromPicker('receiptDate_8471', this.value)">
+<i class="fas fa-calendar-alt ml-2 text-blue-900 cursor-pointer"></i>
+</div>
+</div>
+
+<div style="margin-top:10px;">
+<div class="receipt-headline">HOSPITAL FEE RECEIPT</div>
+<p class="receipt-paragraph">
+RECEIVED RS <input type="number" id="receivedAmt_4812" class="line-input" style="width:120px;" placeholder="Amount" oninput="convertNumberToWords_4812()">
+AS FEE FROM MR/MS <input type="text" id="patientName_9103" class="line-input" style="width:380px;" placeholder="Patient Full Name" oninput="runDataAutoSave_8312()">
+ON <span class="date-input-container"><input type="text" id="receiptDateText_3921" class="date-field" placeholder="DD MON YYYY" onblur="this.value = formatToDDMONYYYY(this.value); runDataAutoSave_8312();"><input type="date" onchange="setDateFromPicker('receiptDateText_3921', this.value)"><i class="fas fa-calendar-alt ml-2 text-blue-900 cursor-pointer"></i></span>
+TOWARDS <span id="towardsPurpose_5821" contenteditable="plaintext-only" class="line-input" style="min-width:320px;" oninput="runDataAutoSave_8312()">HOSPITAL CHARGES AND TREATMENTS / MEDICATION</span>.
+</p>
+<div style="margin-top:15px; display:flex; align-items:center; font-weight:800; color:#1e3a8a; font-size:0.85rem;">
+<span>Rupees in words :</span> <input type="text" id="rupeesWords_1298" class="line-input" style="flex-grow:1; margin-left:10px; color:#334155;" readonly>
+</div>
+</div>
+
+<div style="display:flex; justify-content:space-between; align-items:flex-end; font-size:0.85rem; margin-top:auto; padding-top:10px;">
+    <!-- Hospital Address -->
+    <div style="color: #333;">
+        <i class="fas fa-map-marker-alt" style="color: teal; margin-right: 6px; font-size: 1rem;"></i>
+        Mini Theater Street, Padma Street, <b style="color: #000; font-weight: 900;">Allagadda</b>, AP - 518553
+    </div>
+    
+    <!-- Doctor Signature Area -->
+    <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:160px; border-top:2px solid #000; margin-bottom:5px;"></div>
+        <div style="font-weight:800; color:#000;">Doctor Signature</div>
+    </div>
+</div>
+</div>
+
+</div>
+
+<!-- CM013 - Reset Modal -->
+<div id="confirmModal" class="modal-overlay">
+<div class="modal-content">
+<h3 style="font-weight:800; color:#1e3a8a; margin-bottom: 15px;"><i class="fa-solid fa-triangle-exclamation" style="color:#e11d48;"></i> Are you sure you want to reset all data?</h3>
+<div style="display:flex; justify-content:center; gap:10px;">
+<button class="btn" style="background:linear-gradient(to bottom, #f43f5e, #e11d48);" onclick="executeReset_2910()">YES, RESET</button>
+<button class="btn" style="background:linear-gradient(to bottom, #94a3b8, #64748b);" onclick="closeResetModal_2910()">NO, KEEP</button>
+</div>
+</div>
+</div>
+
+<script>
+// CM014 - State and Initialization
+const OFFICIAL_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzItmewtr1S7jpi4pZz0utFvgNJ3eVVr8Ii7oO6wXsVCgNXSNhzBgrpsboqDOzWX61k/exec";
+
+// CM015 - Date Formatting Handlers
+function formatToDDMONYYYY(str) { if (!str) return ''; str = str.trim().toUpperCase().replace(/[-/]/g, ' '); const parts = str.split(/\s+/); const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']; if (parts.length === 3 && isNaN(parts[0]) === false && parts[0].length <= 2 && isNaN(parts[1]) && parts[2].length === 4) { const d = parts[0].padStart(2, '0'); const m = parts[1].substring(0, 3).toUpperCase(); if (months.includes(m)) { return `${d} ${m} ${parts[2]}`; } } if (parts.length === 3) { if (parts[0].length === 4) { const y = parts[0]; let m = parts[1]; const d = parts[2].padStart(2, '0'); if (isNaN(m)) { const idx = months.findIndex(x => x.startsWith(m.substring(0, 3))); m = idx !== -1 ? months[idx] : 'JAN'; } else { m = months[parseInt(m, 10) - 1] || 'JAN'; } return `${d} ${m} ${y}`; } if (parts[2].length === 4) { const d = parts[0].padStart(2, '0'); let m = parts[1]; const y = parts[2]; if (isNaN(m)) { const idx = months.findIndex(x => x.startsWith(m.substring(0, 3))); m = idx !== -1 ? months[idx] : 'JAN'; } else { m = months[parseInt(m, 10) - 1] || 'JAN'; } return `${d} ${m} ${y}`; } } const d = new Date(str); if (!isNaN(d.getTime())) { const day = String(d.getDate()).padStart(2, '0'); const month = months[d.getMonth()]; const year = d.getFullYear(); return `${day} ${month} ${year}`; } return str; }
+function getTodayDateString() { const d = new Date(); const day = String(d.getDate()).padStart(2, '0'); const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']; return `${day} ${months[d.getMonth()]} ${d.getFullYear()}`; }
+function setDateFromPicker(inputId, dateVal) { if (!dateVal) return; const formatted = formatToDDMONYYYY(dateVal); document.getElementById(inputId).value = formatted; runDataAutoSave_8312(); }
+
+// CM016 - Auto Save and Load
+function runDataAutoSave_8312() { const draft = { name: document.getElementById('patientName_9103').value, amt: document.getElementById('receivedAmt_4812').value, rWords: document.getElementById('rupeesWords_1298').value, topDate: document.getElementById('receiptDate_8471').value, paymentDate: document.getElementById('receiptDateText_3921').value, purpose: document.getElementById('towardsPurpose_5821').innerText, rNo: document.getElementById('receiptNumDisplay_9182').innerText, searchVal: document.getElementById('searchReceiptNo_9981').value, isEditing: localStorage.getItem('vsr_is_editing_mode') || 'false' }; localStorage.setItem('vsr_saved_draft', JSON.stringify(draft)); }
+function loadSavedData_8412() { const raw = localStorage.getItem('vsr_saved_draft'); const today = getTodayDateString(); if (raw) { const draft = JSON.parse(raw); document.getElementById('patientName_9103').value = draft.name || ''; document.getElementById('receivedAmt_4812').value = draft.amt || ''; document.getElementById('rupeesWords_1298').value = draft.rWords || ''; document.getElementById('receiptNumDisplay_9182').innerText = draft.rNo || '[Click Save]'; document.getElementById('searchReceiptNo_9981').value = draft.searchVal || ''; if (draft.purpose) { document.getElementById('towardsPurpose_5821').innerText = draft.purpose; } if (draft.isEditing) { localStorage.setItem('vsr_is_editing_mode', draft.isEditing); } document.getElementById('receiptDate_8471').value = draft.topDate ? formatToDDMONYYYY(draft.topDate) : today; document.getElementById('receiptDateText_3921').value = draft.paymentDate ? formatToDDMONYYYY(draft.paymentDate) : today; } else { document.getElementById('receiptDate_8471').value = today; document.getElementById('receiptDateText_3921').value = today; } }
+function convertNumberToWords_4812() { const amt = parseInt(document.getElementById('receivedAmt_4812').value) || 0; if (amt === 0) { document.getElementById('rupeesWords_1298').value = ''; runDataAutoSave_8312(); return; } const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']; const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']; const scales = ['', 'Thousand', 'Lakh', 'Crore']; const helper = (n) => { let str = ''; if (n >= 100) { str += ones[Math.floor(n / 100)] + ' Hundred '; n %= 100; } if (n >= 20) { str += tens[Math.floor(n / 10)] + ' ' + ones[n % 10]; } else if (n > 0) { str += ones[n]; } return str.trim(); }; let words = '', idx = 0, temp = amt; while (temp > 0) { let divider = idx === 1 ? 100 : 1000; let chunk = temp % divider; if (chunk) { words = helper(chunk) + ' ' + scales[idx] + ' ' + words; } temp = Math.floor(temp / divider); idx++; } document.getElementById('rupeesWords_1298').value = words.trim() + ' Rupees Only'; runDataAutoSave_8312(); }
+
+// CM017 - API and Search Actions
+function searchReceiptFromSheet_9982() { const rNo = document.getElementById('searchReceiptNo_9981').value.trim(); if (!rNo) return; const searchBtn = document.getElementById('searchBtn_9982'); const searchIcon = document.getElementById('searchIcon_9983'); searchBtn.disabled = true; searchIcon.className = "fa-solid fa-spinner fa-spin"; fetch(OFFICIAL_WEBAPP_URL + '?action=search&receiptNo=' + encodeURIComponent(rNo)).then(r => r.json()).then(d => { if (d.status === 'success') { document.getElementById('patientName_9103').value = d.patientName || ''; document.getElementById('receivedAmt_4812').value = d.received || ''; document.getElementById('rupeesWords_1298').value = d.rupeesWords || ''; document.getElementById('receiptNumDisplay_9182').innerText = rNo; document.getElementById('receiptDateText_3921').value = formatToDDMONYYYY(d.date); localStorage.setItem('vsr_is_editing_mode', 'true'); runDataAutoSave_8312(); searchIcon.className = "fa-solid fa-check"; } else { searchIcon.className = "fa-solid fa-xmark"; } }).catch(() => { searchIcon.className = "fa-solid fa-xmark"; }).finally(() => { setTimeout(() => { searchIcon.className = "fa-solid fa-check"; searchBtn.disabled = false; }, 2000); }); }
+function submitToSpreadsheet_7182() { const isEditing = localStorage.getItem('vsr_is_editing_mode') === 'true'; const rNo = document.getElementById('receiptNumDisplay_9182').innerText; const payload = { date: formatToDDMONYYYY(document.getElementById('receiptDateText_3921').value), patientName: document.getElementById('patientName_9103').value, received: document.getElementById('receivedAmt_4812').value, rupeesWords: document.getElementById('rupeesWords_1298').value, action: isEditing ? 'update' : 'insert', receiptNo: isEditing ? rNo : '' }; if (!payload.patientName || !payload.received) return; const saveBtn = document.getElementById('commitBtn_9381'); saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SAVING...'; fetch(OFFICIAL_WEBAPP_URL, { method: 'POST', body: JSON.stringify(payload) }).then(r => r.json()).then(d => { if (d.status === 'success') { document.getElementById('receiptNumDisplay_9182').innerText = d.receiptNo; localStorage.setItem('vsr_is_editing_mode', 'true'); runDataAutoSave_8312(); saveBtn.innerHTML = isEditing ? '<i class="fa-solid fa-cloud-arrow-up"></i> UPDATED' : '<i class="fa-solid fa-cloud-arrow-up"></i> SAVED'; } else { saveBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> ERROR'; } }).catch(() => { saveBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> FAILED'; }).finally(() => { setTimeout(() => { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> SAVE'; }, 2500); }); }
+
+// CM018 - Reset Modal Logic
+function triggerConfirmReset_8213() { document.getElementById('confirmModal').style.display = 'flex'; }
+function closeResetModal_2910() { document.getElementById('confirmModal').style.display = 'none'; }
+function executeReset_2910() { const resetBtn = document.getElementById('resetBtn_8213'); const resetIcon = document.getElementById('resetIcon_8213'); resetBtn.disabled = true; resetIcon.className = "fa-solid fa-spinner fa-spin"; setTimeout(() => { localStorage.removeItem('vsr_saved_draft'); localStorage.removeItem('vsr_is_editing_mode'); document.getElementById('patientName_9103').value = ''; document.getElementById('receivedAmt_4812').value = ''; document.getElementById('rupeesWords_1298').value = ''; document.getElementById('towardsPurpose_5821').innerText = 'HOSPITAL CHARGES AND TREATMENTS / MEDICATION'; document.getElementById('searchReceiptNo_9981').value = ''; document.getElementById('receiptNumDisplay_9182').innerText = '[Click Save]'; document.getElementById('receiptDate_8471').value = getTodayDateString(); document.getElementById('receiptDateText_3921').value = getTodayDateString(); resetIcon.className = "fa-solid fa-trash-can"; resetBtn.disabled = false; closeResetModal_2910(); }, 800); }
+
+</script>
+</body>
+</html>

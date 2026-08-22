@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Discharge Summary | Sri Ramakrishna Hospital</title>
+<link rel="icon" type="image/png" href="https://rh-alg.github.io/RH-IMG/RH-LOGO.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* CM001 - Global Reset and Body */
+* { box-sizing: border-box; }
+body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; padding: 0; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
+
+/* CM002 - Top Action Header Bar */
+.controls-top { width: 100%; background: transparent; padding: 8px 12px; margin-bottom: 0; border: none; display: flex; justify-content: center; box-shadow: none; z-index: 50; }
+
+/* CM003 - Compact Action Buttons Layout */
+.controls-one-row { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; width: 100%; max-width: 215mm; }
+.btn-group-left { display: flex; align-items: center; gap: 8px; }
+
+.btn { padding: 3px 10px; border-radius: 5px; font-weight: 800; font-size: 0.68rem; text-transform: uppercase; color: white; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.1s ease; letter-spacing: 0.03em; height: 26px; border: 1px solid rgba(0,0,0,0.25); box-shadow: 0 2px 4px rgba(0,0,0,0.15); text-shadow: 0 1px 1px rgba(0,0,0,0.3); }
+.btn:active { transform: translateY(1px); box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
+
+/* CM004 - Specific Button Variants */
+.btn-reset { background: linear-gradient(180deg, #f87171 0%, #dc2626 100%); border-color: #b91c1c; }
+.btn-save { background: linear-gradient(180deg, #34d399 0%, #059669 100%); border-color: #047857; }
+.btn-print { background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%); border-color: #1d4ed8; }
+.btn-verify { background: linear-gradient(180deg, #818cf8 0%, #4f46e5 100%); border-color: #3730a3; height: 26px; font-size: 0.68rem; padding: 2px 8px; margin-left: 2px; }
+
+/* CM005 - SVDS Search Field Box */
+.search-panel { display: flex; align-items: center; gap: 6px; background: transparent; padding: 0; border: none; box-shadow: none; margin-left: auto; }
+.search-input { padding: 2px 8px; border: 1px solid #94a3b8; border-radius: 4px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; outline: none; width: 170px; height: 26px; background: #ffffff; }
+.search-input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.2); }
+
+/* CM008 - Main A4 Document Sheet with 6mm Gap Outer Border */
+.a4-page { width: 215mm; max-width: 100%; min-height: 297mm; padding: 6mm; margin: 0 auto 30px auto; background: #ffffff; box-sizing: border-box; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.15); zoom: 1; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.a4-border-frame { border: 3.5px solid #1e3a8a; padding: 2mm; box-sizing: border-box; width: 100%; min-height: calc(297mm - 12mm); display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
+
+/* CM009 - Table and Cell Layout */
+.a4-content-table { width: 100%; height: 100%; min-height: calc(297mm - 22mm); border-collapse: collapse; background: transparent; display: table; position: relative; z-index: 5; box-sizing: border-box; }
+.pad-cell { padding: 0 1mm; border: none; box-sizing: border-box; }
+
+/* CM010 - Print Fixed Border Frame */
+.print-border-box { display: none; }
+
+/* CM011 - Sri Ramakrishna Hospital Branding */
+.header-container { display: flex; flex-direction: column; border-bottom: 2.5px solid teal; padding-bottom: 6px; margin-bottom: 10px; }
+.header-top { display: flex; align-items: center; justify-content: flex-start; gap: 15px; width: 100%; box-sizing: border-box; }
+.logo-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid teal; flex-shrink: 0; }
+.header-text { flex: 1; text-align: center; }
+.nursing-home-title { color: teal; font-weight: 800; font-size: 1.05rem; margin-bottom: 4px; }
+.hospital-main-name { font-size: 1.4rem; font-weight: 900; color: #000000; text-transform: uppercase; margin: 0; line-height: 1.2; }
+.hospital-telugu { font-size: 1.25rem; text-transform: none; display: inline-block; margin-left: 8px; }
+.sub-header-details { display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 0.85rem; font-weight: 700; color: #333; margin-top: 6px; }
+.estd-badge { font-size: 0.9rem; font-weight: 800; color:#000000; background-color:#7FD3FF; padding: 3px 10px; border-radius: 4px; border: 1px solid #1e3a8a; }
+
+.doctors-row { display: flex; justify-content: space-around; align-items: flex-start; border-top: 1.5px solid #1e3a8a; margin-top: 8px; padding-top: 6px; color: #1e3a8a; text-align: center; gap: 12px; }
+.doctor-col { display: flex; flex-direction: column; align-items: center; width: 48%; }
+.doctor-name { font-size: 1rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 1px; }
+.doctor-degree { font-size: 0.85rem; font-weight: 700; color: #1e3a8a; }
+
+/* CM012 - Main Title Block */
+.doc-main-title-wrap { text-align: center; margin: 4px 0 10px 0; }
+.doc-main-title { font-size: 1.15rem; font-weight: 800; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.05em; text-decoration: underline; text-underline-offset: 4px; }
+
+/* CM013 - Patient Particulars Grid */
+.patient-block { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid #1e3a8a; width: 100%; box-sizing: border-box; }
+.p-left, .p-right { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+
+/* CM014 - Form Input Fields */
+.input-row { display: flex; align-items: flex-end; width: 100%; min-width: 0; }
+.p-left .input-label { font-weight: 800; font-size: 0.82rem; color: #1e3a8a; min-width: 120px; width: 120px; text-transform: uppercase; flex-shrink: 0; }
+.p-right .input-label { font-weight: 800; font-size: 0.82rem; color: #1e3a8a; min-width: 105px; width: 105px; text-transform: uppercase; flex-shrink: 0; }
+.input-fill-wrapper { flex-grow: 1; display: flex; align-items: center; border-bottom: 1.5px dotted #1e3a8a; position: relative; min-width: 0; }
+.patient-field { width: 100%; border: none; background: transparent; font-size: 0.88rem; font-weight: 700; color: #0f172a; outline: none; padding: 0 2px; text-transform: uppercase; min-width: 0; }
+.patient-field:focus { border-bottom: 2px solid #2563eb; margin-bottom: -2px; }
+
+/* CM015 - Date and Time Icons */
+.date-picker-trigger { cursor: pointer; color: #1e3a8a; margin-left: 2px; padding: 1px; display: inline-flex; font-size: 0.82rem; flex-shrink: 0; }
+.date-picker-trigger:hover { color: #dc2626; }
+.hidden-picker { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: auto; z-index: -1; bottom: 0; right: 0; border: none; }
+
+/* CM016 - Dynamic Content Sections */
+.content-sections { display: flex; flex-direction: column; gap: 8px; min-height: 100px; margin-top: 6px; width: 100%; box-sizing: border-box; }
+
+/* CM017 - Editable Row Section */
+.row-section { display: flex; flex-direction: row; align-items: flex-start; position: relative; margin-bottom: 4px; width: 100%; box-sizing: border-box; }
+.sec-head-wrap { flex: 0 0 220px; display: flex; justify-content: space-between; align-items: flex-start; padding-right: 8px; padding-top: 1px; flex-shrink: 0; }
+.sec-head-text { font-weight: 800; font-size: 0.82rem; color: #1e3a8a; text-transform: uppercase; outline: none; }
+.sec-head-colon { font-weight: 800; font-size: 0.82rem; color: #1e3a8a; }
+.sec-content-wrap { flex: 1; display: flex; flex-direction: column; min-width: 0; gap: 2px; }
+.sec-editable { min-height: 20px; font-size: 0.82rem; font-weight: 600; color: #334155; outline: none; padding: 0; border-bottom: 1px dashed transparent; text-transform: uppercase; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
+.sec-editable:empty:before { content: "Type here..."; color: #94a3b8; font-style: italic; text-transform: none; }
+.sec-editable:focus { border-bottom-color: #cbd5e1; }
+.section-actions { position: absolute; right: 0; top: 0; opacity: 0; transition: opacity 0.2s; }
+.row-section:hover .section-actions { opacity: 1; }
+.sec-action-btn { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; padding: 1px 4px; font-size: 0.65rem; cursor: pointer; color: #475569; }
+
+/* CM018 - Investigations Grid Layout */
+.investigations-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; background: #f8fafc; padding: 5px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 4px; width: 100%; box-sizing: border-box; }
+.grid-item { display: flex; align-items: center; gap: 2px; font-size: 0.75rem; font-weight: 700; color: #1e293b; min-width: 0; }
+.grid-label { min-width: 42px; color: #1e3a8a; flex-shrink: 0; }
+.grid-input { border: none; border-bottom: 1.5px dotted #94a3b8; background: transparent; font-size: 0.75rem; font-weight: 700; color: #0f172a; outline: none; width: 100%; min-width: 30px; text-align: center; }
+.grid-select { border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.7rem; font-weight: 700; color: #0f172a; outline: none; background: white; padding: 1px; }
+#printInvestigationsText { display: none; font-size: 0.82rem; font-weight: 600; color: #334155; line-height: 1.45; white-space: pre-wrap; }
+
+/* CM019 - Treatment Checkbox Options */
+.treatment-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 4px; margin-top: 2px; align-items: center; width: 100%; box-sizing: border-box; }
+.treatment-check-label { display: flex; align-items: center; gap: 3px; font-size: 0.72rem; font-weight: 600; color: #334155; cursor: pointer; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; border: 1px solid #cbd5e1; }
+.treatment-check-label.active-treatment { color: white; font-weight: 700; background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%); border-color: #1e3a8a; }
+.other-injection-box { display: none; margin-left: 2px; }
+.other-injection-input { border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px 4px; font-size: 0.72rem; width: 150px; outline: none; text-transform: uppercase; }
+
+/* CM020 - Footer Signatures Area (Pinned Downside) */
+.footer-signatures { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 12px; margin-top: auto; width: 100%; box-sizing: border-box; }
+.footer-left { text-align: left; max-width: 65%; }
+.sig-box-right { text-align: center; width: 200px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+.sig-line { width: 160px; border-top: 2px solid #000; padding-top: 4px; font-weight: 800; font-size: 0.85rem; color: #000; }
+
+/* CM021 - Modal Overlays and Spinner */
+.modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; }
+.modal-card { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 15px 25px rgba(0,0,0,0.2); max-width: 320px; width: 90%; text-align: center; border: 2px solid #1e3a8a; }
+.modal-title { font-size: 1rem; font-weight: 800; color: #1e3a8a; margin-bottom: 6px; }
+.modal-text { font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 12px; line-height: 1.3; }
+.modal-actions { display: flex; justify-content: center; gap: 6px; }
+.loader-spinner { border: 3px solid #f1f5f9; border-top: 3px solid #3b82f6; border-radius: 50%; width: 26px; height: 26px; animation: spin 1s linear infinite; margin: 0 auto 8px auto; }
+
+/* CM022 - Analog Clock Time Picker */
+.clock-ring { position: relative; width: 160px; height: 160px; border-radius: 50%; border: 2px solid #e2e8f0; background: #f8fafc; margin: 0 auto 8px auto; }
+.clock-center { position: absolute; width: 8px; height: 8px; background: #1e3a8a; border-radius: 50%; top: calc(50% - 4px); left: calc(50% - 4px); z-index: 10; }
+.clock-hand { position: absolute; width: 2px; height: 60px; background: #1e3a8a; bottom: 50%; left: calc(50% - 1px); transform-origin: bottom center; transition: transform 0.2s ease-out; z-index: 5; }
+.clock-number { position: absolute; font-size: 0.75rem; font-weight: 800; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; transition: all 0.2s; color: #475569; }
+.clock-number:hover, .clock-number.active { background: #3b82f6; color: white; }
+.time-inputs { display: flex; justify-content: center; align-items: center; gap: 4px; margin-bottom: 8px; }
+.time-input-box { width: 36px; padding: 2px; text-align: center; font-size: 0.8rem; font-weight: 800; border: 2px solid #cbd5e1; border-radius: 4px; outline: none; }
+.ampm-toggle { display: flex; flex-direction: column; gap: 2px; }
+.ampm-btn { padding: 2px 6px; font-size: 0.65rem; font-weight: 800; background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; border-radius: 3px; cursor: pointer; }
+.ampm-btn.active { background: #1e3a8a; color: white; border-color: #1e3a8a; }
+#toast { position: fixed; bottom: 20px; right: 20px; padding: 8px 16px; border-radius: 6px; font-weight: 800; color: white; display: none; z-index: 10000; box-shadow: 0 8px 12px rgba(0,0,0,0.2); font-size: 0.8rem; }
+
+/* CM023 - Print Mode Overrides */
+.print-only { display: none !important; }
+
+@media print {
+@page { size: A4; margin: 0; }
+body { background: none !important; padding: 0 !important; margin: 0 !important; display: block !important; }
+.no-print, .controls-top, .section-actions { display: none !important; }
+.print-border-box { display: block !important; position: fixed; top: 6mm; left: 6mm; right: 6mm; bottom: 6mm; border: 3.5px solid #1e3a8a; pointer-events: none; z-index: 100; background: transparent; }
+.a4-page { margin: 0 !important; padding: 6mm !important; box-shadow: none !important; width: 100% !important; min-height: 100vh !important; background: transparent !important; border: none !important; zoom: 1 !important; transform: none !important; overflow: visible !important; }
+.a4-border-frame { border: 3.5px solid transparent !important; padding: 2mm !important; min-height: 100% !important; box-sizing: border-box !important; }
+thead { display: table-header-group !important; }
+tfoot { display: table-footer-group !important; }
+thead .pad-cell { padding-top: 2mm !important; }
+tfoot .pad-cell { padding-bottom: 4mm !important; }
+.sec-editable:empty:before { content: "" !important; }
+input[type="checkbox"] { display: none !important; }
+.investigations-grid, .other-row-line, #txt-INVESTIGATIONS { display: none !important; }
+#printInvestigationsText { display: block !important; }
+#treatmentListBox label { display: none !important; }
+#treatmentListBox label.active-treatment { display: flex !important; background: none !important; border: none !important; padding: 0 !important; color: #1e3a8a !important; box-shadow: none !important; }
+.row-section.hidden-print { display: none !important; }
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+</style>
+</head>
+<body onload="initializeForm_8812()" oninput="autoSaveData_9921()" onchange="autoSaveData_9921()">
+
+<!-- CM024 - Top Control Action Bar -->
+<div class="controls-top no-print">
+<div class="controls-one-row">
+<div class="btn-group-left">
+<button class="btn btn-reset" onclick="promptReset_3391()"><i class="fa-solid fa-trash-can"></i> RESET</button>
+<button class="btn btn-save" id="mainSaveBtn_4412" onclick="saveToCloud_5523()"><i class="fa-solid fa-cloud-arrow-up"></i> <span id="btnText_5523">SAVE</span><span id="btnSpinner_5523" class="loader-spinner" style="width: 10px; height: 10px; border-width: 2px; margin: 0; display: none;"></span></button>
+<button class="btn btn-print" id="mainPrintBtn_6634" onclick="window.print()"><i class="fa-solid fa-print"></i> PRINT</button>
+</div>
+<div class="search-panel">
+<span class="text-[0.72rem] font-extrabold text-blue-900 flex items-center gap-1"><i class="fa-solid fa-file-medical text-blue-600"></i> SVDS ID:</span>
+<input type="text" id="searchDsId_7745" class="search-input" placeholder="ENTER SVDS ID..." oninput="this.value = this.value.toUpperCase()">
+<button class="btn btn-verify" onclick="fetchRecord_8856()"><i class="fa-solid fa-circle-check"></i> VERIFY</button>
+</div>
+</div>
+<!-- Replace this URL with your correct Deployment URL -->
+<input type="hidden" id="gasAppUrl_9911" value="https://script.google.com/macros/s/AKfycbz8nLjbMaz2FLEwB3fBUSZFcPt6F05lMeV_83BSgsfCISJHyfSygkCjIY9PKyfrTn6KFA/exec">
+</div>
+
+<!-- CM026 - Toast Alert Box -->
+<div id="toast"></div>
+
+<!-- CM027 - Confirmation Modal Dialog -->
+<div id="confirmModal_7734" class="modal-overlay">
+<div class="modal-card">
+<i class="fa-solid fa-triangle-exclamation text-rose-600 text-2xl mb-1"></i>
+<h3 class="modal-title">Confirm Action</h3>
+<p class="modal-text" id="confirmMsg_8845">Are you sure?</p>
+<div class="modal-actions">
+<button class="btn" style="background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); border-color: #475569;" onclick="closeConfirm_9956()">Cancel</button>
+<button class="btn btn-reset" id="confirmOkBtn_1167">Yes, Proceed</button>
+</div>
+</div>
+</div>
+
+<!-- CM028 - Loading Spinner Screen -->
+<div id="loaderModal_2278" class="modal-overlay"><div class="modal-card"><div class="loader-spinner"></div><h3 class="modal-title" id="loaderText_3389">Processing...</h3></div></div>
+
+<!-- CM029 - Clock Time Picker Dialog -->
+<div id="clockModal_4490" class="modal-overlay">
+<div class="modal-card">
+<h3 class="modal-title">Select Time</h3>
+<div class="clock-ring" id="clockRing_5501">
+<div class="clock-center"></div>
+<div class="clock-hand" id="clockHand_6612"></div>
+<div id="clockNumbers_7723"></div>
+</div>
+<div class="time-inputs">
+<input type="text" id="manualHH_8834" class="time-input-box" maxlength="2" placeholder="HH" oninput="syncManualClock_9945()">
+<span class="font-bold text-base">:</span>
+<input type="text" id="manualMM_1156" class="time-input-box" maxlength="2" placeholder="MM" oninput="syncManualClock_9945()">
+<div class="ampm-toggle">
+<button id="amBtn_2267" class="ampm-btn" onclick="setAMPM_3378('AM')">AM</button>
+<button id="pmBtn_4489" class="ampm-btn" onclick="setAMPM_3378('PM')">PM</button>
+</div>
+</div>
+<div class="modal-actions">
+<button class="btn" style="background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); border-color: #475569;" onclick="closeClock_5590()">Cancel</button>
+<button class="btn" style="background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%); border-color: #1e3a8a;" onclick="saveClock_6601()">OK</button>
+</div>
+</div>
+</div>
+
+<!-- CM030 - Print Frame Overlay -->
+<div class="print-border-box"></div>
+
+<!-- CM031 - Main Document Container -->
+<div class="a4-page">
+<div class="a4-border-frame">
+<table class="a4-content-table">
+<thead style="display: table-header-group;">
+<tr>
+<td class="pad-cell">
+<!-- CM032 - Sri Ramakrishna Hospital Header Section -->
+<div class="header-container">
+    <div class="header-top">
+        <!-- Hospital Logo -->
+        <img src="https://rh-alg.github.io/RH-IMG/RH-LOGO.png" alt="Hospital Logo" class="logo-img">
+        
+        <!-- Hospital Names -->
+        <div class="header-text">
+            <div class="nursing-home-title">శ్రీ శ్రీనివాస నర్సింగ్ హోమ్ - Sri Srinivasa Nursing Home</div>
+            <h1 class="hospital-main-name">
+                SRI RAMAKRISHNA HOSPITAL
+                <span class="hospital-telugu">శ్రీ రామకృష్ణ హాస్పిటల్</span>
+            </h1>
+            
+            <!-- Hospital Details (Sub-header) -->
+            <div class="sub-header-details">
+                <span class="estd-badge">ESTD 1972</span>
+                <span><i class="fas fa-map-marker-alt" style="color: teal; margin-right: 4px;"></i> Allagadda</span>
+                <span><i class="fas fa-phone-alt" style="color: teal; margin-right: 4px;"></i> 08514-200028</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Static Doctors List -->
+    <div class="doctors-row">
+        <div class="doctor-col">
+            <div class="doctor-name">Dr. N. Lakshmi Sekhar Reddy</div>
+            <div class="doctor-degree">General Medicine</div>
+        </div>
+        <div class="doctor-col">
+            <div class="doctor-name">Dr. N. Sujatha</div>
+            <div class="doctor-degree">Obstetrics & Gynecology (OBG)</div>
+        </div>
+    </div>
+</div>
+</td>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td class="pad-cell" style="vertical-align: top; padding-bottom: 10px;">
+<!-- CM033 - Document Title Banner -->
+<div class="doc-main-title-wrap">
+<span class="doc-main-title">DISCHARGE SUMMARY</span>
+</div>
+
+<!-- CM034 - Patient Info Block -->
+<div class="patient-block">
+<div class="p-left">
+<div class="input-row"><div class="input-label">DISCHARGE ID</div><div class="input-fill-wrapper"><span class="mr-1 font-bold">:</span> <input type="text" id="dsIdDisplayInp_7712" class="patient-field text-red-700 font-extrabold" oninput="this.value = this.value.toUpperCase()"></div></div>
+<div class="input-row"><div class="input-label">PATIENT NAME</div><div class="input-fill-wrapper"><span class="mr-1 font-bold">:</span> <input type="text" id="pName_9934" class="patient-field" oninput="this.value = this.value.toUpperCase()"></div></div>
+<div class="input-row"><div class="input-label">AGE</div><div class="input-fill-wrapper"><span class="mr-1 font-bold">:</span> <input type="text" id="pAge_1145" class="patient-field" oninput="this.value = this.value.toUpperCase()"></div></div>
+<div class="input-row"><div class="input-label">ADDRESS</div><div class="input-fill-wrapper"><span class="mr-1 font-bold">:</span> <input type="text" id="pAddress_2256" class="patient-field" oninput="this.value = this.value.toUpperCase()"></div></div>
+</div>
+<div class="p-right">
+<div class="input-row">
+<div class="input-label">ADMISSION</div>
+<div class="input-fill-wrapper"><span class="mr-1 font-bold">:</span> 
+<input type="text" id="dAdmit_3367" class="patient-field text-center" placeholder="DD-MM-YYYY  HH:MM AM" value="__-__-____  __:__ __" oninput="handleDateMask_4411(event, this)">
+<i class="fa-solid fa-calendar-days date-picker-trigger no-print" onclick="openNativeDate_4478('dAdmit_3367')"></i>
+<i class="fa-solid fa-clock date-picker-trigger no-print" onclick="openClock_5589('dAdmit_3367')"></i>
+<input type="date" id="picker_dAdmit_3367" class="hidden-picker" onchange="applyNativeDate_6690('dAdmit_3367', this.value)">
+</div>
+</div>
+<div class="input-row">
+<div class="input-label">OPERATION</div>
+<div class="input-fill-wrapper"><span class="mr-1 font-bold">:</span> 
+<input type="text" id="dOperate_7701" class="patient-field text-center" placeholder="DD-MM-YYYY  HH:MM AM" value="__-__-____  __:__ __" oninput="handleDateMask_4411(event, this)">
+<i class="fa-solid fa-calendar-days date-picker-trigger no-print" onclick="openNativeDate_4478('dOperate_7701')"></i>
+<i class="fa-solid fa-clock date-picker-trigger no-print" onclick="openClock_5589('dOperate_7701')"></i>
+<input type="date" id="picker_dOperate_7701" class="hidden-picker" onchange="applyNativeDate_6690('dOperate_7701', this.value)">
+</div>
+</div>
+<div class="input-row">
+<div class="input-label">DISCHARGE</div>
+<div class="input-fill-wrapper"><span class="mr-1 font-bold">:</span> 
+<input type="text" id="dDischarge_8812" class="patient-field text-center" placeholder="DD-MM-YYYY  HH:MM AM" value="__-__-____  __:__ __" oninput="handleDateMask_4411(event, this)">
+<i class="fa-solid fa-calendar-days date-picker-trigger no-print" onclick="openNativeDate_4478('dDischarge_8812')"></i>
+<i class="fa-solid fa-clock date-picker-trigger no-print" onclick="openClock_5589('dDischarge_8812')"></i>
+<input type="date" id="picker_dDischarge_8812" class="hidden-picker" onchange="applyNativeDate_6690('dDischarge_8812', this.value)">
+</div>
+</div>
+</div>
+</div>
+
+<!-- CM035 - Medical Diagnosis Sections -->
+<div class="content-sections">
+<div class="row-section" id="sec-CHIEF">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblChief_9923">CHIEF COMPLAINTS</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap"><div class="sec-editable" contenteditable="true" id="txtChief_1134"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtChief_1134')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<div class="row-section" id="sec-DIAGNOSIS">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblDiag_3356">DIAGNOSIS</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap"><div class="sec-editable" contenteditable="true" id="txtDiag_4467"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtDiag_4467')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<!-- CM036 - Investigations Grid Component -->
+<div class="row-section" id="sec-INVESTIGATIONS">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblInv_5578">INVESTIGATIONS</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap">
+<div class="investigations-grid no-print">
+<div class="grid-item"><span class="grid-label">Hb :</span><input type="text" id="iHb_6689" class="grid-input" oninput="compileInv_7790()"></div>
+<div class="grid-item"><span class="grid-label">Blood Grp:</span><input type="text" id="iBg_8801" class="grid-input" oninput="compileInv_7790()"></div>
+<div class="grid-item"><label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="cHi_9912" checked onchange="compileInv_7790()"> HIV:</label><select id="sHi_1123" class="grid-select" onchange="compileInv_7790()"><option>NEGATIVE</option><option>POSITIVE</option></select></div>
+<div class="grid-item"><label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="cHb_2234" checked onchange="compileInv_7790()"> HbsAg:</label><select id="sHb_3345" class="grid-select" onchange="compileInv_7790()"><option>NEGATIVE</option><option>POSITIVE</option></select></div>
+<div class="grid-item"><label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="cHc_4456" checked onchange="compileInv_7790()"> HCV:</label><select id="sHc_5567" class="grid-select" onchange="compileInv_7790()"><option>NEGATIVE</option><option>POSITIVE</option></select></div>
+<div class="grid-item"><span class="grid-label">Platelets:</span><input type="text" id="iPl_6678" class="grid-input" oninput="compileInv_7790()"></div>
+<div class="grid-item"><label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="cBt_7789" checked onchange="compileInv_7790()"> BT:</label><input type="text" id="iBt_8890" class="grid-input" value="NORMAL" oninput="compileInv_7790()"></div>
+<div class="grid-item"><label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="cCt_9901" checked onchange="compileInv_7790()"> CT:</label><input type="text" id="iCt_1112" class="grid-input" value="NORMAL" oninput="compileInv_7790()"></div>
+</div>
+<div id="printInvestigationsText"></div>
+<div class="sec-editable mt-1" contenteditable="true" id="txtInv_2223" oninput="compileInv_7790()"></div>
+</div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="resetInv_3334()"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<div class="row-section" id="sec-OPERATIVE">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblOp_4445">OPERATIVE PROCEDURE</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap"><div class="sec-editable" contenteditable="true" id="txtOp_5556"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtOp_5556')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<div class="row-section" id="sec-INDICATION">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblInd_6667">INDICATION</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap"><div class="sec-editable" contenteditable="true" id="txtInd_7778"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtInd_7778')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<div class="row-section" id="sec-INTRA">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblInt_8889">INTRA OPERATIVE FINDINGS</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap"><div class="sec-editable" contenteditable="true" id="txtInt_9990"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtInt_9990')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<!-- CM037 - Treatment Options Component -->
+<div class="row-section" id="sec-TREATMENT">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblTrt_1101">TREATMENT GIVEN</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap">
+<div class="treatment-list no-print" id="trtList_2212">
+<label class="treatment-check-label"><input type="checkbox" class="tc_3323" value="INJ.MONOCEF 1G IV BD" checked onchange="compileTrt_4434()"> INJ.MONOCEF 1G IV BD</label>
+<label class="treatment-check-label"><input type="checkbox" class="tc_3323" value="INJ METRONEDAZOL 100ML TID" checked onchange="compileTrt_4434()"> INJ METRONEDAZOL 100ML TID</label>
+<label class="treatment-check-label"><input type="checkbox" class="tc_3323" value="INJ.PANTOP 40MG OD" checked onchange="compileTrt_4434()"> INJ.PANTOP 40MG OD</label>
+<label class="treatment-check-label"><input type="checkbox" class="tc_3323" value="INJ DICLOFENAC BD" checked onchange="compileTrt_4434()"> INJ DICLOFENAC BD</label>
+<label class="treatment-check-label"><input type="checkbox" class="tc_3323" value="INJ.PCM 1G SOS" checked onchange="compileTrt_4434()"> INJ.PCM 1G SOS</label>
+<label class="treatment-check-label"><input type="checkbox" id="cOt_5545" onchange="toggleOtTrt_6656()"> OTHERS</label>
+<div class="other-injection-box" id="otBox_7767">
+<input type="text" id="otInp_8878" class="other-injection-input" placeholder="ENTER INJECTION..." oninput="compileTrt_4434()">
+</div>
+</div>
+<div class="sec-editable mt-1" contenteditable="true" id="txtTrt_9989"></div>
+</div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="resetTrt_1100()"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<div class="row-section" id="sec-CONDITION">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblCon_2211">CONDITION AT DISCHARGE</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap"><div class="sec-editable" contenteditable="true" id="txtCon_3322"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtCon_3322')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<div class="row-section" id="sec-ADVICE">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblAdv_4433">ADVICE ON DISCHARGE</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap"><div class="sec-editable" contenteditable="true" id="txtAdv_5544"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtAdv_5544')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<div class="row-section" id="sec-FOLLOWUP">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblFol_6655">FOLLOW UP</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap"><div class="sec-editable" contenteditable="true" id="txtFol_7766"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtFol_7766')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+
+<div class="row-section" id="sec-OTHERS" style="flex-grow: 1; display: flex; flex-direction: row;">
+<div class="sec-head-wrap"><span class="sec-head-text" contenteditable="true" id="lblOth_8877">OTHERS</span><span class="sec-head-colon">:</span></div>
+<div class="sec-content-wrap" style="flex-grow: 1; display: flex; flex-direction: column;"><div class="sec-editable" contenteditable="true" id="txtOth_9988" style="flex-grow: 1; min-height: 35px;"></div></div>
+<span class="section-actions no-print"><button class="sec-action-btn" onclick="clearSec_2245('txtOth_9988')"><i class="fa-solid fa-rotate-left"></i></button></span>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+
+<tfoot style="display: table-footer-group;">
+<tr>
+<td class="pad-cell" style="padding-bottom: 8px;">
+<!-- CM038 - Document Footer Signatures Always Downside -->
+<div class="footer-signatures">
+<div class="footer-left">
+<div class="text-[0.85rem] text-slate-800 font-bold leading-tight">
+    <i class="fas fa-map-marker-alt" style="color: teal; margin-right: 6px; font-size: 1rem;"></i>
+    Mini Theater Street, Padma Street, <b style="color: #000; font-weight: 900;">Allagadda</b>, AP - 518553
+</div>
+</div>
+<div class="sig-box-right">
+<div class="sig-line">Doctor Signature</div>
+</div>
+</div>
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+
+<script>
+/* CM039 - Global Configuration Data */
+const TXT_IDS_5566 = ['txtChief_1134', 'txtDiag_4467', 'txtOp_5556', 'txtInd_7778', 'txtInt_9990', 'txtTrt_9989', 'txtCon_3322', 'txtAdv_5544', 'txtFol_7766', 'txtOth_9988'];
+let confirmCB_7788 = null; let activeClkId_9900 = ""; let clkMode_1111 = "H"; let clkAMPM_2222 = "AM";
+const medCorrections = { "diabetis": "DIABETES", "hipertension": "HYPERTENSION", "pregnency": "PREGNANCY", "feverr": "FEVER", "gastro": "GASTRITIS", "asthama": "ASTHMA", "anemea": "ANEMIA", "colera": "CHOLERA", "infecshun": "INFECTION", "headacke": "HEADACHE" };
+
+/* CM040 - UI Feedback Toast Loader */
+function showToast_3333(msg, isSuc) { const t = document.getElementById('toast'); t.className = "fixed bottom-5 right-5 font-extrabold text-white z-[10000] shadow-2xl p-3 rounded-lg " + (isSuc ? "bg-emerald-600" : "bg-rose-600"); t.innerText = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3500); }
+function showLoader_4444(msg) { document.getElementById('loaderText_3389').innerText = msg; document.getElementById('loaderModal_2278').style.display = 'flex'; }
+function hideLoader_5555() { document.getElementById('loaderModal_2278').style.display = 'none'; }
+function promptReset_3391() { document.getElementById('confirmMsg_8845').innerText = "Are you sure you want to reset all form fields?"; document.getElementById('confirmModal_7734').style.display = 'flex'; confirmCB_7788 = executeReset_6666; }
+function clearSec_2245(id) { document.getElementById('confirmMsg_8845').innerText = "Clear this section?"; document.getElementById('confirmModal_7734').style.display = 'flex'; confirmCB_7788 = () => { document.getElementById(id).innerText = ''; autoSaveData_9921(); }; }
+function closeConfirm_9956() { document.getElementById('confirmModal_7734').style.display = 'none'; confirmCB_7788 = null; }
+document.getElementById('confirmOkBtn_1167').onclick = () => { if(confirmCB_7788) confirmCB_7788(); closeConfirm_9956(); };
+
+/* CM041 - Form Initialization and Autosave */
+function initializeForm_8812() { setupDateMasks_7777(); setupTitleCaseFormatting_1234(); restoreData_8888(); compileInv_7790(); compileTrt_4434(); }
+function executeReset_6666() { localStorage.removeItem('svr_ds_draft'); location.reload(); }
+
+function autoSaveData_9921() { 
+    const data = { 
+        pid: document.getElementById('searchDsId_7745').value, 
+        did: document.getElementById('dsIdDisplayInp_7712').value, 
+        pn: document.getElementById('pName_9934').value, 
+        pa: document.getElementById('pAge_1145').value, 
+        pad: document.getElementById('pAddress_2256').value, 
+        da: document.getElementById('dAdmit_3367').value, 
+        do: document.getElementById('dOperate_7701').value, 
+        dd: document.getElementById('dDischarge_8812').value, 
+        hb: document.getElementById('iHb_6689').value, 
+        bg: document.getElementById('iBg_8801').value, 
+        hi: document.getElementById('cHi_9912').checked, 
+        hiv: document.getElementById('sHi_1123').value, 
+        hbs: document.getElementById('cHb_2234').checked, 
+        hbsv: document.getElementById('sHb_3345').value, 
+        hcv: document.getElementById('cHc_4456').checked, 
+        hcvv: document.getElementById('sHc_5567').value, 
+        pl: document.getElementById('iPl_6678').value, 
+        bt: document.getElementById('cBt_7789').checked, 
+        btv: document.getElementById('iBt_8890').value, 
+        ct: document.getElementById('cCt_9901').checked, 
+        ctv: document.getElementById('iCt_1112').value, 
+        trt: Array.from(document.querySelectorAll('.tc_3323')).map(c=>c.checked), 
+        cot: document.getElementById('cOt_5545').checked, 
+        oti: document.getElementById('otInp_8878').value, 
+        invT: document.getElementById('txtInv_2223').innerText 
+    }; 
+    TXT_IDS_5566.forEach(id => data[id] = document.getElementById(id).innerText); 
+    localStorage.setItem('svr_ds_draft', JSON.stringify(data)); 
+    checkEmptySections_5432(); 
+}
+
+function restoreData_8888() { 
+    const raw = localStorage.getItem('svr_ds_draft'); 
+    if(!raw) return; 
+    const d = JSON.parse(raw); 
+    document.getElementById('searchDsId_7745').value = d.pid||''; 
+    document.getElementById('dsIdDisplayInp_7712').value = d.did||''; 
+    document.getElementById('pName_9934').value = d.pn||''; 
+    document.getElementById('pAge_1145').value = d.pa||''; 
+    document.getElementById('pAddress_2256').value = d.pad||''; 
+    document.getElementById('dAdmit_3367').value = d.da||''; 
+    document.getElementById('dOperate_7701').value = d.do||''; 
+    document.getElementById('dDischarge_8812').value = d.dd||''; 
+    document.getElementById('iHb_6689').value = d.hb||''; 
+    document.getElementById('iBg_8801').value = d.bg||''; 
+    document.getElementById('cHi_9912').checked = d.hi!==false; 
+    document.getElementById('sHi_1123').value = d.hiv||'NEGATIVE'; 
+    document.getElementById('cHb_2234').checked = d.hbs!==false; 
+    document.getElementById('sHb_3345').value = d.hbsv||'NEGATIVE'; 
+    document.getElementById('cHc_4456').checked = d.hcv!==false; 
+    document.getElementById('sHc_5567').value = d.hcvv||'NEGATIVE'; 
+    document.getElementById('iPl_6678').value = d.pl||''; 
+    document.getElementById('cBt_7789').checked = d.bt!==false; 
+    document.getElementById('iBt_8890').value = d.btv||'NORMAL'; 
+    document.getElementById('cCt_9901').checked = d.ct!==false; 
+    document.getElementById('iCt_1112').value = d.ctv||'NORMAL'; 
+    document.querySelectorAll('.tc_3323').forEach((c,i)=> { if(d.trt !== undefined) c.checked=d.trt[i]; }); 
+    document.getElementById('cOt_5545').checked = d.cot||false; 
+    document.getElementById('otInp_8878').value = d.oti||''; 
+    document.getElementById('txtInv_2223').innerText = d.invT||''; 
+    TXT_IDS_5566.forEach(id => {if(d[id]) document.getElementById(id).innerText = d[id];}); 
+    toggleOtTrt_6656(); 
+    if(d.did) document.getElementById('mainPrintBtn_6634').style.display='inline-flex'; 
+    checkEmptySections_5432(); 
+}
+
+/* CM043 - Investigations Data Compiler */
+function compileInv_7790() { const p = []; const v = (id) => document.getElementById(id).value.trim(); const c = (id) => document.getElementById(id).checked; if(v('iHb_6689')) p.push(`Hb: ${v('iHb_6689')}`); if(v('iBg_8801')) p.push(`Blood Grp: ${v('iBg_8801')}`); if(c('cHi_9912')) p.push(`HIV: ${v('sHi_1123')}`); if(c('cHb_2234')) p.push(`HbsAg: ${v('sHb_3345')}`); if(c('cHc_4456')) p.push(`HCV: ${v('sHc_5567')}`); if(v('iPl_6678')) p.push(`Platelets: ${v('iPl_6678')}`); if(c('cBt_7789')) p.push(`BT: ${v('iBt_8890')}`); if(c('cCt_9901')) p.push(`CT: ${v('iCt_1112')}`); const base = p.join(' | '); const extra = document.getElementById('txtInv_2223').innerText.trim(); document.getElementById('printInvestigationsText').innerText = extra ? `${base}\n${extra}` : base; autoSaveData_9921(); }
+function resetInv_3334() { document.getElementById('iHb_6689').value=''; document.getElementById('iBg_8801').value=''; document.getElementById('sHi_1123').value='NEGATIVE'; document.getElementById('sHb_3345').value='NEGATIVE'; document.getElementById('sHc_5567').value='NEGATIVE'; document.getElementById('iPl_6678').value=''; document.getElementById('iBt_8890').value='NORMAL'; document.getElementById('iCt_1112').value='NORMAL'; document.getElementById('txtInv_2223').innerText=''; compileInv_7790(); }
+
+/* CM044 - Treatment Given Data Compiler */
+function toggleOtTrt_6656() { document.getElementById('otBox_7767').style.display = document.getElementById('cOt_5545').checked ? 'block' : 'none'; compileTrt_4434(); }
+function compileTrt_4434() { const l = []; document.querySelectorAll('.tc_3323').forEach(c => { c.parentElement.classList.toggle('active-treatment', c.checked); if(c.checked) l.push(c.value); }); if(document.getElementById('cOt_5545').checked && document.getElementById('otInp_8878').value) l.push(document.getElementById('otInp_8878').value.toUpperCase()); document.getElementById('txtTrt_9989').innerText = l.join(', '); autoSaveData_9921(); }
+function resetTrt_1100() { document.querySelectorAll('.tc_3323').forEach(c=>c.checked=true); document.getElementById('cOt_5545').checked=false; document.getElementById('otInp_8878').value=''; toggleOtTrt_6656(); }
+
+/* CM045 - Text Auto-Correction Formatter */
+function setupTitleCaseFormatting_1234() { 
+    document.querySelectorAll('.sec-editable').forEach(el => { 
+        el.addEventListener('blur', () => { 
+            if (el.innerText.trim()) { 
+                let lines = el.innerText.split(/\r?\n/); 
+                let processedLines = lines.map(line => {
+                    let words = line.split(/[ \t]+/);
+                    return words.map(word => {
+                        if(!word) return "";
+                        let clean = word.toLowerCase().replace(/[^a-z]/g, ''); 
+                        if (medCorrections[clean]) { 
+                            return word.toUpperCase().replace(new RegExp(clean, 'i'), medCorrections[clean]); 
+                        } 
+                        if (/^(mg|mm|ml|od|bd|tds|qid|tid|hs|po|iv|im|sc|gm|cc|kg)$/i.test(clean)) { 
+                            return word.toLowerCase(); 
+                        } 
+                        return word.toUpperCase();
+                    }).join(' ');
+                });
+                el.innerText = processedLines.join('\n'); 
+                compileInv_7790(); 
+                autoSaveData_9921(); 
+            } 
+        }); 
+    }); 
+}
+
+/* CM046 - Section Visibility Helper */
+function checkEmptySections_5432() { document.querySelectorAll('.row-section').forEach(sec => { const editable = sec.querySelector('.sec-editable'); if(sec.id === 'sec-INVESTIGATIONS'){ const hb = document.getElementById('iHb_6689').value.trim(); const bgp = document.getElementById('iBg_8801').value.trim(); const plt = document.getElementById('iPl_6678').value.trim(); const extra = document.getElementById('txtInv_2223').innerText.trim(); if(hb === "" && bgp === "" && plt === "" && extra === ""){ sec.classList.add('hidden-print'); } else { sec.classList.remove('hidden-print'); } } else if(sec.id === 'sec-TREATMENT') { const tList = document.getElementById('txtTrt_9989').innerText.trim(); if(tList === "") { sec.classList.add('hidden-print'); } else { sec.classList.remove('hidden-print'); } } else { if (editable && editable.innerText.trim() === "") { sec.classList.add('hidden-print'); } else { sec.classList.remove('hidden-print'); } } }); }
+window.addEventListener('beforeprint', () => { checkEmptySections_5432(); compileInv_7790(); });
+window.addEventListener('afterprint', () => { document.querySelectorAll('.row-section').forEach(sec => sec.classList.remove('hidden-print')); });
+
+/* CM047 - Date Masking and Picker Handlers */
+function setupDateMasks_7777() { 
+    ['dAdmit_3367', 'dOperate_7701', 'dDischarge_8812'].forEach(id => { 
+        const el = document.getElementById(id); 
+        if(el) {
+            el.onfocus = () => { if(!el.value || el.value.trim() === "") { el.value = "__-__-____  __:__ __"; el.dataset.lastVal = "__-__-____  __:__ __"; } }; 
+            el.onblur = () => { if(el.value === "__-__-____  __:__ __") el.value = ""; }; 
+        }
+    }); 
+}
+
+function handleDateMask_4411(e, el) { 
+    let val = el.value; let lastVal = el.dataset.lastVal || "__-__-____  __:__ __"; let pos = el.selectionStart; 
+    if (val === lastVal) return; 
+    if (val.length < lastVal.length) { 
+        let diff = lastVal.length - val.length; let base = lastVal.split(''); let template = "__-__-____  __:__ __".split(''); let actualPos = pos; 
+        if (diff === 1 && (lastVal[pos] === '-' || lastVal[pos] === ':' || lastVal[pos] === ' ')) { 
+            let search = pos - 1; while (search >= 0 && (template[search] === '-' || template[search] === ':' || template[search] === ' ')) { search--; actualPos--; } 
+            if (search >= 0) { base[search] = template[search]; actualPos = search; } 
+        } else { for (let i = 0; i < diff; i++) { let idx = pos + i; if (idx < template.length) base[idx] = template[idx]; } } 
+        let newVal = base.join(''); el.value = newVal; el.setSelectionRange(actualPos, actualPos); el.dataset.lastVal = newVal; return; 
+    } 
+    if (val.length > lastVal.length) { 
+        let diff = val.length - lastVal.length; let typed = val.substr(pos - diff, diff); let base = lastVal.split(''); let writePos = pos - diff; 
+        for (let i = 0; i < typed.length; i++) { let char = typed[i]; while (writePos < 21 && (base[writePos] === '-' || base[writePos] === ':' || base[writePos] === ' ')) writePos++; if (writePos >= 21) break; 
+        if (writePos < 17 && /\d/.test(char)) { base[writePos] = char; writePos++; } else if (writePos >= 18 && writePos <= 19 && /[aApPmM]/.test(char)) { let uc = char.toUpperCase(); if (uc === 'A' || uc === 'P') { base[18] = uc; base[19] = 'M'; writePos = 21; } else if (uc === 'M') { base[19] = 'M'; writePos = 21; } } } 
+        let newVal = base.join(''); el.value = newVal; el.setSelectionRange(writePos, writePos); el.dataset.lastVal = newVal; return; 
+    } 
+    if (val.length === lastVal.length) { 
+        let start = -1; for (let i = 0; i < val.length; i++) { if (val[i] !== lastVal[i]) { start = i; break; } } 
+        if (start !== -1) { let char = val[start]; let base = lastVal.split(''); if (start < 17 && /\d/.test(char)) { base[start] = char; } else if (start >= 18 && start <= 19 && /[aApPmM]/.test(char)) { let uc = char.toUpperCase(); if (uc === 'A' || uc === 'P') { base[18] = uc; base[19] = 'M'; } } 
+        let newVal = base.join(''); el.setSelectionRange(start + 1, start + 1); el.dataset.lastVal = newVal; } 
+    } 
+    autoSaveData_9921(); 
+}
+
+const formatDateValue_7654 = (val) => { 
+    if (!val) return ""; val = val.toString().trim().replace(/^'/, ""); 
+    if (/^\d{2}-\d{2}-\d{4}\s+\d{2}:\d{2}\s+[AP]M$/i.test(val)) return val; 
+    let parsedDate = new Date(val); 
+    if (!isNaN(parsedDate.getTime()) && (val.includes("GMT") || val.includes("Time") || val.includes("Z") || val.includes("T"))) { let d = String(parsedDate.getDate()).padStart(2, '0'); let mo = String(parsedDate.getMonth() + 1).padStart(2, '0'); let y = parsedDate.getFullYear(); let h = parsedDate.getHours(); let mi = String(parsedDate.getMinutes()).padStart(2, '0'); let fAp = h >= 12 ? "PM" : "AM"; h = h % 12; h = h ? h : 12; return `${d}-${mo}-${y}  ${String(h).padStart(2, '0')}:${mi} ${fAp}`; } 
+    let m = val.match(/^(\d{4})[-/](\d{2})[-/](\d{2})(?:[T\s](\d{2}):(\d{2})(?::\d{2})?(?:\.\d+)?(Z)?(?:\s+([AP]M))?)?/i); 
+    if (m) { let y = m[1], mo = m[2], d = m[3], h = m[4] ? parseInt(m[4]) : 12, mi = m[5] ? m[5] : "00", ap = m[7]; if (ap) return `${d}-${mo}-${y}  ${String(h).padStart(2, '0')}:${mi} ${ap.toUpperCase()}`; let fAp = h >= 12 ? "PM" : "AM"; h = h % 12; h = h ? h : 12; return `${d}-${mo}-${y}  ${String(h).padStart(2, '0')}:${mi} ${fAp}`; } 
+    let m2 = val.match(/^(\d{2})[-/](\d{2})[-/](\d{4})(?:\s+(\d{2}):(\d{2})(?:\s+([AP]M))?)?/i); 
+    if (m2) { let d = m2[1], mo = m2[2], y = m2[3], h = m2[4] ? parseInt(m2[4]) : 12, mi = m2[5] ? m2[5] : "00", ap = m2[6]; if (ap) return `${d}-${mo}-${y}  ${String(h).padStart(2, '0')}:${mi} ${ap.toUpperCase()}`; let fAp = h >= 12 ? "PM" : "AM"; h = h % 12; h = h ? h : 12; return `${d}-${mo}-${y}  ${String(h).padStart(2, '0')}:${mi} ${fAp}`; } 
+    return val; 
+};
+
+function openNativeDate_4478(id) { 
+    try { 
+        document.getElementById('picker_'+id).showPicker(); 
+    } catch(e) { 
+        document.getElementById('picker_'+id).focus(); 
+    } 
+}
+
+function applyNativeDate_6690(id, val) { 
+    if(!val) return; 
+    const [y,m,d] = val.split('-'); 
+    const e = document.getElementById(id); 
+    const cur = e.value || "__-__-____  __:__ __"; 
+    e.value = `${d}-${m}-${y}` + (cur.length > 10 ? cur.substring(10) : "  __:__ __"); 
+    e.dataset.lastVal = e.value; 
+    autoSaveData_9921(); 
+}
+
+/* CM048 - Clock Time Picker Logic */
+function openClock_5589(id) { activeClkId_9900 = id; clkMode_1111 = "H"; clkAMPM_2222 = "AM"; document.getElementById('manualHH_8834').value=''; document.getElementById('manualMM_1156').value=''; drawClock_9911(); document.getElementById('clockModal_4490').style.display='flex'; }
+function closeClock_5590() { document.getElementById('clockModal_4490').style.display='none'; }
+function drawClock_9911() { const c = document.getElementById('clockNumbers_7723'); c.innerHTML=''; const r=55, cx=80, cy=80; const max = clkMode_1111==="H"?12:12; for(let i=0; i<max; i++){ const v = clkMode_1111==="H" ? (i+1) : (i*5); const a = (i*(360/max)-90+ (clkMode_1111==="H"?30:0)) * Math.PI/180; const el = document.createElement('div'); el.className='clock-number'; el.innerText = clkMode_1111==="H"?v:String(v).padStart(2,'0'); el.style.left = (cx + r*Math.cos(a) - 10)+'px'; el.style.top = (cy + r*Math.sin(a) - 10)+'px'; el.onclick=()=>pickTime_2233(v); c.appendChild(el); } document.getElementById('clockHand_6612').style.transform = 'rotate(0deg)'; }
+function pickTime_2233(v) { if(clkMode_1111==="H"){ document.getElementById('manualHH_8834').value=String(v).padStart(2,'0'); document.getElementById('clockHand_6612').style.transform=`rotate(${v*30}deg)`; setTimeout(()=>{clkMode_1111="M"; drawClock_9911();}, 200); } else { document.getElementById('manualMM_1156').value=String(v).padStart(2,'0'); document.getElementById('clockHand_6612').style.transform=`rotate(${v*6}deg)`; } }
+function syncManualClock_9945() { const h = parseInt(document.getElementById('manualHH_8834').value)||0; const m = parseInt(document.getElementById('manualMM_1156').value)||0; if(clkMode_1111==="H" && h>=1 && h<=12) document.getElementById('clockHand_6612').style.transform=`rotate(${h*30}deg)`; else if(clkMode_1111==="M" && m>=0 && m<60) document.getElementById('clockHand_6612').style.transform=`rotate(${m*6}deg)`; }
+function setAMPM_3378(v) { clkAMPM_2222 = v; document.getElementById('amBtn_2267').classList.toggle('active', v==='AM'); document.getElementById('pmBtn_4489').classList.toggle('active', v==='PM'); setTimeout(saveClock_6601, 200); }
+function saveClock_6601() { const h = document.getElementById('manualHH_8834').value||"12"; const m = document.getElementById('manualMM_1156').value||"00"; const e = document.getElementById(activeClkId_9900); const cur = e.value || "__-__-____  __:__ __"; const dp = cur.length>=10 ? cur.substring(0,10) : "__-__-____"; e.value = `${dp}  ${h.padStart(2,'0')}:${m.padStart(2,'0')} ${clkAMPM_2222}`; e.dataset.lastVal = e.value; autoSaveData_9921(); closeClock_5590(); }
+
+/* CM049 - String Parsers for Search Records */
+const parseInv_7712 = (str) => { if(!str) return; const pts = str.split('\n'); const ml = pts[0]; document.getElementById('txtInv_2223').innerText = pts.slice(1).join('\n') || ""; const hbm = ml.match(/Hb:\s*([^|]+)/i); if(hbm) document.getElementById('iHb_6689').value = hbm[1].trim(); const bgm = ml.match(/Blood Grp:\s*([^|]+)/i); if(bgm) document.getElementById('iBg_8801').value = bgm[1].trim(); const hivm = ml.match(/HIV:\s*(NEGATIVE|POSITIVE)/i); if(hivm) { document.getElementById('cHi_9912').checked = true; document.getElementById('sHi_1123').value = hivm[1].toUpperCase(); } else document.getElementById('cHi_9912').checked = false; const hbsm = ml.match(/HbsAg:\s*(NEGATIVE|POSITIVE)/i); if(hbsm) { document.getElementById('cHb_2234').checked = true; document.getElementById('sHb_3345').value = hbsm[1].toUpperCase(); } else document.getElementById('cHb_2234').checked = false; const hcvm = ml.match(/HCV:\s*(NEGATIVE|POSITIVE)/i); if(hcvm) { document.getElementById('cHc_4456').checked = true; document.getElementById('sHc_5567').value = hcvm[1].toUpperCase(); } else document.getElementById('cHc_4456').checked = false; const plm = ml.match(/Platelets:\s*([^|]+)/i); if(plm) document.getElementById('iPl_6678').value = plm[1].trim(); const btm = ml.match(/BT:\s*([^|]+)/i); if(btm) { document.getElementById('cBt_7789').checked = true; document.getElementById('iBt_8890').value = btm[1].trim(); } else document.getElementById('cBt_7789').checked = false; const ctm = ml.match(/CT:\s*([^|]+)/i); if(ctm) { document.getElementById('cCt_9901').checked = true; document.getElementById('iCt_1112').value = ctm[1].trim(); } else document.getElementById('cCt_9901').checked = false; };
+const parseTrt_3312 = (str) => { if(!str) return; const lns = str.split(/,\s*|\n/).map(s => s.trim()).filter(Boolean); const pre = ["INJ.MONOCEF 1G IV BD", "INJ METRONEDAZOL 100ML TID", "INJ.PANTOP 40MG OD", "INJ DICLOFENAC BD", "INJ.PCM 1G SOS"]; document.querySelectorAll('.tc_3323').forEach(chk => { chk.checked = lns.includes(chk.value); }); const ots = lns.filter(l => !pre.includes(l)); if(ots.length > 0) { document.getElementById('cOt_5545').checked = true; document.getElementById('otInp_8878').value = ots.join(', '); } else { document.getElementById('cOt_5545').checked = false; } toggleOtTrt_6656(); };
+
+/* CM050 - Google Apps Script Backend API */
+async function fetchRecord_8856() { 
+    const id = document.getElementById('searchDsId_7745').value; 
+    const g = document.getElementById('gasAppUrl_9911').value; 
+    if(!id) return showToast_3333('Enter SVDS ID', false); 
+    showLoader_4444('Searching...'); 
+    try { 
+        const res = await fetch(g, { method:'POST', body:JSON.stringify({action:'search', svdsId:id})}).then(r=>r.json()); 
+        hideLoader_5555(); 
+        if(res.status==='success' && res.found) { 
+            const d=res.data; 
+            let c=d.chiefComplaints||"", dg=d.diagnosis||"", iv=d.investigations||"", op=d.operativeProcedure||"", ind=d.indication||"", io=d.intraOperative||"", tg=d.treatmentGiven||"", cd=d.conditionAtDischarge||"", ad=d.adviceOnDischarge||"", fu=d.followUp||"", ot=d.others||""; 
+            
+            document.getElementById('pName_9934').value=d.patientName||''; 
+            document.getElementById('pAge_1145').value=d.patientAge||''; 
+            document.getElementById('pAddress_2256').value=d.patientAddress||''; 
+            document.getElementById('dAdmit_3367').value=formatDateValue_7654(d.dateAdmission); 
+            document.getElementById('dAdmit_3367').dataset.lastVal=formatDateValue_7654(d.dateAdmission); 
+            document.getElementById('dOperate_7701').value=formatDateValue_7654(d.dateOperation); 
+            document.getElementById('dOperate_7701').dataset.lastVal=formatDateValue_7654(d.dateOperation); 
+            document.getElementById('dDischarge_8812').value=formatDateValue_7654(d.dateDischarge); 
+            document.getElementById('dDischarge_8812').dataset.lastVal=formatDateValue_7654(d.dateDischarge); 
+            document.getElementById('dsIdDisplayInp_7712').value=res.generatedId || d.svdsId || ''; 
+            document.getElementById('txtChief_1134').innerText=c; 
+            document.getElementById('txtDiag_4467').innerText=dg; 
+            document.getElementById('txtOp_5556').innerText=op; 
+            document.getElementById('txtInd_7778').innerText=ind; 
+            document.getElementById('txtInt_9990').innerText=io; 
+            document.getElementById('txtCon_3322').innerText=cd; 
+            document.getElementById('txtAdv_5544').innerText=ad; 
+            document.getElementById('txtFol_7766').innerText=fu; 
+            document.getElementById('txtOth_9988').innerText=ot; 
+            
+            parseInv_7712(iv); 
+            parseTrt_3312(tg); 
+            
+            document.getElementById('mainPrintBtn_6634').style.display='inline-flex'; 
+            autoSaveData_9921(); 
+            showToast_3333('Loaded successfully', true); 
+        } else { 
+            showToast_3333('Record not found', false); 
+        } 
+    } catch(e) { 
+        hideLoader_5555(); 
+        showToast_3333('Network Error', false); 
+    } 
+}
+
+async function saveToCloud_5523() { 
+    const nm = document.getElementById('pName_9934').value; 
+    const g = document.getElementById('gasAppUrl_9911').value; 
+    if(!nm) return showToast_3333('Patient Name required', false); 
+    document.getElementById('btnText_5523').innerText = "SAVING..."; 
+    document.getElementById('btnSpinner_5523').style.display = "inline-block"; 
+    document.getElementById('mainSaveBtn_4412').disabled = true; 
+    compileInv_7790(); 
+    
+    // Hardcoded doctors string for saving to backend sheet
+    const doctorString = "Dr. N. Lakshmi Sekhar Reddy, Dr. N. Sujatha";
+
+    const payload = { 
+        svdsId: document.getElementById('searchDsId_7745').value, 
+        patientName: nm, 
+        patientAge: document.getElementById('pAge_1145').value, 
+        patientAddress: document.getElementById('pAddress_2256').value, 
+        dateAdmission: "'"+document.getElementById('dAdmit_3367').value, 
+        dateOperation: "'"+document.getElementById('dOperate_7701').value, 
+        dateDischarge: "'"+document.getElementById('dDischarge_8812').value, 
+        doctorSelection: doctorString, 
+        chiefComplaints: document.getElementById('txtChief_1134').innerText, 
+        diagnosis: document.getElementById('txtDiag_4467').innerText, 
+        investigations: document.getElementById('printInvestigationsText').innerText, 
+        operativeProcedure: document.getElementById('txtOp_5556').innerText, 
+        indication: document.getElementById('txtInd_7778').innerText, 
+        intraOperative: document.getElementById('txtInt_9990').innerText, 
+        treatmentGiven: document.getElementById('txtTrt_9989').innerText, 
+        conditionAtDischarge: document.getElementById('txtCon_3322').innerText, 
+        adviceOnDischarge: document.getElementById('txtAdv_5544').innerText, 
+        followUp: document.getElementById('txtFol_7766').innerText, 
+        others: document.getElementById('txtOth_9988').innerText 
+    }; 
+    try { 
+        const res = await fetch(g, {method:'POST', body:JSON.stringify(payload)}).then(r=>r.json()); 
+        if(res.generatedId) { 
+            document.getElementById('searchDsId_7745').value = res.generatedId; 
+            document.getElementById('dsIdDisplayInp_7712').value = res.generatedId; 
+        } 
+        document.getElementById('mainPrintBtn_6634').style.display='inline-flex'; 
+        autoSaveData_9921(); 
+        showToast_3333('Saved successfully!', true); 
+    } catch(e) { 
+        showToast_3333('Save failed', false); 
+    } finally { 
+        document.getElementById('btnText_5523').innerText = "SAVE"; 
+        document.getElementById('btnSpinner_5523').style.display = "none"; 
+        document.getElementById('mainSaveBtn_4412').disabled = false; 
+    } 
+}
+</script>
+</body>
+</html>

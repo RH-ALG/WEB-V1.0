@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>సమాచార సమ్మతి | Sri Ramakrishna Hospital</title>
+<link class="favicon-icon" rel="icon" type="image/png" href="https://rh-alg.github.io/RH-IMG/RH-LOGO.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* CM001 - ప్రధాన లేఅవుట్ శైలులు */
+body { font-family: 'Roboto Slab', serif; background-color: #ffffff; padding: 10px; margin: 0; }
+.a4-page { width: 210mm; height: 297mm; min-height: 297mm; padding: 10mm; margin: 5px auto 40px auto; background: #ffffff; box-sizing: border-box; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden; }
+.inner-content { border: 2.5px solid #1e3a8a; height: 100%; display: flex; flex-direction: column; padding: 6px 10mm; box-sizing: border-box; position: relative; }
+
+/* CM002 - హాస్పిటల్ హెడర్ శైలులు */
+.header-container { display: flex; flex-direction: column; position: relative; z-index: 10; border-bottom: 2px solid #1e3a8a; padding-bottom: 8px; margin-bottom: 15px; }
+.header-top { display: flex; align-items: center; justify-content: flex-start; width: 100%; }
+.logo-img { height: 95px; width: 95px; object-fit: contain; margin-right: 15px; flex-shrink: 0; }
+.header-text-block { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; text-align: center; }
+.srinivasa-text { font-size: 1.1rem; font-weight: 800; color: #008080; margin-bottom: 2px; }
+.ramakrishna-text { font-size: 1.85rem; font-weight: 900; color: #000000; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 0.5px; white-space: nowrap; }
+.header-contact-row { display: flex; align-items: center; justify-content: center; gap: 20px; font-weight: 800; color: #000000; font-size: 0.95rem; }
+.since-badge { background-color: #7FD3FF; color: #000000; padding: 2px 10px; border-radius: 4px; border: 1.5px solid #1e3a8a; font-size: 0.9rem; }
+.icon-text { display: flex; align-items: center; gap: 5px; color: #008080; }
+.icon-text span { color: #000000; }
+
+/* CM003 - వాటర్‌మార్క్ బ్యాక్‌గ్రౌండ్ శైలి */
+.watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; opacity: 0.04; pointer-events: none; z-index: 0; }
+
+/* CM004 - ఫుటర్ శైలులు */
+.footer { text-align: center; color: #1e3a8a; border-top: 2px solid #1e3a8a; padding-top: 5px; }
+.address-text { font-size: 0.72rem; font-weight: 800; margin-bottom: 1px; }
+
+/* CM005 - కంట్రోల్ బటన్ శైలులు */
+.controls-top { display: flex; justify-content: center; gap: 12px; margin: 5px auto 10px auto; width: 100%; z-index: 1000; }
+.btn { padding: 6px 14px; color: white; border-radius: 6px; font-weight: 800; cursor: pointer; border: 1px solid rgba(0,0,0,0.2); display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.72rem; box-shadow: 0 4px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4); transition: all 0.2s ease; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); letter-spacing: 0.5px; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 6px 10px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5); filter: brightness(1.1); }
+.btn:active { transform: translateY(2px); box-shadow: 0 2px 4px rgba(0,0,0,0.1), inset 0 2px 4px rgba(0,0,0,0.2); }
+.btn-reset { background: linear-gradient(135deg, #f43f5e, #be123c); }
+.btn-print { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+
+/* CM006 - కన్సెంట్ ఫారమ్ ఇన్పుట్ శైలి */
+.consent-input { border: none; border-bottom: 1.5px dotted #1e3a8a; outline: none; background: transparent; font-family: 'Roboto Slab', serif; color: #1e3a8a; font-weight: 800; padding: 0px 4px; font-size: 0.82rem; transition: border-color 0.2s; }
+.consent-input:focus { border-bottom: 1.5px solid #1e3a8a; }
+
+/* CM007 - ప్రింటింగ్ మీడియా నియమాలు */
+@media print { 
+  @page { size: A4 portrait; margin: 0; } 
+  body { background: #ffffff !important; padding: 0 !important; margin: 0 !important; display: flex !important; justify-content: center !important; align-items: center !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } 
+  .a4-page { width: 210mm !important; height: 297mm !important; padding: 10mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; box-sizing: border-box !important; display: flex !important; flex-direction: column !important; page-break-after: avoid; page-break-inside: avoid; } 
+  .controls-top { display: none !important; } 
+  .consent-input { border-bottom: 1.5px dotted #1e3a8a !important; color: #1e3a8a !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } 
+}
+</style>
+</head>
+<body>
+
+<!-- CM008 - కంట్రోల్ ప్యానెల్ సెక్షన్ -->
+<div class="controls-top animate-fade-in">
+<button class="btn btn-reset" id="resetBtn_4812" onclick="showResetModal_5921()"><i class="fa-solid fa-rotate-left"></i> RESET</button>
+<button class="btn btn-print" id="printBtn_2831" onclick="triggerNativePrint_9281()"><i class="fa-solid fa-print"></i> PRINT</button>
+</div>
+
+<!-- CM009 - రీసెట్ కన్ఫర్మేషన్ మోడల్ -->
+<div id="resetModal_9102" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] hidden">
+<div id="modalCard_9102" class="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full mx-4 border-2 border-[#1e3a8a] transform scale-95 transition-all duration-200 text-[#1e3a8a]">
+<div class="text-center">
+<div class="w-14 h-14 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+<i class="fa-solid fa-triangle-exclamation"></i>
+</div>
+<h3 class="text-base font-extrabold tracking-wide mb-2 uppercase">Reset Confirmation</h3>
+<p class="text-xs text-gray-600 mb-6 font-semibold">Are you sure you want to clear all entered details? This action cannot be undone.</p>
+<div class="flex gap-3 justify-center">
+<button onclick="hideResetModal_5921()" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-md transition text-xs uppercase tracking-wider">No, Cancel</button>
+<button onclick="confirmResetForm_3821()" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-md transition text-xs shadow-md uppercase tracking-wider">Yes, Reset</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- CM010 - హాస్పిటల్ ప్రధాన లేఅవుట్ (A4 సైజు) -->
+<div class="a4-page">
+<div class="inner-content">
+<img src="https://dsvsrh.github.io/DRSVR-IMG-2026/IMG_01_HEDER_LOGO_MAIN.png" alt="Hospital Watermark" class="watermark">
+
+<!-- CM011 - హెడర్ కంటైనర్ -->
+<div class="header-container">
+<div class="header-top">
+<img src="https://rh-alg.github.io/RH-IMG/RH-LOGO.png" alt="Hospital Logo" class="logo-img">
+<div class="header-text-block">
+<div class="srinivasa-text">శ్రీ శ్రీనివాస నర్సింగ్ హోమ్ - Sri Srinivasa Nursing Home</div>
+<div class="ramakrishna-text"><span>SRI RAMAKRISHNA HOSPITAL</span></div>
+<div class="header-contact-row">
+<span class="since-badge">ESTD 1972</span>
+<span class="icon-text"><i class="fa-solid fa-location-dot"></i> <span>Allagadda</span></span>
+<span class="icon-text"><i class="fa-solid fa-phone"></i> <span>08514-200028</span></span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- CM012 - అధిక ప్రమాద సమాచార సమ్మతి కంటెంట్ -->
+<form id="consentForm_8291" class="flex-grow flex flex-col justify-start pt-3 pb-3 z-10 relative text-[#1e3a8a] text-[0.81rem] leading-relaxed" onsubmit="event.preventDefault();">
+
+<div class="text-center mb-2">
+<h2 class="text-[0.83rem] font-extrabold tracking-wide uppercase border-2 border-[#1e3a8a] px-3.5 py-1 inline-block rounded-md bg-white">అధిక ప్రమాద సమాచార సమ్మతి</h2>
+</div>
+
+<div class="text-justify leading-relaxed font-medium mb-3">
+<span>ఈ క్రింది సంతకం పెట్టిన నేను పద్దెనిమిది (18) సంవత్సరాల వయస్సు నిండి మానసికంగా సరైన స్థితిలో వైద్యునికి</span>
+<input type="text" class="consent-input w-48" id="tel_doc_1">
+<span>మరియు అతని/అతనిచే నియమించబడిన సహాయకులు శస్త్ర చికిత్స నిర్వహించడానికి వారిచే సిఫార్సు చేయబడిన మత్తుమందు ఇచ్చుటకు నేను అధికారం తెలియపరచటమైనది. నాకు పూర్తిగా వివరించబడినది</span>
+<input type="text" class="consent-input w-36" id="tel_lang_1">
+<span>భాషలో శస్త్ర చికిత్స / పద్ధతిలో అధిక ప్రమాదం నిండి రన్నదని అర్థం చేసుకున్నాన్న ఒకవేళ రోగి సమ్మతి తెలియ చేయలేకపోతే, క్రింద సంతకం పెట్టిన నేను రోగికి న్యాయ ప్రతినిధిగా ఉంటాను</span>
+<input type="text" class="consent-input w-44" id="tel_rep_1">
+<span>అధికృత, వైద్యుడు</span>
+<input type="text" class="consent-input w-48" id="tel_doc_2">
+<span>మరియు సహాయకులు / సహాయకులు శస్త్ర చికిత్స నిర్వహించడానికి వారిచే సిఫార్సు చేయబడిన మత్తుమందు ఇచ్చుటకు నేను అధికారం తెలియపరచటమైనది. నాకు పూర్తిగా వివరించబడినది</span>
+<input type="text" class="consent-input w-36" id="tel_lang_2">
+<span>భాషలో శస్త్ర చికిత్స / పద్ధతిలో అధిక ప్రమాదం నిండి ఉన్నదని అర్థం చేసుకున్నాను. అధిక ప్రమాదం ఉన్నప్పటికీ వైద్య చికిత్స బృందం తీర్పు ప్రకారము శస్త్ర చికిత్స చేయుటకు అవసరము. అదే రోగి జీవితాన్ని కాపాడుకునేందుకు మంచి అవకాశాన్ని అందించే చికిత్స అందుకు అధిక ప్రమాద చికిత్సకు, దాని పర్యవసానాలకు నా పూర్తి సమ్మతిని తెలియపరచటమైనది. శస్త్ర చికిత్స చేయక పోవటం వలన వచ్చే ప్రమాదాల గురించి కూడా నాకు వివరించినారు. నేను అవి అర్థం చేసుకున్నాను. చికిత్స తిరస్కరించటం వలన నష్టాలు ప్రత్యమ్నాయాలు నాకు వివరించబడినది.</span>
+</div>
+
+<!-- CM013 - సంతకాల విభాగాలు -->
+<div class="flex flex-col gap-3 mt-auto">
+
+<div class="border-t border-b border-[#1e3a8a] py-3.5">
+<div class="text-center font-bold text-[0.8rem] mb-1.5 text-[#1e3a8a]">తల్లిదండ్రుల / సరోగేట్</div>
+<div class="grid grid-cols-12 gap-2">
+<div class="col-span-8 flex flex-col gap-1.5 justify-center">
+<div class="flex items-end gap-1.5">
+<span class="font-bold whitespace-nowrap">పేరు :</span>
+<input type="text" class="consent-input flex-grow min-w-0" id="parent_name">
+</div>
+<div class="flex items-end gap-1.5">
+<span class="font-bold whitespace-nowrap">సంతకము :</span>
+<input type="text" class="consent-input flex-grow min-w-0" id="parent_sig">
+</div>
+<div class="flex items-end gap-1.5">
+<span class="font-bold whitespace-nowrap">సంబంధం :</span>
+<input type="text" class="consent-input flex-grow min-w-0" id="parent_relation">
+</div>
+<div class="flex items-end gap-1.5">
+<span class="font-bold whitespace-nowrap">తేది :</span>
+<input type="text" class="consent-input w-28" id="parent_date">
+<span class="font-bold whitespace-nowrap ml-2">సమయం :</span>
+<input type="text" class="consent-input w-24" id="parent_time">
+</div>
+</div>
+<div class="col-span-4 flex flex-col items-center justify-start border-l border-[#1e3a8a]/20 pl-2 pt-1">
+<span class="text-[0.63rem] font-bold mb-1.5 text-[#1e3a8a] text-center leading-tight">ఎడమ చేతి బొటనవేలు ముద్ర (LHTI)</span>
+<div class="border-1.5 border-dashed border-[#1e3a8a] w-28 h-20 rounded bg-gray-50/50"></div>
+</div>
+</div>
+</div>
+
+<div class="border-b border-[#1e3a8a] py-3">
+<div class="text-center font-bold text-[0.8rem] mb-1.5 text-[#1e3a8a]">సర్జన్</div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-1.5">
+<div class="flex items-end gap-1.5">
+<span class="font-bold whitespace-nowrap">పేరు :</span>
+<input type="text" class="consent-input flex-grow min-w-0" id="surgeon_name">
+</div>
+<div class="flex items-end gap-1.5">
+<span class="font-bold whitespace-nowrap">సంతకము :</span>
+<input type="text" class="consent-input flex-grow min-w-0" id="surgeon_sig">
+</div>
+<div class="flex items-end gap-1.5 col-span-2">
+<span class="font-bold whitespace-nowrap">తేది :</span>
+<input type="text" class="consent-input w-36" id="surgeon_date">
+<span class="font-bold whitespace-nowrap ml-4">సమయం :</span>
+<input type="text" class="consent-input w-32" id="surgeon_time">
+</div>
+</div>
+</div>
+
+<div class="pt-2 pb-2">
+<div class="text-center font-bold text-[0.8rem] mb-1.5 text-[#1e3a8a]">సాక్షి</div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-1.5">
+<div class="flex items-end gap-1.5">
+<span class="font-bold whitespace-nowrap">పేరు :</span>
+<input type="text" class="consent-input flex-grow min-w-0" id="witness_name">
+</div>
+<div class="flex items-end gap-1.5">
+<span class="font-bold whitespace-nowrap">సంతకము :</span>
+<input type="text" class="consent-input flex-grow min-w-0" id="witness_sig">
+</div>
+<div class="flex items-end gap-1.5 col-span-2">
+<span class="font-bold whitespace-nowrap">తేది :</span>
+<input type="text" class="consent-input w-36" id="witness_date">
+<span class="font-bold whitespace-nowrap ml-4">సమయం :</span>
+<input type="text" class="consent-input w-32" id="witness_time">
+</div>
+</div>
+</div>
+
+</div>
+
+</form>
+
+<!-- CM014 - ఫుటర్ కంటైనర్ -->
+<div class="footer">
+<p class="address-text">Address : Mini Theater Street, Padma Street, Allagadda, AP - 518553</p>
+</div>
+</div>
+</div>
+
+<script>
+/* CM015 - ఫంక్షన్లు మరియు ఈవెంట్ లిజనర్లు */
+function triggerNativePrint_9281() { window.print(); }
+function showResetModal_5921() { const modal = document.getElementById('resetModal_9102'); const card = document.getElementById('modalCard_9102'); modal.classList.remove('hidden'); setTimeout(() => { card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10); }
+function hideResetModal_5921() { const card = document.getElementById('modalCard_9102'); const modal = document.getElementById('resetModal_9102'); card.classList.remove('scale-100'); card.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); }, 150); }
+function confirmResetForm_3821() { document.getElementById('consentForm_8291').reset(); localStorage.removeItem('vsr_high_risk_consent_data'); hideResetModal_5921(); }
+const saveFormState_8291 = () => { const data = {}; document.querySelectorAll('.consent-input').forEach(input => { data[input.id] = input.value; }); localStorage.setItem('vsr_high_risk_consent_data', JSON.stringify(data)); };
+const loadFormState_8291 = () => { const data = JSON.parse(localStorage.getItem('vsr_high_risk_consent_data') || '{}'); Object.keys(data).forEach(id => { const el = document.getElementById(id); if (el) el.value = data[id]; }); };
+document.getElementById('consentForm_8291').addEventListener('input', saveFormState_8291);
+window.addEventListener('DOMContentLoaded', loadFormState_8291);
+</script>
+</body>
+</html>

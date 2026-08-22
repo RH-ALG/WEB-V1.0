@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Death Certificate - Form No. 4</title>
+    <link rel="icon" type="image/png" href="https://dsvsrh.github.io/DRSVR-IMG-2026/IMG_02_FEVICON_ICON.png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 01-HEADER CSS SECTION */
+        body { font-family: 'Roboto Slab', serif; background-color: #ffffff; color: #000000; margin: 0; padding: 2px 0 0 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .controls-panel { width: 100%; max-width: 820px; display: flex; justify-content: space-between; align-items: center; margin: 1px auto 3px auto; padding: 8px 12px; background: white; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); box-sizing: border-box; }
+        .panel-title { font-size: 13px; font-weight: 700; color: #111827; display: flex; align-items: center; gap: 6px; font-family: 'Roboto Slab', serif; }
+        .btn-reset { font-family: 'Roboto Slab', serif; background-color: #dc2626; color: white; border: none; padding: 6px 14px; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 11px; text-transform: uppercase; box-shadow: 0 2px 4px rgba(220,38,38,0.2); transition: all 0.2s ease; }
+        .btn-reset:hover { background-color: #b91c1c; transform: translateY(-1px); box-shadow: 0 4px 6px rgba(220,38,38,0.3); }
+        .btn-save { font-family: 'Roboto Slab', serif; background-color: #059669; color: white; border: none; padding: 6px 14px; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 11px; text-transform: uppercase; box-shadow: 0 2px 4px rgba(5,150,105,0.2); transition: all 0.2s ease; }
+        .btn-save:hover { background-color: #047857; transform: translateY(-1px); box-shadow: 0 4px 6px rgba(5,150,105,0.3); }
+        .btn-print { font-family: 'Roboto Slab', serif; background-color: #2563eb; color: white; border: none; padding: 6px 14px; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 11px; text-transform: uppercase; box-shadow: 0 2px 4px rgba(37,99,235,0.2); transition: all 0.2s ease; }
+        .btn-print:hover { background-color: #1d4ed8; transform: translateY(-1px); box-shadow: 0 4px 6px rgba(37,99,235,0.3); }
+        
+        /* 02-ABOUT CSS SECTION */
+        .a4-wrapper { width: 100%; max-width: 820px; box-sizing: border-box; padding: 2px; margin-bottom: 5px; }
+        .a4-sheet { background-color: #ffffff; border: 2px solid #000000; box-shadow: 0 4px 10px rgba(0,0,0,0.15); padding: 12px 30px; box-sizing: border-box; width: 100%; height: 1020px; max-height: 1020px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.3s ease; }
+        .form-header { text-align: center; margin-bottom: 4px; line-height: 1.25; }
+        .form-header h2 { font-size: 12px; font-weight: bold; margin: 0; letter-spacing: 0.3px; }
+        .form-header .rule-text { font-size: 9.5px; font-style: italic; margin: 0 0 2px 0; }
+        .form-header h1 { font-size: 14px; font-weight: bold; text-decoration: underline; margin: 0 0 3px 0; letter-spacing: 0.1px; }
+        .form-header .sub-text { font-size: 10px; font-weight: normal; margin: 1px 0; }
+        .hospital-line { display: flex; align-items: flex-end; width: 100%; margin-top: 4px; margin-bottom: 4px; }
+        .certify-block { font-size: 11.5px; line-height: 1.45; text-align: justify; margin-bottom: 8px; }
+        
+        /* 03-SPECIALTY CSS SECTION */
+        .form-body { flex-grow: 1; display: flex; flex-direction: column; }
+        .form-row { display: flex; align-items: flex-end; margin-bottom: 6px; width: 100%; }
+        .form-label { font-size: 11px; font-weight: bold; white-space: nowrap; margin-right: 5px; }
+        .form-fill { border: none; border-bottom: 1px dashed #000000; outline: none; flex-grow: 1; font-size: 11.5px; padding: 0 2px; font-family: inherit; background: transparent; color: #000000; transition: border-color 0.2s; font-weight: 500; }
+        .sex-container { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; border: 1px solid #000000; padding: 4px 8px; font-size: 11px; }
+        .sex-option { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .sex-option input[type="radio"] { margin: 0; width: 11px; height: 11px; cursor: pointer; accent-color: #000000; }
+        .age-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%; margin-bottom: 8px; border: 1px solid #000000; padding: 4px; }
+        .age-col { display: flex; flex-direction: column; gap: 2px; border-right: 1px solid #d1d5db; padding: 0 2px; align-items: center; text-align: center; }
+        .age-col:last-child { border-right: none; }
+        .age-col label { font-size: 8.5px; font-weight: bold; line-height: 1.1; min-height: 18px; width: 100%; text-align: center; }
+        .age-input-compact { max-width: 40px; text-align: center; border: none; border-bottom: 1px dashed #000000; outline: none; font-size: 11.5px; font-family: inherit; font-weight: 500; background: transparent; }
+        
+        /* 04-TIMINGS CSS SECTION */
+        .cause-table { width: 100%; border-collapse: collapse; border-spacing: 0; margin-bottom: 8px; }
+        .cause-table th, .cause-table td { border: 1px solid #000000; padding: 1px 2px; text-align: left; vertical-align: top; font-size: 11px; box-sizing: border-box; }
+        .cause-table th { background-color: #f3f4f6; font-weight: bold; text-align: center; font-size: 10px; }
+        .cause-table td p { margin: 0; font-size: 9.5px; color: #4b5563; }
+        .manner-block { border: 1px solid #000000; padding: 6px; margin-bottom: 6px; }
+        .manner-title { font-size: 11px; font-weight: bold; margin-bottom: 2px; text-transform: uppercase; }
+        .manner-options { display: flex; gap: 10px; font-size: 10.5px; flex-wrap: wrap; }
+        .female-block { border: 1px solid #000000; padding: 6px; margin-bottom: 6px; background-color: #fafafa; }
+        .female-title { font-size: 10px; font-weight: bold; margin-bottom: 4px; }
+        .female-options { display: flex; gap: 15px; font-size: 10.5px; }
+        .other-instructions-block { border: 1px solid #000000; padding: 6px; margin-bottom: 6px; }
+        .other-instructions-title { font-size: 11px; font-weight: bold; margin-bottom: 2px; text-transform: uppercase; }
+        
+        /* 05-REGISTRATION CSS SECTION */
+        .bottom-split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 12px; margin-top: auto; padding-top: 5px; }
+        .stat-office-box { border: 2px solid #000000; padding: 6px; height: 165px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+        .stat-title { font-weight: bold; text-align: center; font-size: 10.5px; margin-bottom: 4px; text-decoration: underline; }
+        .stat-row { display: flex; justify-content: space-between; font-size: 9.5px; margin-bottom: 3px; }
+        .stat-box-blank { border: 1px solid #000000; width: 40px; height: 12px; }
+        .signature-block { display: flex; flex-direction: column; justify-content: space-between; height: 165px; box-sizing: border-box; padding-left: 6px; min-height: 165px; }
+        .sig-row { display: flex; align-items: flex-end; font-size: 10.5px; margin-bottom: 4px; }
+        .sig-line { border-top: 1px solid #000000; margin-top: auto; text-align: center; font-size: 10px; padding-top: 3px; font-weight: bold; text-transform: uppercase; }
+        .date-verification-box { border: 1px solid #000000; padding: 4px 6px; display: flex; align-items: center; justify-content: space-between; font-size: 10px; margin-top: 6px; width: 100%; box-sizing: border-box; white-space: nowrap; overflow: hidden; }
+        .date-box-wrapper { display: flex; gap: 1px; flex-shrink: 0; }
+        .date-square { border: 1px solid #000000; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; box-sizing: border-box; }
+        
+        /* 06-MODALS CSS SECTION */
+        .custom-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .modal-content { background: white; padding: 15px; border-radius: 6px; box-shadow: 0 3px 10px rgba(0,0,0,0.15); max-width: 360px; width: 90%; text-align: center; color: #000; }
+        .modal-title { font-size: 15px; font-weight: bold; margin-bottom: 8px; color: #111827; }
+        .modal-text { font-size: 13px; color: #4b5563; margin-bottom: 15px; line-height: 1.35; }
+        .modal-buttons { display: flex; justify-content: center; gap: 8px; }
+        .btn-modal-cancel { background-color: #9ca3af; color: white; border: none; padding: 6px 12px; font-weight: 600; border-radius: 4px; cursor: pointer; font-size: 11px; transition: background-color 0.2s; }
+        .btn-modal-cancel:hover { background-color: #6b7280; }
+        
+        /* 07-PICKER CSS SECTION */
+        .dp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: bold; gap: 4px; }
+        .dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; }
+        .dp-day-header { font-size: 10px; font-weight: bold; color: #4b5563; padding: 2px 0; }
+        .dp-day { font-size: 11px; padding: 5px 0; cursor: pointer; border-radius: 4px; font-weight: 500; }
+        .dp-day:hover { background-color: #f3f4f6; }
+        .dp-blank { cursor: default; }
+        .dp-blank:hover { background: none; }
+        .wizard-circle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 10px 0; }
+        .wizard-circle-item { font-size: 11px; font-weight: bold; padding: 8px 4px; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; transition: all 0.15s ease; background-color: #f9fafb; text-align: center; }
+        .wizard-circle-item:hover { background-color: #2563eb; color: white; border-color: #2563eb; }
+        .tp-manual-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
+        .tp-input { width: 45px; text-align: center; padding: 4px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px; font-family: inherit; }
+        .tp-period-row { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+        .btn-tp { padding: 5px 15px; font-size: 11px; font-weight: bold; color: white; border: none; border-radius: 4px; cursor: pointer; background-color: #4b5563; transition: background-color 0.2s; }
+        .btn-tp:hover { background-color: #1f2937; }
+        .btn-icon-trigger { background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; transition: opacity 0.2s; }
+        .btn-icon-trigger:hover { opacity: 0.7; }
+        .btn-print:disabled { background-color: #9ca3af; cursor: not-allowed; opacity: 0.6; }
+        
+        @page { size: A4; margin: 0; }
+        @media print { 
+            body { background-color: #ffffff; padding: 0; margin: 0; } 
+            .controls-panel, .custom-modal, .btn-icon-trigger { display: none !important; } 
+            .a4-wrapper { padding: 0; margin: 0; max-width: 100%; } 
+            .a4-sheet { border: 2px solid #000000 !important; box-shadow: none !important; padding: 8mm 12mm !important; margin: 8mm auto !important; width: 194mm !important; height: 281mm !important; box-sizing: border-box !important; page-break-after: avoid; page-break-before: avoid; } 
+            .form-fill, .age-input-compact { border-bottom: 1px dashed #000000 !important; } 
+            .date-verification-box { width: 100% !important; white-space: nowrap !important; } 
+            .date-box-wrapper { transform: none !important; } 
+            .signature-block { width: 100% !important; } 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 01-HEADER SECTION -->
+    <div class="controls-panel">
+        <div class="panel-title"><span>📄</span> Official Medical Certificate of Cause of Death (Form No. 4)</div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn-reset" onclick="triggerReset()">RESET</button>
+            <button class="btn-save" onclick="saveData(true)">SAVE</button>
+            <button class="btn-print" id="printBtn" onclick="printCertificate()" disabled>PRINT</button>
+        </div>
+    </div>
+
+    <!-- 02-ABOUT SECTION -->
+    <div class="a4-wrapper">
+    <div class="a4-sheet" id="print-sheet">
+        <div class="form-header">
+            <h2>FORM NO. 4</h2>
+            <div class="rule-text">(See rule 7)</div>
+            <h1>MEDICAL CERTIFICATE OF CAUSE OF DEATH</h1>
+            <div class="sub-text"><b>(Hospital In-patients. Not to be used for still births)</b></div>
+            <div class="sub-text">To be sent to Registrar along with Form No. 2 (Death Report)</div>
+            <div class="sub-text">A copy of this certificate to be provided to the nearest relative of the deceased</div>
+        </div>
+        
+        <div class="form-body">
+            <div class="hospital-line">
+                <span class="form-label" style="margin-right: 5px;">Name of the Hospital:</span>
+                <!-- Hospital Name kept blank by default as per request -->
+                <input type="text" class="form-fill" id="hospital-name" value="" style="font-weight: bold;">
+            </div>
+            <div class="certify-block">
+                I hereby certify that the person whose particulars are given below died in the hospital in Ward No.
+                <input type="text" class="form-fill" id="ward-no" style="width: 70px; flex-grow: 0; display: inline-block; text-align: center;">
+                on Date
+                <span style="display: inline-flex; align-items: center; gap: 4px;">
+                    <input type="text" class="form-fill" id="death-date-text" style="width: 120px; flex-grow: 0; text-align: center;">
+                    <button type="button" class="btn-icon-trigger" onclick="openDatePicker('death-date-text')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </button>
+                </span>
+                at Time
+                <span style="display: inline-flex; align-items: center; gap: 4px;">
+                    <input type="text" class="form-fill" id="death-time-text" style="width: 70px; flex-grow: 0; text-align: center;">
+                    <input type="text" class="form-fill" id="death-period-text" style="width: 50px; flex-grow: 0; text-align: center;">
+                    <button type="button" class="btn-icon-trigger" onclick="openTimePicker()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </button>
+                </span>.
+            </div>
+            <div class="form-row" style="margin-top: 10px;">
+                <span class="form-label">NAME OF DECEASED:</span>
+                <input type="text" class="form-fill" id="deceased-name">
+            </div>
+            <div class="sex-container">
+                <span class="form-label" style="margin-right: 15px;">Sex:</span>
+                <label class="sex-option"><input type="radio" name="deceased-sex" id="sex-m"> 1. Male</label>
+                <label class="sex-option"><input type="radio" name="deceased-sex" id="sex-f"> 2. Female</label>
+                <label class="sex-option"><input type="radio" name="deceased-sex" id="sex-t"> 3. Transgender person</label>
+            </div>
+            <div class="form-row"><span class="form-label">Age at Death:</span></div>
+            <div class="age-grid">
+                <div class="age-col">
+                    <label>If 1 year or more, age in years</label>
+                    <input type="text" class="age-input-compact" id="age-years">
+                </div>
+                <div class="age-col">
+                    <label>If less than 1 year, age in months</label>
+                    <input type="text" class="age-input-compact" id="age-months">
+                </div>
+                <div class="age-col">
+                    <label>If less than 1 month, age in days</label>
+                    <input type="text" class="age-input-compact" id="age-days">
+                </div>
+                <div class="age-col">
+                    <label>If less than 1 day, age in hours</label>
+                    <input type="text" class="age-input-compact" id="age-hours">
+                </div>
+            </div>
+
+            <!-- 03-SPECIALTY SECTION -->
+            <div class="form-row"><span class="form-label" style="font-size:13px; text-decoration: underline;">CAUSE OF DEATH</span></div>
+            <table class="cause-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%; text-align: center;">No.</th>
+                        <th style="width: 75%; text-align: left;">Disease, injury or complication directly leading to death / Antecedent cause / Morbid conditions</th>
+                        <th style="width: 20%; text-align: center;">Interval between onset & death approx.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center; font-weight: bold;">I</td>
+                        <td>
+                            <b>Immediate Cause:</b>
+                            <p>State the disease, injury or complication which caused death, not the mode of dying such as heart failure, asthenia, etc.</p>
+                            <div style="display: flex; align-items: flex-end; margin-top: 4px;">
+                                <span>(a) due to (or as a consequence of)</span>
+                                <input type="text" class="form-fill" id="cause-i-a" style="margin-left: 5px;">
+                            </div>
+                        </td>
+                        <td style="vertical-align: bottom;"><input type="text" class="form-fill" id="interval-i-a" style="text-align: center;"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; font-weight: bold;"></td>
+                        <td>
+                            <b>Antecedent Cause:</b>
+                            <p>Morbid conditions, if any, giving rise to the above cause, stating underlying conditions last</p>
+                            <div style="display: flex; align-items: flex-end; margin-top: 4px;">
+                                <span>(b) due to (or as a consequence of)</span>
+                                <input type="text" class="form-fill" id="cause-i-b" style="margin-left: 5px;">
+                            </div>
+                            <div style="display: flex; align-items: flex-end; margin-top: 6px;">
+                                <span>(c) due to (or as a consequence of)</span>
+                                <input type="text" class="form-fill" id="cause-i-c" style="margin-left: 5px;">
+                            </div>
+                        </td>
+                        <td style="vertical-align: top; padding: 2px;">
+                            <div style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+                                <input type="text" class="form-fill" id="interval-i-b" style="text-align:center; margin-top:12px;">
+                                <input type="text" class="form-fill" id="interval-i-c" style="text-align:center; margin-top:25px;">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; font-weight: bold;">II</td>
+                        <td>
+                            <b>Other Significant Conditions:</b>
+                            <p>Contributing to the death but not related to the disease or condition causing it</p>
+                            <input type="text" class="form-fill" id="cause-ii" style="width: 100%; margin-top: 4px;">
+                        </td>
+                        <td style="vertical-align: bottom;"><input type="text" class="form-fill" id="interval-ii" style="text-align: center;"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 04-TIMINGS SECTION -->
+            <div class="manner-block">
+                <div class="manner-title">Manner of Death:</div>
+                <div class="manner-options">
+                    <label class="sex-option"><input type="radio" name="manner-death" id="manner-1"> 1. Natural</label>
+                    <label class="sex-option"><input type="radio" name="manner-death" id="manner-2"> 2. Accident</label>
+                    <label class="sex-option"><input type="radio" name="manner-death" id="manner-3"> 3. Suicide</label>
+                    <label class="sex-option"><input type="radio" name="manner-death" id="manner-4"> 4. Homicide</label>
+                    <label class="sex-option"><input type="radio" name="manner-death" id="manner-5"> 5. Pending Investigation</label>
+                </div>
+                <div class="form-row" style="margin-top: 8px; margin-bottom: 0;">
+                    <span class="form-label" style="font-size: 11px;">How did the injury occur?</span>
+                    <input type="text" class="form-fill" id="injury-method">
+                </div>
+            </div>
+            
+            <div class="female-block">
+                <div class="female-title">If deceased was a female, was pregnancy associated with the death?</div>
+                <div class="female-options">
+                    <div style="display: flex; gap: 12px;">
+                        <label class="sex-option"><input type="radio" name="preg-assoc" id="preg-y"> 1. Yes</label>
+                        <label class="sex-option"><input type="radio" name="preg-assoc" id="preg-n"> 2. No</label>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-left: 20px;">
+                        <span class="form-label" style="font-size: 11px; font-weight: normal;">If yes, was there a delivery?</span>
+                        <label class="sex-option"><input type="radio" name="deliv-assoc" id="deliv-y"> 1. Yes</label>
+                        <label class="sex-option"><input type="radio" name="deliv-assoc" id="deliv-n"> 2. No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04.5-OTHER INSTRUCTIONS SECTION -->
+            <div class="other-instructions-block">
+                <div class="other-instructions-title">Other Instructions:</div>
+                <input type="text" class="form-fill" id="other-instructions" style="width: 100%; margin-top: 2px;">
+            </div>
+
+            <!-- 05-REGISTRATION SECTION -->
+            <div class="bottom-split">
+                <div class="stat-office-box">
+                    <div class="stat-title">For use of Statistical Office</div>
+                    <div class="stat-row"><span>Immediate Cause Code (I.a Code):</span><div class="stat-box-blank"></div></div>
+                    <div class="stat-row"><span>Antecedent Cause Code (I.b Code):</span><div class="stat-box-blank"></div></div>
+                    <div class="stat-row"><span>Contributory Cause Code (II Code):</span><div class="stat-box-blank"></div></div>
+                    <div class="stat-row"><span>Manner of Death Code:</span><div class="stat-box-blank"></div></div>
+                </div>
+                <div class="signature-block">
+                    <div>
+                        <div class="sig-row">
+                            <span style="white-space: nowrap; font-weight: bold;">Certifying Attendant:</span>
+                            <input type="text" class="form-fill" id="attendant-name">
+                        </div>
+                        <div class="sig-row">
+                            <span style="white-space: nowrap;">Designation / Reg No:</span>
+                            <input type="text" class="form-fill" id="attendant-reg">
+                        </div>
+                    </div>
+                    <div class="date-verification-box">
+                        <span>Date of verification:</span>
+                        <span style="display: inline-flex; align-items: center; gap: 6px;">
+                            <div class="date-box-wrapper" id="verification-date-container" data-val="">
+                                <div class="date-square"></div><div class="date-square"></div>
+                                <span style="margin: 0 2px;">/</span>
+                                <div class="date-square"></div><div class="date-square"></div>
+                                <span style="margin: 0 2px;">/</span>
+                                <div class="date-square"></div><div class="date-square"></div><div class="date-square"></div><div class="date-square"></div>
+                            </div>
+                            <button type="button" class="btn-icon-trigger" onclick="openDatePicker('verification-date')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="sig-line">Signature of Medical Attendant</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- 06-MODALS SECTION -->
+    <div class="custom-modal" id="reset-confirm-modal">
+        <div class="modal-content">
+            <div class="modal-title">Reset Form?</div>
+            <div class="modal-text">Are you sure you want to clear all data? This action cannot be undone.</div>
+            <div class="modal-buttons">
+                <button class="btn-reset" onclick="confirmReset(true)" style="padding: 6px 15px;">Yes, Clear</button>
+                <button class="btn-modal-cancel" onclick="confirmReset(false)" style="padding: 6px 15px;">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="custom-modal" id="save-success-modal">
+        <div class="modal-content">
+            <div class="modal-title">Saved Successfully</div>
+            <div class="modal-text">Your form data has been safely saved to the cloud sheet.</div>
+            <div class="modal-buttons">
+                <button class="btn-save" onclick="closeSaveSuccess()" style="padding: 6px 25px;">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="custom-modal" id="date-picker-modal">
+        <div class="modal-content" style="max-width: 320px; padding: 15px;">
+            <div class="dp-header">
+                <select id="dp-select-month" onchange="handleDropdownChange()" class="tp-input" style="width: auto;"></select>
+                <select id="dp-select-year" onchange="handleDropdownChange()" class="tp-input" style="width: auto;"></select>
+            </div>
+            <div class="dp-grid" style="grid-template-columns: repeat(7, 1fr); margin-bottom: 5px;">
+                <div class="dp-day-header">S</div><div class="dp-day-header">M</div><div class="dp-day-header">T</div><div class="dp-day-header">W</div><div class="dp-day-header">T</div><div class="dp-day-header">F</div><div class="dp-day-header">S</div>
+            </div>
+            <div class="dp-grid" id="dp-grid"></div>
+            <div style="margin-top: 15px;">
+                <button type="button" class="btn-modal-cancel" onclick="document.getElementById('date-picker-modal').style.display='none'">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="custom-modal" id="time-picker-modal">
+        <div class="modal-content" style="max-width: 340px; padding: 15px;">
+            <div class="modal-title" id="tp-modal-step-title">Select Hour</div>
+            <div id="tp-step-hours" class="wizard-circle-grid"></div>
+            <div id="tp-step-minutes" class="wizard-circle-grid" style="display:none;"></div>
+            <div id="tp-step-period" class="tp-period-row" style="display:none;">
+                <button type="button" class="btn-tp" onclick="selectClockPeriod('AM')" style="font-size:14px; padding:10px 25px;">AM</button>
+                <button type="button" class="btn-tp" onclick="selectClockPeriod('PM')" style="font-size:14px; padding:10px 25px;">PM</button>
+            </div>
+            <div class="tp-manual-row" style="margin-top:12px; border-top:1px solid #e5e7eb; padding-top:8px;">
+                <span style="font-size:11px; color:#4b5563;">Manual Override:</span>
+                <input type="text" id="tp-manual-typed-time" class="tp-input" style="width:70px;" placeholder="05:30" oninput="saveManualTimeTyped()">
+                <input type="text" id="tp-manual-typed-period" class="tp-input" style="width:45px;" placeholder="PM" oninput="saveManualTimeTyped()">
+            </div>
+            <div style="margin-top: 15px; display:flex; justify-content:space-between;">
+                <button type="button" id="btn-tp-back" class="btn-modal-cancel" style="display:none;" onclick="goBackTimeStep()">Back</button>
+                <button type="button" class="btn-modal-cancel" onclick="document.getElementById('time-picker-modal').style.display='none'" style="margin-left:auto;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 01-HEADER JAVASCRIPT SECTION
+        let currentDateTarget = ''; let selectedDate = new Date(); let selectedHour = '12'; let selectedMinute = '00'; let selectedPeriod = 'AM'; let clockStep = 1;
+        
+        function printCertificate() { window.print(); }
+        
+        // 02-FORM VALIDATION SECTION
+        function triggerReset() { document.getElementById('reset-confirm-modal').style.display = 'flex'; }
+        
+        function confirmReset(isConfirmed) { 
+            if (isConfirmed) { 
+                localStorage.removeItem('mccd_form_data'); 
+                document.querySelectorAll('.form-fill, .age-input-compact').forEach(el => { el.value = ''; }); 
+                document.querySelectorAll('input[type="radio"]').forEach(el => { el.checked = false; }); 
+                
+                // Keep Hospital Name explicitly blank
+                document.getElementById('hospital-name').value = ''; 
+                
+                document.getElementById('verification-date-container').innerHTML = '<div class="date-square"></div><div class="date-square"></div><span style="margin: 0 2px;">/</span><div class="date-square"></div><div class="date-square"></div><span style="margin: 0 2px;">/</span><div class="date-square"></div><div class="date-square"></div><div class="date-square"></div><div class="date-square"></div>'; 
+                document.getElementById('verification-date-container').removeAttribute('data-val');
+                document.getElementById('printBtn').disabled = true;
+                saveData(false); 
+            }
+            document.getElementById('reset-confirm-modal').style.display = 'none'; 
+        }
+        
+        function closeSaveSuccess() { document.getElementById('save-success-modal').style.display = 'none'; }
+        
+        // 03-BUTTON ACTION SECTION
+        function saveData(showModal) { 
+            const saveBtn = document.querySelector('.btn-save'); 
+            const resetBtn = document.querySelector('.btn-reset'); 
+            const printBtn = document.querySelector('.btn-print'); 
+            const originalText = saveBtn.textContent; 
+            if (showModal) { 
+                saveBtn.textContent = 'SAVING...'; 
+                saveBtn.disabled = true; 
+                resetBtn.disabled = true; 
+                printBtn.disabled = true; 
+            } 
+            
+            const selectedSex = document.querySelector('input[name="deceased-sex"]:checked'); 
+            const sexVal = selectedSex ? selectedSex.parentElement.textContent.trim().substring(2).trim() : ''; 
+            const selectedManner = document.querySelector('input[name="manner-death"]:checked'); 
+            const mannerVal = selectedManner ? selectedManner.parentElement.textContent.trim().substring(2).trim() : ''; 
+            const selectedPreg = document.querySelector('input[name="preg-assoc"]:checked'); 
+            const pregVal = selectedPreg ? selectedPreg.parentElement.textContent.trim().substring(2).trim() : ''; 
+            const selectedDeliv = document.querySelector('input[name="deliv-assoc"]:checked'); 
+            const delivVal = selectedDeliv ? selectedDeliv.parentElement.textContent.trim().substring(2).trim() : ''; 
+            
+            const payload = { 
+                hospitalName: document.getElementById('hospital-name').value, 
+                wardNo: document.getElementById('ward-no').value, 
+                deathDate: document.getElementById('death-date-text').value, 
+                deathTime: document.getElementById('death-time-text').value, 
+                deathPeriod: document.getElementById('death-period-text').value, 
+                deceasedName: document.getElementById('deceased-name').value, 
+                gender: sexVal, 
+                ageYears: document.getElementById('age-years').value, 
+                ageMonths: document.getElementById('age-months').value, 
+                ageDays: document.getElementById('age-days').value, 
+                ageHours: document.getElementById('age-hours').value, 
+                immediateCause: document.getElementById('cause-i-a').value, 
+                intervalIa: document.getElementById('interval-i-a').value, 
+                antecedentCauseIb: document.getElementById('cause-i-b').value, 
+                intervalIb: document.getElementById('interval-i-b').value, 
+                antecedentCauseIc: document.getElementById('cause-i-c').value, 
+                intervalIc: document.getElementById('interval-i-c').value, 
+                otherConditions: document.getElementById('cause-ii').value, 
+                intervalIi: document.getElementById('interval-ii').value, 
+                mannerDeath: mannerVal, 
+                injuryMethod: document.getElementById('injury-method').value, 
+                pregAssoc: pregVal, 
+                delivAssoc: delivVal, 
+                otherInstructions: document.getElementById('other-instructions').value, 
+                attendantName: document.getElementById('attendant-name').value, 
+                attendantReg: document.getElementById('attendant-reg').value, 
+                verificationDate: document.getElementById('verification-date-container').getAttribute('data-val') || '' 
+            }; 
+            
+            const localData = { texts: {}, radios: {}, custom: {} }; 
+            document.querySelectorAll('.form-fill, .age-input-compact').forEach(el => { localData.texts[el.id] = el.value; }); 
+            document.querySelectorAll('input[type="radio"]').forEach(el => { localData.radios[el.id] = el.checked; }); 
+            const vDate = document.getElementById('verification-date-container').getAttribute('data-val'); 
+            if (vDate) localData.custom['verification-date'] = vDate; 
+            localStorage.setItem('mccd_form_data', JSON.stringify(localData)); 
+            
+            if (!showModal) return; 
+            
+            // New Google Apps Script URL as requested
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbyfNjGNeZG8s3UrQfZ2xVTNjRZ4EUiof3sV-jMWhH9yqOk-Z-3JEbdb3E4vxnUCGul7/exec"; 
+            
+            fetch(scriptUrl, { 
+                method: "POST", 
+                mode: "no-cors", 
+                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                body: JSON.stringify(payload) 
+            })
+            .then(() => {
+                saveBtn.textContent = originalText;
+                saveBtn.disabled = false;
+                resetBtn.disabled = false;
+                document.getElementById('printBtn').disabled = false;
+                document.getElementById('save-success-modal').style.display = 'flex';
+            })
+            .catch(err => { 
+                console.error(err); 
+                saveBtn.textContent = originalText; 
+                saveBtn.disabled = false; 
+                resetBtn.disabled = false; 
+                document.getElementById('printBtn').disabled = true; 
+            }); 
+        }
+        
+        function loadData() { 
+            const raw = localStorage.getItem('mccd_form_data'); 
+            if (!raw) return; 
+            const data = JSON.parse(raw); 
+            Object.keys(data.texts || {}).forEach(id => { const el = document.getElementById(id); if (el) el.value = data.texts[id]; }); 
+            Object.keys(data.radios || {}).forEach(id => { const el = document.getElementById(id); if (el) el.checked = data.radios[id]; }); 
+            if (data.custom && data.custom['verification-date']) { 
+                const p = data.custom['verification-date'].split(' '); 
+                if (p.length === 3) updateVerificationDateBoxes(p[0], p[1], p[2]); 
+            } 
+        }
+        
+        document.getElementById('printBtn').disabled = false;
+        
+        function setupAutoSave() { 
+            document.querySelectorAll('.form-fill, .age-input-compact').forEach(el => { el.addEventListener('input', () => saveData(false)); }); 
+            document.querySelectorAll('input[type="radio"]').forEach(el => { el.addEventListener('change', () => saveData(false)); }); 
+        }
+        
+        // 04-PICKERS JAVASCRIPT SECTION
+        function openDatePicker(targetId) { 
+            currentDateTarget = targetId; selectedDate = new Date(); initDatePickerDropdowns(); renderDatePicker(); 
+            document.getElementById('date-picker-modal').style.display = 'flex'; 
+        }
+        function initDatePickerDropdowns() { 
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']; 
+            const mSelect = document.getElementById('dp-select-month'); mSelect.innerHTML = ''; 
+            months.forEach((m, i) => { 
+                const opt = document.createElement('option'); opt.value = i; opt.textContent = m; 
+                if(i === selectedDate.getMonth()) opt.selected = true; mSelect.appendChild(opt); 
+            }); 
+            const ySelect = document.getElementById('dp-select-year'); ySelect.innerHTML = ''; 
+            const startYear = 1950; const endYear = 2050; 
+            for(let y = startYear; y <= endYear; y++) { 
+                const opt = document.createElement('option'); opt.value = y; opt.textContent = y; 
+                if(y === selectedDate.getFullYear()) opt.selected = true; ySelect.appendChild(opt); 
+            } 
+        }
+        function handleDropdownChange() { 
+            const m = parseInt(document.getElementById('dp-select-month').value); 
+            const y = parseInt(document.getElementById('dp-select-year').value); 
+            selectedDate.setMonth(m); selectedDate.setFullYear(y); renderDatePicker(); 
+        }
+        function renderDatePicker() { 
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']; 
+            const year = selectedDate.getFullYear(); const month = selectedDate.getMonth(); 
+            const firstDay = new Date(year, month, 1).getDay(); const totalDays = new Date(year, month + 1, 0).getDate(); 
+            const grid = document.getElementById('dp-grid'); grid.innerHTML = ''; 
+            for(let i=0; i<firstDay; i++) { 
+                const blank = document.createElement('div'); blank.className = 'dp-day dp-blank'; grid.appendChild(blank); 
+            } 
+            for(let d=1; d<=totalDays; d++) { 
+                const btn = document.createElement('div'); btn.className = 'dp-day'; btn.textContent = d; 
+                btn.onclick = () => selectDateValue(d, months[month], year); grid.appendChild(btn); 
+            } 
+        }
+        function selectDateValue(day, monthStr, year) { 
+            const formattedDay = String(day).padStart(2, '0'); const value = `${formattedDay} ${monthStr} ${year}`; 
+            if (currentDateTarget === 'verification-date') { 
+                updateVerificationDateBoxes(formattedDay, monthStr, year); 
+            } else { 
+                const el = document.getElementById(currentDateTarget); 
+                if (el) { el.value = value; saveData(false); } 
+            } 
+            document.getElementById('date-picker-modal').style.display = 'none'; 
+        }
+        function updateVerificationDateBoxes(dayStr, monthStr, yearStr) { 
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']; 
+            const mIndex = String(months.indexOf(monthStr) + 1).padStart(2, '0'); const fullStr = dayStr + mIndex + yearStr; 
+            const container = document.getElementById('verification-date-container'); container.innerHTML = ''; 
+            for (let i = 0; i < 8; i++) { 
+                const char = fullStr[i] || (i < 2 ? 'D' : (i < 4 ? 'M' : 'Y')); container.innerHTML += `<div class="date-square">${char}</div>`; 
+                if (i === 1) container.innerHTML += `<span style="margin: 0 2px;">/</span>`; 
+                if (i === 3) container.innerHTML += `<span style="margin: 0 2px;">/</span>`; 
+            } 
+            container.setAttribute('data-val', `${dayStr} ${monthStr} ${yearStr}`); saveData(false); 
+        }
+        
+        // 05-TIME WIZARD JAVASCRIPT SECTION
+        function openTimePicker() { 
+            clockStep = 1; selectedHour = '12'; selectedMinute = '00'; selectedPeriod = 'AM'; 
+            document.getElementById('tp-manual-typed-time').value = ''; document.getElementById('tp-manual-typed-period').value = ''; 
+            renderTimeWizard(); document.getElementById('time-picker-modal').style.display = 'flex'; 
+        }
+        function renderTimeWizard() { 
+            const title = document.getElementById('tp-modal-step-title'); const stepHours = document.getElementById('tp-step-hours'); 
+            const stepMinutes = document.getElementById('tp-step-minutes'); const stepPeriod = document.getElementById('tp-step-period'); 
+            const btnBack = document.getElementById('btn-tp-back'); 
+            stepHours.style.display = 'none'; stepMinutes.style.display = 'none'; stepPeriod.style.display = 'none'; 
+            btnBack.style.display = clockStep > 1 ? 'inline-block' : 'none'; 
+            if(clockStep === 1) { 
+                title.textContent = "Select Hour"; stepHours.style.display = 'grid'; stepHours.innerHTML = ''; 
+                for(let h=1; h<=12; h++) { 
+                    const btn = document.createElement('div'); btn.className = 'wizard-circle-item'; btn.textContent = String(h).padStart(2, '0'); 
+                    btn.onclick = () => selectClockHour(String(h).padStart(2, '0')); stepHours.appendChild(btn); 
+                } 
+            } else if(clockStep === 2) { 
+                title.textContent = "Select Minute"; stepMinutes.style.display = 'grid'; stepMinutes.innerHTML = ''; 
+                const mins = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']; 
+                mins.forEach(m => { 
+                    const btn = document.createElement('div'); btn.className = 'wizard-circle-item'; btn.textContent = m; 
+                    btn.onclick = () => selectClockMinute(m); stepMinutes.appendChild(btn); 
+                }); 
+            } else if(clockStep === 3) { 
+                title.textContent = "Select AM / PM"; stepPeriod.style.display = 'flex'; 
+            } 
+        }
+        function selectClockHour(h) { 
+            selectedHour = h; document.getElementById('tp-manual-typed-time').value = selectedHour + ':' + selectedMinute; 
+            clockStep = 2; renderTimeWizard(); 
+        }
+        function selectClockMinute(m) { 
+            selectedMinute = m; document.getElementById('tp-manual-typed-time').value = selectedHour + ':' + selectedMinute; 
+            clockStep = 3; renderTimeWizard(); 
+        }
+        function selectClockPeriod(p) { selectedPeriod = p; insertFinalTime(); }
+        function goBackTimeStep() { if(clockStep > 1) { clockStep--; renderTimeWizard(); } }
+        function saveManualTimeTyped() { 
+            const val = document.getElementById('tp-manual-typed-time').value.trim(); const per = document.getElementById('tp-manual-typed-period').value.trim().toUpperCase(); 
+            if (val.includes(':')) { const parts = val.split(':'); selectedHour = parts[0].padStart(2, '0'); selectedMinute = parts[1].padStart(2, '0'); } 
+            if (per === 'AM' || per === 'PM') { selectedPeriod = per; } 
+            document.getElementById('death-time-text').value = selectedHour + ':' + selectedMinute; 
+            document.getElementById('death-period-text').value = selectedPeriod; saveData(false); 
+        }
+        function insertFinalTime() { 
+            document.getElementById('death-time-text').value = selectedHour + ':' + selectedMinute; 
+            document.getElementById('death-period-text').value = selectedPeriod; document.getElementById('time-picker-modal').style.display = 'none'; 
+            saveData(false); 
+        }
+        
+        window.onload = function() { 
+            loadData(); setupAutoSave(); 
+            // Ensures Hospital Name remains blank upon first load if no data exists
+            if (!document.getElementById('hospital-name').value) {
+                document.getElementById('hospital-name').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
