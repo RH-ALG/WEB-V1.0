@@ -89,16 +89,16 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 <a href="#contact" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1">📞 Contact</a>
 <a href="#doctors" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1">👨‍⚕️ Specialty</a>
 <a href="#contact" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1">❓ Enquiry</a>
+<div class="relative">
 <button onclick="toggleHospitalDrawer()" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1 cursor-pointer">🏥 Hospital Sections ▾</button>
+<!-- Hospital Sections Sub Buttons Panel (Absolute Overlay) -->
+<div id="hospitalDrawer" class="hidden absolute top-full right-0 mt-1.5 z-50 w-44 flex-col gap-1.5 p-2 bg-teal-900/95 backdrop-blur-md rounded-xl shadow-lg border border-teal-700 animate-fade-in transition-all">
+<div class="text-[9px] uppercase tracking-widest font-black text-teal-200 mb-0.5 text-center border-b border-teal-700 pb-1">Portals</div>
+<a href="https://rh-alg.github.io/WEB-V1.0/opsystem.html" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2.5 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-start gap-2">🔐 Staff Login</a>
+<a href="https://rh-alg.github.io/WEB-V1.0/opverifydoctore.html" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2.5 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-start gap-2">🛡️ Admin Login</a>
+<a href="https://rh-alg.github.io/WEB-V1.0/forms/" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2.5 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-start gap-2">📋 Forms</a>
+<a href="https://rh-alg.github.io/WEB-V1.0" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2.5 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-start gap-2">🧪 Laboratory</a>
 </div>
-<!-- Hospital Sections Sub Buttons Panel -->
-<div id="hospitalDrawer" class="hidden max-w-2xl mx-auto mt-2 p-2.5 bg-teal-900/95 backdrop-blur-md text-white rounded-xl shadow-lg border border-teal-700 animate-fade-in transition-all">
-<div class="text-[10px] uppercase tracking-widest font-black text-teal-200 mb-1.5 text-center">Hospital Portal Sections</div>
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-<button onclick="openSubModal('Staff Login')" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-center gap-1">🔐 Staff Login</button>
-<button onclick="openSubModal('Admin Login')" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-center gap-1">🛡️ Admin Login</button>
-<button onclick="openSubModal('Forms')" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-center gap-1">📋 Forms</button>
-<button onclick="openSubModal('Laboratory')" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-center gap-1">🧪 Laboratory</button>
 </div>
 </div>
 </section>
@@ -490,7 +490,7 @@ function initPageDate() { const todayStr = new Date().toISOString().split('T')[0
 function toTitleCase(str) { return !str ? '' : str.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '); }
 
 /* CM024 - Hospital Sections Drawer & Sub-Modal Handlers */
-function toggleHospitalDrawer() { const d = document.getElementById('hospitalDrawer'); d.classList.toggle('hidden'); }
+function toggleHospitalDrawer() { const d = document.getElementById('hospitalDrawer'); d.classList.toggle('hidden'); d.classList.toggle('flex'); }
 function openSubModal(type) { const m = document.getElementById('subSectionModal'); const t = document.getElementById('modalTitle'); const b = document.getElementById('modalBody'); t.innerText = type; if(type==='Staff Login') { b.innerHTML = 'Staff Portal Access.<br><br><input type="text" placeholder="Staff ID" class="w-full mb-2 p-2 rounded border border-slate-300 text-xs"><input type="password" placeholder="Password" class="w-full p-2 rounded border border-slate-300 text-xs">'; } else if(type==='Admin Login') { b.innerHTML = 'Administrator Portal Access.<br><br><input type="text" placeholder="Admin Username" class="w-full mb-2 p-2 rounded border border-slate-300 text-xs"><input type="password" placeholder="Password" class="w-full p-2 rounded border border-slate-300 text-xs">'; } else if(type==='Forms') { b.innerHTML = 'Download & View Patient Admission, Discharge & Medical History Forms.'; } else if(type==='Laboratory') { b.innerHTML = '24/7 Diagnostic Lab Reports & Test Booking Panel.'; } m.classList.remove('hidden'); document.getElementById('departments').scrollIntoView({ behavior: 'smooth' }); }
 function closeSubModal() { document.getElementById('subSectionModal').classList.add('hidden'); }
 
