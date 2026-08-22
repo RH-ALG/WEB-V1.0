@@ -12,9 +12,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-tailwind.config = { theme: { extend: { fontFamily: { sans: ['Roboto Slab', 'serif'], serif: ['Roboto Slab', 'serif'], }, animation: { 'blob': 'blob 7s infinite', 'float': 'float 6s ease-in-out infinite', 'fade-in': 'fadeIn 0.5s ease-out forwards', }, keyframes: { blob: { '0%': { transform: 'translate(0px, 0px) scale(1)' }, '33%': { transform: 'translate(30px, -50px) scale(1.1)' }, '66%': { transform: 'translate(-20px, 20px) scale(0.9)' }, '100%': { transform: 'translate(0px, 0px) scale(1)' }, }, float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' }, }, fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } } } } }
+tailwind.config = { theme: { extend: { fontFamily: { sans: ['Roboto Slab', 'serif'], serif: ['Roboto Slab', 'serif'] }, animation: { 'blob': 'blob 7s infinite', 'float': 'float 6s ease-in-out infinite', 'fade-in': 'fadeIn 0.5s ease-out forwards' }, keyframes: { blob: { '0%': { transform: 'translate(0px, 0px) scale(1)' }, '33%': { transform: 'translate(30px, -50px) scale(1.1)' }, '66%': { transform: 'translate(-20px, 20px) scale(0.9)' }, '100%': { transform: 'translate(0px, 0px) scale(1)' } }, float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } }, fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } } } } }
 </script>
 <style>
+
 /* CM001 - Global Reset and Typography */
 * { scroll-behavior: smooth; box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
@@ -74,13 +75,35 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 <div class="text-center md:text-right text-[11px] sm:text-xs text-slate-700 border-t md:border-t-0 md:border-l border-teal-200 pt-1 md:pt-0 md:pl-3 bg-transparent w-full md:w-auto">
 <p class="font-black text-red-600 uppercase mb-0.5 tracking-widest drop-shadow-sm animate-pulse">📍 24/7 Emergency</p>
+<p class="font-black text-teal-900 text-sm sm:text-base mb-0.5 tracking-wider bg-teal-100/50 inline-block px-2 py-0.5 rounded border border-teal-200 shadow-sm">📞 08519-220028</p>
 <p class="font-bold">Mini Theater St, Padma St,</p>
 <p class="font-black text-slate-800">Allagadda, AP - 518553</p>
 </div>
 </div>
 </header>
 
-<!-- CM011 - About Section -->
+<!-- CM011 - Quick Action Buttons with Hospital Section Drawer Toggle -->
+<section class="w-full py-1 z-40 relative">
+<div class="max-w-7xl mx-auto px-2 flex flex-wrap justify-center gap-1.5 items-center">
+<a href="#op-register" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1">📝 OP Register</a>
+<a href="#contact" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1">📞 Contact</a>
+<a href="#doctors" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1">👨‍⚕️ Specialty</a>
+<a href="#contact" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1">❓ Enquiry</a>
+<button onclick="toggleHospitalDrawer()" class="bg-teal-900 hover:bg-teal-950 text-white font-bold py-1 px-2.5 rounded shadow-sm text-[10px] uppercase tracking-wide transition-colors flex items-center gap-1 cursor-pointer">🏥 Hospital Sections ▾</button>
+</div>
+<!-- Hospital Sections Sub Buttons Panel -->
+<div id="hospitalDrawer" class="hidden max-w-2xl mx-auto mt-2 p-2.5 bg-teal-900/95 backdrop-blur-md text-white rounded-xl shadow-lg border border-teal-700 animate-fade-in transition-all">
+<div class="text-[10px] uppercase tracking-widest font-black text-teal-200 mb-1.5 text-center">Hospital Portal Sections</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+<button onclick="openSubModal('Staff Login')" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-center gap-1">🔐 Staff Login</button>
+<button onclick="openSubModal('Admin Login')" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-center gap-1">🛡️ Admin Login</button>
+<button onclick="openSubModal('Forms')" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-center gap-1">📋 Forms</button>
+<button onclick="openSubModal('Laboratory')" class="bg-teal-800 hover:bg-teal-700 text-teal-100 font-bold py-1.5 px-2 rounded-lg text-[10px] transition-all border border-teal-600 flex items-center justify-center gap-1">🧪 Laboratory</button>
+</div>
+</div>
+</section>
+
+<!-- CM012 - About Section -->
 <section id="about" class="w-full bg-light-medical py-12 px-4 relative mt-2">
 <div class="max-w-6xl mx-auto space-y-3">
 <div class="flex flex-col md:flex-row items-center gap-6">
@@ -97,7 +120,7 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 </section>
 
-<!-- CM012 - Doctors Section -->
+<!-- CM013 - Doctors Section -->
 <section id="doctors" class="w-full bg-slate-50 py-6 px-4 relative overflow-hidden">
 <div class="absolute top-0 right-0 w-64 h-64 bg-teal-200/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
 <div class="absolute bottom-0 left-0 w-64 h-64 bg-emerald-200/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
@@ -142,7 +165,7 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 </section>
 
-<!-- CM013 - Departments & Services Section -->
+<!-- CM014 - Departments & Services Section -->
 <section id="departments" class="w-full bg-white py-6 px-4 relative overflow-hidden">
 <div class="max-w-7xl mx-auto relative z-10">
 <div class="text-center mb-6">
@@ -213,7 +236,7 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 </section>
 
-<!-- CM014 - Consultation Timings Section -->
+<!-- CM015 - Consultation Timings Section -->
 <section id="timings" class="w-full bg-slate-50 py-6 px-4 relative">
 <div class="max-w-5xl mx-auto bg-gradient-to-br from-teal-50 via-white to-emerald-50 rounded-3xl p-6 shadow-sm border border-teal-100 relative overflow-hidden">
 <h2 class="text-2xl sm:text-3xl font-black text-teal-800 text-center font-serif mb-5 drop-shadow-sm relative z-10">Consultation Timings</h2>
@@ -235,7 +258,7 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 </section>
 
-<!-- CM015 - OP Register Section -->
+<!-- CM016 - OP Register Section with Increased Doctor Field Width -->
 <section id="op-register" class="w-full py-6 px-4 relative overflow-hidden bg-white">
 <div class="max-w-6xl mx-auto relative z-10">
 <div class="text-center mb-5">
@@ -248,11 +271,11 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 <label class="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Date</label>
 <input type="date" id="opDate" required class="input-3d w-full px-3 py-2.5 rounded-xl text-sm font-medium text-slate-800" readonly>
 </div>
-<div class="lg:col-span-1">
-<label class="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Select Doctor</label>
-<select id="opDoctor" required class="input-3d w-full px-3 py-2.5 rounded-xl text-sm font-medium text-teal-900 appearance-none cursor-pointer border-2 border-teal-400 bg-teal-50 focus:ring-2 focus:ring-teal-200 transition-all">
-<option value="LSR" selected>Dr. N. Lakshmi Sekhar Reddy</option>
-<option value="SJ">Dr. N. Sujatha</option>
+<div class="lg:col-span-3">
+<label class="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Select Doctor (Speciality)</label>
+<select id="opDoctor" required class="input-3d w-full px-3 py-2.5 rounded-xl text-xs sm:text-sm font-black text-teal-900 cursor-pointer border-2 border-teal-500 bg-teal-50 focus:ring-2 focus:ring-teal-300 transition-all">
+<option value="LSR" selected>Dr. N. Lakshmi Sekhar Reddy — General Medicine</option>
+<option value="SJ">Dr. N. Sujatha — Obstetrics & Gynecology (OBG)</option>
 </select>
 </div>
 <div class="lg:col-span-2">
@@ -267,18 +290,18 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 <label class="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Village/Town</label>
 <input type="text" id="opVillage" placeholder="Location" required class="input-3d w-full px-3 py-2.5 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400">
 </div>
-<div class="lg:col-span-1 lg:col-start-1">
+<div class="lg:col-span-1">
 <label class="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Gender</label>
-<select id="opGender" required class="input-3d w-full px-3 py-2.5 rounded-xl text-sm font-medium text-slate-800 appearance-none cursor-pointer">
+<select id="opGender" required class="input-3d w-full px-3 py-2.5 rounded-xl text-sm font-medium text-slate-800 cursor-pointer">
 <option value="Male">Male</option>
 <option value="Female">Female</option>
 </select>
 </div>
-<div class="lg:col-span-2 lg:col-start-2">
+<div class="lg:col-span-1">
 <label class="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Mobile Number</label>
-<input type="tel" id="opPhone" placeholder="Exactly 10 digits" pattern="[0-9]{10}" maxlength="10" required class="input-3d w-full px-3 py-2.5 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400">
+<input type="tel" id="opPhone" placeholder="10 digits" pattern="[0-9]{10}" maxlength="10" required class="input-3d w-full px-3 py-2.5 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400">
 </div>
-<div class="lg:col-span-3 lg:col-start-4">
+<div class="lg:col-span-2">
 <button type="submit" id="opSubmitBtn" class="w-full bg-gradient-to-r from-teal-600 to-emerald-500 text-white font-black text-sm py-2.5 px-4 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 uppercase tracking-widest flex justify-center items-center gap-2 border border-transparent hover:border-emerald-200">REGISTER</button>
 </div>
 </div>
@@ -288,7 +311,7 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 </section>
 
-<!-- CM016 - Ultrasound Section -->
+<!-- CM017 - Ultrasound Section -->
 <section id="ultrasound" class="w-full py-8 px-4 bg-white relative overflow-hidden">
 <div class="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center gap-8">
 <div class="w-full lg:w-1/2 flex justify-center lg:justify-end">
@@ -329,7 +352,7 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 </section>
 
-<!-- CM017 - Facilities Section -->
+<!-- CM018 - Facilities Section -->
 <section id="facilities" class="w-full py-8 px-4 bg-slate-50">
 <div class="max-w-6xl mx-auto">
 <div class="text-center mb-8">
@@ -390,7 +413,7 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 </section>
 
-<!-- CM018 - Gallery Section -->
+<!-- CM019 - Gallery Section -->
 <section class="w-full py-6 px-4 bg-white overflow-hidden relative">
 <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-4 relative z-10">
 <div class="relative h-56 sm:h-72 w-full rounded-2xl overflow-hidden shadow-sm group border border-slate-100">
@@ -412,49 +435,78 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 </section>
 
-<!-- CM019 - Footer Section -->
+<!-- CM020 - Footer Section with Embedded Live Google Map Location -->
 <footer id="contact" class="w-full bg-gradient-to-r from-slate-50 to-teal-50 text-slate-800 py-6 px-4 border-t border-teal-200 relative overflow-hidden">
 <div class="max-w-6xl mx-auto">
-<div class="grid lg:grid-cols-2 gap-4 items-center mb-4">
+<div class="grid lg:grid-cols-2 gap-6 items-center mb-6">
 <div class="text-center lg:text-left space-y-1.5">
 <h3 class="font-black text-teal-900 text-xl tracking-wide font-serif drop-shadow-sm">Sri Ramakrishna Hospital <br><span class="text-xs text-teal-700 font-black">Sri Srinivasa Nursing Home</span></h3>
 <p class="text-[11px] sm:text-xs text-slate-600 leading-snug max-w-md mx-auto lg:mx-0 font-semibold mt-2">Delivering compassionate, affordable, and advanced healthcare to the people of Allagadda and surrounding regions for over five decades.</p>
 <div class="inline-block px-3 py-1 bg-amber-100 text-amber-900 rounded-lg text-[10px] font-black tracking-widest uppercase shadow-sm mt-2 border border-amber-300">🚨 24/7 Emergency & Ambulance</div>
 <p class="text-xs text-slate-700 font-bold mt-2">Mini Theater Street, Padma Street, Allagadda, AP - 518553</p>
+<p class="text-sm text-teal-900 font-black mt-1">📞 08519-220028</p>
 </div>
-<div class="bg-white rounded-2xl p-3 border border-teal-200 shadow-sm relative overflow-hidden transform hover:-translate-y-1 transition-transform max-w-sm mx-auto lg:mx-0 lg:ml-auto w-full">
+<div class="bg-white rounded-2xl p-3 border border-teal-200 shadow-md relative overflow-hidden w-full space-y-3">
+<div class="flex items-center justify-between border-b border-teal-100 pb-2">
+<span class="text-xs font-black text-teal-900 uppercase tracking-wider flex items-center gap-1.5">📍 Hospital Live Location</span>
+<a href="https://maps.app.goo.gl/6LqtW6vKvkpGYAU3A" target="_blank" class="text-[10px] font-black text-teal-700 hover:text-teal-900 underline uppercase tracking-wider">Open in Google Maps ↗</a>
+</div>
+<!-- Live Map Embed -->
+<div class="w-full h-44 rounded-xl overflow-hidden border border-teal-200 shadow-inner">
+<iframe title="Sri Ramakrishna Hospital Location" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3851.3534591283833!2d78.5085!3d15.1315!2m3!1f0!0f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb5dd6f1b8fb12f%3A0x861c028a4aa53d26!2sSri%20Srinivasa%20Nursing%20Home%2F%20Sri%20Ramakrishna%20Hospital!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
 <div class="grid grid-cols-3 gap-2 relative z-10">
-<a href="https://maps.google.com/?q=4GM5+HWG,Allagadda,Andhra+Pradesh+518543" target="_blank" class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-blue-50 to-white hover:from-blue-100 hover:to-blue-50 border border-blue-200 text-blue-700 py-2 rounded-xl transition-all cursor-pointer text-decoration-none shadow-sm hover:shadow-md group/btn"><span class="text-lg group-hover/btn:scale-110 transition-transform">🗺️</span><span class="text-[9px] font-black uppercase tracking-widest">Directions</span></a>
-<button onclick="shareHospitalLocation()" class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-emerald-50 to-white hover:from-emerald-100 hover:to-emerald-50 border border-emerald-200 text-emerald-700 py-2 rounded-xl transition-all cursor-pointer shadow-sm hover:shadow-md group/btn"><span class="text-lg group-hover/btn:scale-110 transition-transform">↗️</span><span class="text-[9px] font-black uppercase tracking-widest">Share</span></button>
-<a href="https://maps.google.com/?q=4GM5+HWG,Allagadda,Andhra+Pradesh+518543" target="_blank" class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-amber-50 to-white hover:from-amber-100 hover:to-amber-50 border border-amber-200 text-amber-700 py-2 rounded-xl transition-all cursor-pointer text-decoration-none shadow-sm hover:shadow-md group/btn"><span class="text-lg group-hover/btn:scale-110 transition-transform">⭐</span><span class="text-[9px] font-black uppercase tracking-widest">Save</span></a>
+<a href="https://maps.app.goo.gl/6LqtW6vKvkpGYAU3A" target="_blank" class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-blue-50 to-white hover:from-blue-100 hover:to-blue-50 border border-blue-200 text-blue-700 py-1.5 rounded-xl transition-all cursor-pointer text-decoration-none shadow-sm hover:shadow-md group/btn"><span class="text-base group-hover/btn:scale-110 transition-transform">🗺️</span><span class="text-[9px] font-black uppercase tracking-widest">Directions</span></a>
+<button onclick="shareHospitalLocation()" class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-emerald-50 to-white hover:from-emerald-100 hover:to-emerald-50 border border-emerald-200 text-emerald-700 py-1.5 rounded-xl transition-all cursor-pointer shadow-sm hover:shadow-md group/btn"><span class="text-base group-hover/btn:scale-110 transition-transform">↗️</span><span class="text-[9px] font-black uppercase tracking-widest">Share</span></button>
+<a href="https://maps.app.goo.gl/6LqtW6vKvkpGYAU3A" target="_blank" class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-amber-50 to-white hover:from-amber-100 hover:to-amber-50 border border-amber-200 text-amber-700 py-1.5 rounded-xl transition-all cursor-pointer text-decoration-none shadow-sm hover:shadow-md group/btn"><span class="text-base group-hover/btn:scale-110 transition-transform">⭐</span><span class="text-[9px] font-black uppercase tracking-widest">Save</span></a>
 </div>
 </div>
 </div>
-<div class="border-t border-teal-200 pt-4 mt-4 text-center text-xs text-slate-600 font-semibold tracking-wide">&copy; 2026 Sri Srinivasa Nursing Home. All rights reserved.  Architecture by Sri Veda Org</div>
+<div class="border-t border-teal-200 pt-4 mt-4 text-center text-xs text-slate-600 font-semibold tracking-wide">&copy; 2026 Sri Srinivasa Nursing Home. All rights reserved. Architecture by Sri Veda Org</div>
 </div>
 </footer>
 
+<!-- CM021 - Interactive Hospital Sections Sub-Modal Popup -->
+<div id="subSectionModal" class="fixed inset-0 z-50 hidden modal-overlay flex items-center justify-center p-4">
+<div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-teal-200 relative animate-fade-in text-center space-y-4">
+<button onclick="closeSubModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-black text-xl">✕</button>
+<div class="w-12 h-12 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-2xl mx-auto shadow-sm">🏥</div>
+<h3 id="modalTitle" class="text-lg font-black text-teal-900 font-serif">Hospital Portal Section</h3>
+<p id="modalDesc" class="text-xs text-slate-600 font-semibold leading-relaxed">Access authorized portal services directly.</p>
+<div id="modalBody" class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-bold text-slate-700">Redirecting or requesting authorization credentials...</div>
+<div class="flex gap-2 justify-center pt-2">
+<button onclick="closeSubModal()" class="bg-teal-900 text-white font-black text-xs py-2 px-6 rounded-xl hover:bg-teal-950 transition-colors uppercase tracking-widest shadow-sm">Close</button>
+</div>
+</div>
+</div>
+
 <script>
-/* CM020 - Initialization */
+
+/* CM022 - Initialization */
 window.onload = function() { initPageDate(); initSlider(); };
 
-/* CM021 - Form Helpers */
+/* CM023 - Form Helpers */
 function initPageDate() { const todayStr = new Date().toISOString().split('T')[0]; document.getElementById('opDate').value = todayStr; }
 function toTitleCase(str) { return !str ? '' : str.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '); }
 
-/* CM022 - Handle OP Submit (API Fetch) */
+/* CM024 - Hospital Sections Drawer & Sub-Modal Handlers */
+function toggleHospitalDrawer() { const d = document.getElementById('hospitalDrawer'); d.classList.toggle('hidden'); }
+function openSubModal(type) { const m = document.getElementById('subSectionModal'); const t = document.getElementById('modalTitle'); const b = document.getElementById('modalBody'); t.innerText = type; if(type==='Staff Login') { b.innerHTML = 'Staff Portal Access.<br><br><input type="text" placeholder="Staff ID" class="w-full mb-2 p-2 rounded border border-slate-300 text-xs"><input type="password" placeholder="Password" class="w-full p-2 rounded border border-slate-300 text-xs">'; } else if(type==='Admin Login') { b.innerHTML = 'Administrator Portal Access.<br><br><input type="text" placeholder="Admin Username" class="w-full mb-2 p-2 rounded border border-slate-300 text-xs"><input type="password" placeholder="Password" class="w-full p-2 rounded border border-slate-300 text-xs">'; } else if(type==='Forms') { b.innerHTML = 'Download & View Patient Admission, Discharge & Medical History Forms.'; } else if(type==='Laboratory') { b.innerHTML = '24/7 Diagnostic Lab Reports & Test Booking Panel.'; } m.classList.remove('hidden'); document.getElementById('departments').scrollIntoView({ behavior: 'smooth' }); }
+function closeSubModal() { document.getElementById('subSectionModal').classList.add('hidden'); }
+
+/* CM025 - Handle OP Submit API Fetch */
 async function handleOpSubmit(event) { event.preventDefault(); const err = document.getElementById('phoneErrorMsg'); err.classList.add('hidden'); const btn = document.getElementById('opSubmitBtn'); const oText = btn.innerHTML; btn.innerHTML = '<span class="animate-spin text-lg">⏳</span> GENERATING TOKEN...'; btn.disabled = true; const rawName = document.getElementById('opName').value.trim(); const ageVal = document.getElementById('opAge').value.trim(); const rawVillage = document.getElementById('opVillage').value.trim(); const genderVal = document.getElementById('opGender').value; const phoneVal = document.getElementById('opPhone').value.replace(/\D/g, ''); if(phoneVal.length !== 10) { err.classList.remove('hidden'); btn.innerHTML = oText; btn.disabled = false; return; } const reqData = { action: 'REGISTER', doctorId: document.getElementById('opDoctor').value, name: toTitleCase(rawName), age: ageVal, gender: genderVal, village: toTitleCase(rawVillage), phone: phoneVal }; try { const response = await fetch('https://script.google.com/macros/s/AKfycbzLuozXgxpqFRXv9R2UJ59_8ZTYdYqwqZthipmq4cwOjnd7W6pjn8MOLeyusg_YrKCE/exec', { method: 'POST', body: JSON.stringify(reqData) }); const res = await response.json(); if(res.success || res.result === 'success') { showSuccessScreen({ tNo: res.token || res.tokenNumber || (res.data ? res.data.token : '00'), name: reqData.name, vil: reqData.village, phone: reqData.phone }); } else { alert('Registration failed: ' + (res.message || 'Unknown error')); } } catch(e) { alert('Failed to connect to the server. Please try again.'); } btn.innerHTML = oText; btn.disabled = false; }
 
-/* CM023 - Show Success Screen Logic */
+/* CM026 - Show Success Screen Logic */
 function showSuccessScreen(data) { const f = document.getElementById('opForm'); const s = document.getElementById('successScreen'); f.classList.add('hidden'); s.classList.remove('hidden'); s.innerHTML = `<div class="bg-gradient-to-br from-teal-50 to-emerald-50 p-6 rounded-3xl shadow-sm border border-teal-200 flex flex-col md:flex-row items-center justify-between gap-6 w-full"><div class="w-full md:w-1/2 space-y-4 border-b md:border-b-0 md:border-r border-teal-200 pb-5 md:pb-0 pr-0 md:pr-5"><h3 class="text-base font-black text-teal-900 mb-2 font-serif border-b border-teal-200 pb-2 inline-block">Patient Details</h3><div class="space-y-3"><p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Name:</span> <span class="font-black">${data.name}</span></p><p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Village:</span> <span class="font-black">${data.vil}</span></p><p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Mobile:</span> <span class="font-black">${data.phone}</span></p></div></div><div class="w-full md:w-1/2 flex flex-col items-center justify-center text-center"><p class="text-[13px] font-black text-teal-800 uppercase tracking-widest mb-2 bg-teal-100 px-4 py-1 rounded-lg shadow-sm">Your Token Number</p><div class="text-[90px] sm:text-[110px] leading-none font-black text-transparent bg-clip-text bg-gradient-to-br from-teal-600 to-emerald-500 drop-shadow-md mb-5">${data.tNo}</div><button onclick="resetOpForm()" class="bg-slate-800 hover:bg-slate-700 text-white font-black text-xs py-3 px-8 rounded-xl transition-all shadow-sm hover:shadow-md hover:-translate-y-1 uppercase tracking-widest">Register Another Patient</button></div></div>`; }
 
-/* CM024 - Reset Form Logic */
+/* CM027 - Reset Form Logic */
 function resetOpForm() { const f = document.getElementById('opForm'); const s = document.getElementById('successScreen'); f.reset(); initPageDate(); s.classList.add('hidden'); f.classList.remove('hidden'); }
 
-/* CM025 - Share Hospital Location */
-function shareHospitalLocation() { const locUrl = 'https://maps.google.com/?q=4GM5+HWG,Allagadda,Andhra+Pradesh+518543'; if (navigator.share) { navigator.share({ title: 'Sri Ramakrishna Hospital Location', text: 'Here is the location for Sri Ramakrishna Hospital in Allagadda:', url: locUrl }).catch(console.error); } else { const el = document.createElement('textarea'); el.value = locUrl; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); alert('Location copied to clipboard!'); } }
+/* CM028 - Share Hospital Location */
+function shareHospitalLocation() { const locUrl = 'https://maps.app.goo.gl/6LqtW6vKvkpGYAU3A'; if (navigator.share) { navigator.share({ title: 'Sri Ramakrishna Hospital Location', text: 'Here is the location for Sri Ramakrishna Hospital in Allagadda:', url: locUrl }).catch(console.error); } else { const el = document.createElement('textarea'); el.value = locUrl; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); alert('Location copied to clipboard!'); } }
 
-/* CM026 - Dual Gallery Image Slider Logic */
+/* CM029 - Dual Gallery Image Slider Logic */
 function initSlider() { const leftImages = ["https://rh-alg.github.io/RH-IMG/RH-IMG-1.jpeg", "https://rh-alg.github.io/RH-IMG/RH-IMG%282%29.jpeg", "https://rh-alg.github.io/RH-IMG/RH-IMG%283%29.jpeg", "https://rh-alg.github.io/RH-IMG/RH-IMG%284%29.jpeg"]; const rightImages = ["https://rh-alg.github.io/RH-IMG/RH-IMG%288%29.jpeg", "https://rh-alg.github.io/RH-IMG/RH-IMG%2810%29.jpeg", "https://rh-alg.github.io/RH-IMG/RH-IMG%2811%29.jpeg", "https://rh-alg.github.io/RH-IMG/RH-IMG%2814%29.jpeg"]; let leftIndex = 0; let rightIndex = 0; setInterval(() => { const lCurrent = document.getElementById('left-slide-1'); const lNext = document.getElementById('left-slide-2'); leftIndex = (leftIndex + 1) % leftImages.length; lNext.src = leftImages[leftIndex]; lCurrent.classList.remove('opacity-100'); lCurrent.classList.add('opacity-0'); lNext.classList.remove('opacity-0'); lNext.classList.add('opacity-100'); setTimeout(() => { lCurrent.src = lNext.src; lCurrent.classList.remove('opacity-0'); lCurrent.classList.add('opacity-100'); lNext.classList.remove('opacity-100'); lNext.classList.add('opacity-0'); }, 1000); setTimeout(() => { const rCurrent = document.getElementById('right-slide-1'); const rNext = document.getElementById('right-slide-2'); rightIndex = (rightIndex + 1) % rightImages.length; rNext.src = rightImages[rightIndex]; rCurrent.classList.remove('opacity-100'); rCurrent.classList.add('opacity-0'); rNext.classList.remove('opacity-0'); rNext.classList.add('opacity-100'); setTimeout(() => { rCurrent.src = rNext.src; rCurrent.classList.remove('opacity-0'); rCurrent.classList.add('opacity-100'); rNext.classList.remove('opacity-100'); rNext.classList.add('opacity-0'); }, 1000); }, 500); }, 4000); }
 </script>
 </body>
