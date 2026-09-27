@@ -15,7 +15,6 @@
 tailwind.config = { theme: { extend: { fontFamily: { sans: ['Roboto Slab', 'serif'], serif: ['Roboto Slab', 'serif'] }, animation: { 'blob': 'blob 7s infinite', 'float': 'float 6s ease-in-out infinite', 'fade-in': 'fadeIn 0.5s ease-out forwards' }, keyframes: { blob: { '0%': { transform: 'translate(0px, 0px) scale(1)' }, '33%': { transform: 'translate(30px, -50px) scale(1.1)' }, '66%': { transform: 'translate(-20px, 20px) scale(0.9)' }, '100%': { transform: 'translate(0px, 0px) scale(1)' } }, float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } }, fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } } } } }
 </script>
 <style>
-
 /* CM001 - Global Reset and Typography */
 * { scroll-behavior: smooth; box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
@@ -35,11 +34,7 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 /* CM005 - Hero Slider Images */
 .hero-slider-img { transition: opacity 1s ease-in-out; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 1rem; }
 
-/* CM006 - Navigation Links */
-.nav-link { color: #334155; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.2s; padding: 0.5rem 1rem; text-decoration: none; border-radius: 0.5rem; }
-.nav-link:hover { color: #0d9488; background-color: #f0fdf4; }
-
-/* CM007 - Custom Scrollbar */
+/* CM006 - Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #f1f5f9; }
 ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
@@ -173,7 +168,6 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">🩸</span> Menstrual Disorders</li>
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">👨‍👩‍👧</span> Family Planning</li>
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">✂️</span> Gynaecological Surgery</li>
-<li class="flex items-center gap-2"><span class="text-pink-500 text-sm">🔬</span> Laparoscopic Surgery</li>
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">🖥️</span> Pelvic USG</li>
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">⚠️</span> High-Risk Pregnancy Care</li>
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">🏥</span> Caesarean Section</li>
@@ -181,8 +175,6 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">🎗️</span> PCOS Management</li>
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">🛡️</span> IUCD & Sterilization</li>
 <li class="flex items-center gap-2"><span class="text-pink-500 text-sm">🩺</span> Hysterectomy</li>
-<li class="flex items-center gap-2"><span class="text-pink-500 text-sm">📟</span> Obstetric USG</li>
-<li class="flex items-center gap-2"><span class="text-pink-500 text-sm">🍼</span> Neonatal Stabilization</li>
 </ul>
 </div>
 <div class="bg-slate-50 p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all">
@@ -299,6 +291,8 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 <div id="phoneErrorMsg" class="hidden text-xs font-black text-red-600 mt-2 text-center animate-pulse">Please enter exactly 10 digits for the Mobile Number.</div>
 </form>
+
+<!-- Success Screen Area -->
 <div id="successScreen" class="hidden animate-fade-in w-full max-w-6xl mx-auto"></div>
 </div>
 </section>
@@ -472,9 +466,11 @@ body { font-family: 'Roboto Slab', serif; background-color: #f8fafc; color: #1e2
 </div>
 
 <script>
-
 /* CM020 - Configuration and Links */
-const CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbzLuozXgxpqFRXv9R2UJ59_8ZTYdYqwqZthipmq4cwOjnd7W6pjn8MOLeyusg_YrKCE/exec', MAP_LINK: 'https://maps.app.goo.gl/6LqtW6vKvkpGYAU3A' };
+const CONFIG = { 
+  API_URL: 'https://home-page-op.contact-ramakrishnahospital.workers.dev/', 
+  MAP_LINK: 'https://maps.app.goo.gl/6LqtW6vKvkpGYAU3A' 
+};
 
 /* CM021 - Initialization */
 window.onload = function() { initPageDate(); initSlider(); };
@@ -489,10 +485,87 @@ function openSubModal(type) { const m = document.getElementById('subSectionModal
 function closeSubModal() { document.getElementById('subSectionModal').classList.add('hidden'); }
 
 /* CM024 - Handle OP Submit API Fetch */
-async function handleOpSubmit(event) { event.preventDefault(); const err = document.getElementById('phoneErrorMsg'); err.classList.add('hidden'); const btn = document.getElementById('opSubmitBtn'); const oText = btn.innerHTML; btn.innerHTML = '<span class="animate-spin text-lg">⏳</span> GENERATING TOKEN...'; btn.disabled = true; const rawName = document.getElementById('opName').value.trim(); const ageVal = document.getElementById('opAge').value.trim(); const rawVillage = document.getElementById('opVillage').value.trim(); const genderVal = document.getElementById('opGender').value; const phoneVal = document.getElementById('opPhone').value.replace(/\D/g, ''); if(phoneVal.length !== 10) { err.classList.remove('hidden'); btn.innerHTML = oText; btn.disabled = false; return; } const reqData = { action: 'REGISTER', doctorId: document.getElementById('opDoctor').value, name: rawName, age: ageVal, gender: genderVal, village: rawVillage, phone: phoneVal }; try { const response = await fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify(reqData) }); const res = await response.json(); if(res.success || res.result === 'success') { showSuccessScreen({ tNo: res.token || res.tokenNumber || (res.data ? res.data.token : '00'), name: reqData.name, vil: reqData.village, phone: reqData.phone }); } else { alert('Registration failed: ' + (res.message || 'Unknown error')); } } catch(e) { alert('Failed to connect to the server. Please try again.'); } btn.innerHTML = oText; btn.disabled = false; }
+async function handleOpSubmit(event) { 
+  event.preventDefault(); 
+  const err = document.getElementById('phoneErrorMsg'); 
+  err.classList.add('hidden'); 
+  const btn = document.getElementById('opSubmitBtn'); 
+  const oText = btn.innerHTML; 
+  btn.innerHTML = '<span class="animate-spin text-lg">⏳</span> GENERATING TOKEN...'; 
+  btn.disabled = true; 
+  
+  const rawName = document.getElementById('opName').value.trim(); 
+  const ageVal = document.getElementById('opAge').value.trim(); 
+  const rawVillage = document.getElementById('opVillage').value.trim(); 
+  const genderVal = document.getElementById('opGender').value; 
+  const phoneVal = document.getElementById('opPhone').value.replace(/\D/g, ''); 
+  
+  if(phoneVal.length !== 10) { 
+    err.classList.remove('hidden'); 
+    btn.innerHTML = oText; 
+    btn.disabled = false; 
+    return; 
+  } 
+  
+  const reqData = { 
+    action: 'REGISTER', 
+    doctorId: document.getElementById('opDoctor').value, 
+    name: rawName, 
+    age: ageVal, 
+    gender: genderVal, 
+    village: rawVillage, 
+    phone: phoneVal 
+  }; 
+  
+  try { 
+    const response = await fetch(CONFIG.API_URL, { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reqData) 
+    }); 
+    const res = await response.json(); 
+    
+    if(res.success || res.result === 'success') { 
+      showSuccessScreen({ 
+        tNo: res.token || '00', 
+        name: reqData.name, 
+        vil: reqData.village, 
+        ppid: res.ppid 
+      }); 
+    } else { 
+      alert('Registration failed: ' + (res.message || 'Unknown error')); 
+    } 
+  } catch(e) { 
+    alert('Failed to connect to the server. Please try again.'); 
+  } 
+  btn.innerHTML = oText; 
+  btn.disabled = false; 
+}
 
 /* CM025 - Show Success Screen Logic */
-function showSuccessScreen(data) { const f = document.getElementById('opForm'); const s = document.getElementById('successScreen'); f.classList.add('hidden'); s.classList.remove('hidden'); const numericToken = String(data.tNo).replace(/\D/g, '') || '00'; s.innerHTML = `<div class="bg-gradient-to-br from-teal-50 to-emerald-50 p-6 rounded-3xl shadow-sm border border-teal-200 flex flex-col md:flex-row items-center justify-between gap-6 w-full"><div class="w-full md:w-1/2 space-y-4 border-b md:border-b-0 md:border-r border-teal-200 pb-5 md:pb-0 pr-0 md:pr-5"><h3 class="text-base font-black text-teal-900 mb-2 font-serif border-b border-teal-200 pb-2 inline-block">Patient Details</h3><div class="space-y-3"><p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Name:</span> <span class="font-black">${data.name}</span></p><p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Village:</span> <span class="font-black">${data.vil}</span></p><p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Mobile:</span> <span class="font-black">${data.phone}</span></p></div></div><div class="w-full md:w-1/2 flex flex-col items-center justify-center text-center"><p class="text-[13px] font-black text-teal-800 uppercase tracking-widest mb-2 bg-teal-100 px-4 py-1 rounded-lg shadow-sm">Your Token Number</p><div class="text-[90px] sm:text-[110px] leading-none font-black text-transparent bg-clip-text bg-gradient-to-br from-teal-600 to-emerald-500 drop-shadow-md mb-5">${numericToken}</div><button onclick="resetOpForm()" class="bg-slate-800 hover:bg-slate-700 text-white font-black text-xs py-3 px-8 rounded-xl transition-all shadow-sm hover:shadow-md hover:-translate-y-1 uppercase tracking-widest">Register Another Patient</button></div></div>`; }
+function showSuccessScreen(data) { 
+  const f = document.getElementById('opForm'); 
+  const s = document.getElementById('successScreen'); 
+  f.classList.add('hidden'); 
+  s.classList.remove('hidden'); 
+  
+  s.innerHTML = `
+  <div class="bg-gradient-to-br from-teal-50 to-emerald-50 p-6 rounded-3xl shadow-sm border border-teal-200 flex flex-col md:flex-row items-center justify-between gap-6 w-full">
+    <div class="w-full md:w-1/2 space-y-4 border-b md:border-b-0 md:border-r border-teal-200 pb-5 md:pb-0 pr-0 md:pr-5">
+      <h3 class="text-base font-black text-teal-900 mb-2 font-serif border-b border-teal-200 pb-2 inline-block">Patient Details</h3>
+      <div class="space-y-3">
+        <p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Name:</span> <span class="font-black text-teal-800">${data.name}</span></p>
+        <p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Village:</span> <span class="font-black text-teal-800">${data.vil}</span></p>
+        <p class="text-sm text-slate-700 flex justify-between items-center bg-white p-3 rounded-xl border border-teal-100 shadow-sm"><span class="font-bold">Patient ID (PID):</span> <span class="font-black text-rose-600">${data.ppid}</span></p>
+      </div>
+    </div>
+    <div class="w-full md:w-1/2 flex flex-col items-center justify-center text-center">
+      <p class="text-[13px] font-black text-teal-800 uppercase tracking-widest mb-2 bg-teal-100 px-4 py-1 rounded-lg shadow-sm">Your Token Number</p>
+      <div class="text-[90px] sm:text-[110px] leading-none font-black text-transparent bg-clip-text bg-gradient-to-br from-teal-600 to-emerald-500 drop-shadow-md mb-5">${data.tNo}</div>
+      <button onclick="resetOpForm()" class="bg-slate-800 hover:bg-slate-700 text-white font-black text-xs py-3 px-8 rounded-xl transition-all shadow-sm hover:shadow-md hover:-translate-y-1 uppercase tracking-widest">Register Another Patient</button>
+    </div>
+  </div>`; 
+}
 
 /* CM026 - Reset Form Logic */
 function resetOpForm() { const f = document.getElementById('opForm'); const s = document.getElementById('successScreen'); f.reset(); initPageDate(); s.classList.add('hidden'); f.classList.remove('hidden'); }
@@ -505,3 +578,4 @@ function initSlider() { const leftImages = ["https://rh-alg.github.io/RH-IMG/RH-
 </script>
 </body>
 </html>
+```eof
